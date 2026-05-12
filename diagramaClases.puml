@@ -1,0 +1,392 @@
+@startuml diagramaClases
+title Diagrama de clases de diseño
+
+' Se han omitido los getters para mejor visibilidad del diagrama
+' en las clases principales
+
+skinparam classAttributeIconSize 0
+
+' GRASP: Controlador
+class ClienteRESTController {
+  + validarCliente(...): Cliente
+  + insertarCliente(...)
+  + buscarRestaurante(...): List<Restaurante>
+  + buscarPlato(...): List<Plato>
+  + filtrarPlatos(...): List<Plato>
+  + realizarPedido(...): Pedido
+  + valorarRestaurante(...)
+  + realizarPago(...)
+}
+
+class RestauranteRESTController {
+  + validarRestaurante(...): Restaurante
+  + buscarRestaurante(...): List<Restaurante>
+  + insertarRestaurante(...)
+  + borrarRestaurante(...)
+  + buscarPlato(...): List<Plato>
+  + filtrarPlatos(...): List<Plato>
+  + insertarPlato(...)
+  + borrarPlato(...)
+  + cambiarEstadoPedido(...)
+  + establecerRebaja(...)
+}
+
+class RepartidorRESTController {
+  + validarRepartidor(...): Repartidor
+  + insertarRepartidor(...)
+  + borrarRepartidor(...)
+  + buscarPedidosARepartir(...): List<Pedido>
+  + cambiarEstadoPedido(...)
+  + asignarPedido(...)
+}
+
+' GRASP: Fabricacion Pura
+' GRASP: Creacion: experto en crear Cliente y sus atributos(email, ...00)
+class ClientesService {
+  - repositorio: ClientesRepository
+
+  + validar(email: String, passwd: String): Cliente
+  + insertarCliente(nombre: String, direccion: String, telefono: String, email: String, passwd: String)
+  + buscarClientePorID(idCliente): Cliente
+}
+
+' GRASP: Fabricacion Pura
+class RestaurantesService {
+  - repositorio: RestaurantesRepository
+
+  + validar(email: String, passwd: String): Restaurante
+  + buscarRestaurantePorID(idRest): Restaurante
+  + buscarRestaurante(nombre: String): List<Restaurante>
+  + insertarRestaurante(nombre: String, categoria: Integer, direccion: String, telefono: String, email: String, horaApertura: String, horaCierre: String, passwd: String)
+  + borrarRestaurante(idRestaurante: Integer)
+  + actualizarValoracion(idRestaurante, valoracion: Double)
+}
+
+' GRASP: Fabricacion Pura
+class PlatosService {
+  - repositorio: PlatosRepository
+
+  + buscarPlatoPorID(platoID): Plato
+  + buscarPlato(idRestaurante: Integer): List<Plato>
+  + filtrarPlatos(idRestaurante: Integer, categoria: Integer): List<Plato>
+  + insertarPlato(idRestaurante: Integer, nombre: String, categoria: Integer, precio: Double)
+  + borrarPlato(idRestaurante: Integer, idPlato: Integer)
+  + establecerRebaja(idRestaurante: Integer, idPlato: Integer, nuevoPrecio: Double, fechaFin: Fecha)
+}
+
+' GRASP: Fabricacion Pura
+class RepartidoresService {
+  - repositorio: RepartidoresRepository
+
+  + validar(email: Email, passwd: String): Repartidor
+  + buscarRepartidorPorID(repartidorID: Integer): Repartidor
+  + insertarRepartidor(nombre: String, telefono: String, email: String, passwd: String)
+  + borrarRepartidor(idRepartidor: Integer)
+}
+
+' GRASP: Fabricacion Pura
+class PedidosService {
+  - repositorio: PedidosRepository
+
+  + realizarPedido(idCliente: Integer, idRestaurante: Integer, platos: List<Integer>): Pedido
+  + buscarPedidoPorID(idPedido: Integer): Pedido
+  + anularPedido(idPedido: Integer)
+  + cambiarEstado(idPedido: Integer, estado: Integer)
+  + asignarPedido(idPedido, idRepartidor)
+  ' TODO: Demasiado complejo?
+  ' TODO: Modelar la ubicacion?
+  + buscarPedidosARepartir(ubicacionRepartidor: Integer): List<Pedido>
+}
+
+' GRASP: Indireccion
+class PagosService {
+  + realizarPago(cantidad: Precio)
+}
+
+class ClienteFactory {
+  - nombre
+  - direccionEnvio: String
+  - telefonoContacto: String
+  - email: String
+  - passwd: String
+
+  + fabricarCliente(): Cliente
+}
+
+class RestauranteFactory {
+  - nombre
+  - direccion: String
+  - telefonoContacto: String
+  - email: String
+  - horaApertura: String
+  - horaCierre: String
+  - categoria: Integer
+  - passwd: String
+
+  + fabricarRestaurante(): Restaurante
+}
+
+class RepartidorFactory {
+  - nombre
+  - telefonoContacto: String
+  - email: String
+  - passwd: String
+
+  + fabricarRepartidor(): Repartidor
+}
+
+class PlatosFactory {
+  - nombre
+  - idRestaurante: Integer
+  - precio: Double
+  - categoria: Integer
+
+  + fabricarPlato(): Plato
+}
+
+class PedidosFactory {
+  - idCliente
+  - idRestaurante
+  - platos: List<Integer>
+
+  + fabricarPedido(): Pedido
+}
+
+'-------------------
+
+' GRASP: Fabricacion Pura, Indireccion, Variaciones Protegidas
+interface ClientesRepository {
+  + findById(id: Integer): Cliente
+  + findByEmail(email: Email): Cliente
+  + save(cliente: Cliente): Cliente
+  + deleteById(id: Integer)
+}
+
+interface RestaurantesRepository {
+  + findById(id: Integer): Restaurante
+  + findByEmail(email: Email): Restaurante
+  + findByNombreContaining(nombre: String): List<Restaurante>
+  + findByCategoria(categoria: CategoriaRestaurante): List<Restaurante>
+  + save(restaurante: Restaurante): Restaurante
+  + deleteById(id: Integer)
+}
+
+interface PlatosRepository {
+  + findById(id: Integer): Plato
+  + findByRestauranteIdRestaurante(idRestaurante: Integer): List<Plato>
+  + findByRestauranteIdRestauranteAndTipoPlato(idRestaurante: Integer, categoria: CategoriaPlato): List<Plato>
+  + save(plato: Plato): Plato
+  + deleteById(id: Integer)
+  + establecerRebaja(idRestaurante: Integer, idPlato: Integer, nuevoPrecio: Double, fechaFin: Fecha)
+}
+
+interface RebajasRepository {
+  + findById(id: Integer): Rebaja
+  + save(rebaja: Rebaja)
+  + deleteById(id:Integer)
+}
+
+interface RepartidoresRepository {
+  + findById(id: Integer): Repartidor
+  + findByEmail(email: Email): Repartidor
+  + save(repartidor: Repartidor): Repartidor
+  + deleteById(id: Integer)
+}
+
+interface PedidosRepository {
+  + findById(id: Integer): Optional<Pedido>
+  + findByClienteIdCliente(idCliente: Integer): List<Pedido>
+  + findByRestauranteIdRestaurante(idRestaurante: Integer): List<Pedido>
+  + findByEstadoPedido(estado: EstadoPedido): List<Pedido>
+  + save(pedido: Pedido): Pedido
+  + deleteById(id: Integer)
+}
+'-------------------
+
+class Repartidor {
+  - idRepartidor
+  - nombre
+  - telefonoContacto
+
+  + email(): Email
+}
+
+class Restaurante {
+  - idRestaurante
+  - nombre
+  - direccion
+  - telefonoContacto
+
+  + categoria(): CategoriaRestaurante
+  + email(): Email
+  + valoracion(): Valoracion
+  + horaApertura(): Hora
+  + horaCierre(): Hora
+  + estaAbierto(horaActual: Hora): Boolean
+}
+
+class Cliente {
+  - idCliente
+  - nombre
+  - direccionEnvio
+  - telefonoContacto
+
+  + email(): Email
+}
+
+class Email {
+  - userName
+  - servidor
+}
+
+class Hora {
+  - horas
+  - minutos
+}
+
+class Fecha {
+  - dia
+  - mes
+  - año
+}
+
+class Valoracion {
+  - valor: Double
+
+  + actualizarValoracion(nuevaValoracion: Double)
+}
+
+class CategoriaRestaurante {
+  - categoria
+}
+
+class CategoriaPlato {
+  - categoria
+}
+
+class EstadoPedido {
+  estado
+}
+
+class Precio {
+  - cantidad
+  - divisa
+}
+
+' GRASP: Experto en precio
+class Pedido {
+  - idPedido
+
+  + estado(): EstadoPedido  
+  + setEstado(estado: EstadoPedido)
+  + fechaRealizacion(): Fecha
+  + precioTotal(): Precio
+  + cliente(): Cliente
+  + restaurante(): Restaurante
+  + repartidorAsignado(): Boolean
+  + repartidor(): Repartidor
+  + asignarRepartidor(repartidor: Repartidor)
+}
+
+class LineaPlatos {
+  - cantidad
+
+  + precioSubtotal(): Precio
+}
+
+class Plato {
+  - idPlato
+  - nombre
+  
+  + precio(): Precio
+  + tipoPlato(): CategoriaPlato
+  + rebaja(): Rebaja
+  + setRebaja(rebaja: Rebaja)
+  + quitarRebaja()
+}
+
+class Rebaja {
+  - idRebaja
+
+  + fechaLimite(): Fecha
+  + nuevoPrecio(): Precio
+}
+
+ClienteRESTController ..> ClientesService : usa
+ClienteRESTController ..> RestaurantesService : usa
+ClienteRESTController ..> PlatosService : usa
+ClienteRESTController ..> PedidosService : usa
+
+RestauranteRESTController ..> RestaurantesService : usa
+RestauranteRESTController ..> PlatosService : usa
+RestauranteRESTController ..> PedidosService : usa
+
+RepartidorRESTController ..> RepartidoresService : usa
+RepartidorRESTController ..> PedidosService : usa
+
+ClientesService ..> ClientesRepository : usa
+RestaurantesService ..> RestaurantesRepository : usa
+PlatosService ..> PlatosRepository : usa
+RepartidoresService ..> RepartidoresRepository : usa
+PedidosService ..> PedidosRepository : usa
+' Es usado al asignar un pedido a un repartidor
+PedidosService ..> RepartidoresService : usa
+
+PedidosRepository ..> Pedido : persiste
+ClientesRepository ..> Cliente : recupera
+RestaurantesRepository ..> Restaurante : recupera
+PlatosRepository ..> Plato : recupera
+RepartidoresRepository ..> Repartidor : recupera
+
+ClientesService ..> ClienteFactory : usa
+RestaurantesService ..> RestauranteFactory : usa
+PlatosService ..> PlatosFactory : usa
+RepartidoresService ..> RepartidorFactory : usa
+PedidosService ..> PedidosFactory : usa
+
+ClienteFactory ..> Cliente : crea
+ClienteFactory ..> Email : crea
+RestauranteFactory ..> Restaurante : crea
+RestauranteFactory ..> Email : crea
+RestauranteFactory ..> Hora : crea
+RestauranteFactory ..> CategoriaRestaurante : crea
+RestauranteFactory ..> Valoracion : crea
+PlatosFactory ..> Plato : crea
+PlatosFactory ..> CategoriaPlato : crea
+PlatosFactory ..> Precio : crea
+PlatosFactory ..> RestaurantesService : usa
+PedidosFactory ..> Pedido : crea
+PedidosFactory ..> Fecha : crea
+PedidosFactory ..> Precio : crea
+PedidosFactory ..> LineaPlatos : crea
+PedidosFactory ..> PlatosService : usa
+PedidosFactory ..> ClientesService : usa
+PedidosFactory ..> RestaurantesService : usa
+PedidosFactory ..> RepartidoresService : usa
+
+LineaPlatos --> Plato : describe
+Plato --> Restaurante : perteneceA
+Plato --> Precio : tienePrecio
+Plato --> CategoriaPlato : perteneceCategoria
+Restaurante --> Hora : tieneHoraApertura
+Restaurante --> Hora : tieneHoraCierre
+Restaurante --> Email : tieneEmail
+Restaurante --> Valoracion : tieneValoracion
+Restaurante --> CategoriaRestaurante : perteneceCategoria
+Pedido --> LineaPlatos : contiene
+Pedido --> Cliente : pedidoPor
+Pedido --> Restaurante : pedidoA
+Pedido --> EstadoPedido : tieneEstado
+Pedido --> Fecha : fechaPedido
+Pedido --> Repartidor : recogidoPor
+Repartidor --> Email : tieneEmail
+Plato "1" --> "0..1" Rebaja : tieneRebaja
+Rebaja "1" --> "1" Precio : tienePrecio
+Rebaja "1" --> "1" Fecha : tieneFechaLimite
+
+' PrestamosRepository ..> Prestamo : persiste
+
+' Usuario "1" <-- "0..*" Prestamo : corresponde a
+
+
+@enduml
