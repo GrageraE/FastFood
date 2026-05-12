@@ -9,7 +9,7 @@ public class RepartidoresService {
 
     private RepartidoresRepository repository;
 
-    public Repartidor validar(String email, String passwd){
+    public Repartidor validar(String email, String passwd) {
         // TODO
         return null;
     }

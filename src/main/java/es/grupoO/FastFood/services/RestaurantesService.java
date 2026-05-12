@@ -2,7 +2,6 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

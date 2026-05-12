@@ -6,7 +6,6 @@ import es.grupoO.FastFood.repository.PlatosRepository;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -39,7 +38,7 @@ public class PlatosService {
         this.repository.deleteById(idPlato);
     }
     
-    public void establecerRebaja(long idRest, long idPlato, double nuevoPrecio, LocalTime fechaFin) {
+    public void establecerRebaja(long idRest, long idPlato, double nuevoPrecio, String fechaFin) {
         // TODO
     }
 }

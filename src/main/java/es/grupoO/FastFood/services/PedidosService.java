@@ -31,7 +31,7 @@ public class PedidosService {
         // TODO
     }
     
-    List<Pedido> buscarPedidosARepartir(long ubicacionRepartidor) {
+    public List<Pedido> buscarPedidosARepartir(long ubicacionRepartidor) {
         // TODO
         return null;
     }
