@@ -21,11 +21,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-elasticsearch'
 	implementation 'org.springframework.boot:spring-boot-starter-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'org.xerial:sqlite-jdbc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-elasticsearch-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-mongodb-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-mongodb-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

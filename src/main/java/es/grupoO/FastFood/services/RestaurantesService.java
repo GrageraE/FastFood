@@ -1,0 +1,39 @@
+package es.grupoO.FastFood.services;
+import es.grupoO.FastFood.model.entity.Restaurante;
+import es.grupoO.FastFood.repository.RestaurantesRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class RestaurantesService {
+    private RestaurantesRepository repository;
+
+    public Restaurante validar(String email, String passwd) {
+        // TODO
+        return null;
+    }
+
+    public Restaurante buscarRestaurantePorID(long idRest) {
+        return this.repository.findById(idRest).get();
+    }
+
+    public List<Restaurante> buscarRestaurante(String nombre) {
+        return this.repository.findAllByNombreContaining(nombre);
+    }
+
+    public void insertarRestaurante(String nombre, int categoria, String direccion,
+                                    String telefono, String email, String horaApertura,
+                                    String horaCierre, String passwd)
+    {
+        // TODO
+    }
+
+    public void borrarRestaurante(long id) {
+        this.repository.deleteById(id);
+    }
+
+    public void actualizarValoracion(long id, int valor) {
+        // TODO
+    }
+}
