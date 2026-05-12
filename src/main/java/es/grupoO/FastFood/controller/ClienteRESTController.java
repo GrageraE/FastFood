@@ -7,20 +7,26 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.*;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class ClienteRESTController {
+    @Autowired
     private final ClientesService clientesService;
 
+    @Autowired
     private final RestaurantesService restaurantesService;
 
+    @Autowired
     private final PlatosService platosService;
 
+    @Autowired
     private final PedidosService pedidosService;
 
+    @Autowired
     private final PagosService pagosService;
 
     public ClienteRESTController(ClientesService clientesService, RestaurantesService restaurantesService,

@@ -5,13 +5,16 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.repository.PlatosRepository;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PlatosService {
+    @Autowired
     private RestaurantesRepository restRepo;
+    @Autowired
     private PlatosRepository repository;
 
     public Plato buscarPlatoPorID(ObjectId platoId) {

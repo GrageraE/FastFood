@@ -7,15 +7,16 @@ import es.grupoO.FastFood.model.state.Divisa;
 import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.services.RestaurantesService;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class PlatosFactory {
     private String nombre;
     private ObjectId idRestaurante;
     private double precio;
     private int categoriaPlato;
     
+    @Autowired
     private RestaurantesService restaurantesService;
 
     public PlatosFactory(String nombre, ObjectId idRestaurante, double precio, int categoriaPlato) {

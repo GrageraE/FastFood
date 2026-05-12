@@ -2,10 +2,12 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.repository.ClientesRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientesService {
+    @Autowired
     ClientesRepository repositoy;
     
     public Cliente validar(String email, String passwd) {

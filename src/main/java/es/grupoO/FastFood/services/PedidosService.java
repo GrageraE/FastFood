@@ -3,12 +3,14 @@ import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.PedidosRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PedidosService {
+    @Autowired
     private PedidosRepository repository;
 
     public Pedido realizarPedido(ObjectId idCliente, ObjectId idRest, List<Pair<ObjectId, Integer>> platos) {

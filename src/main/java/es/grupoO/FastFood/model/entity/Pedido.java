@@ -6,8 +6,6 @@ import es.grupoO.FastFood.model.valueobject.Precio;
 import java.util.ArrayList;
 import java.time.LocalTime;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -16,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("Pedidos")
 public class Pedido {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private ObjectId idPedido;
 
     @DBRef

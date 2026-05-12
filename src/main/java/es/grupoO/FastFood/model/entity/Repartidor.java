@@ -1,8 +1,6 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Email;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;

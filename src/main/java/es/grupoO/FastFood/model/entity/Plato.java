@@ -2,8 +2,6 @@ package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.state.CategoriaPlato;
 import es.grupoO.FastFood.model.valueobject.Precio;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

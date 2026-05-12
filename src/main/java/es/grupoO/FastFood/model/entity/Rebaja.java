@@ -3,8 +3,6 @@ package es.grupoO.FastFood.model.entity;
 import java.time.LocalDate;
 
 import es.grupoO.FastFood.model.valueobject.Precio;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;

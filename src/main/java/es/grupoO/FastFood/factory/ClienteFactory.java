@@ -3,9 +3,9 @@ package es.grupoO.FastFood.factory;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.hasher.HashMaker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
 public class ClienteFactory {
     private String nombre;
     private String direccion;

@@ -6,22 +6,26 @@ import es.grupoO.FastFood.services.ClientesService;
 import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.RestaurantesService;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class PedidosFactory {
     private ObjectId idCliente;
     private ObjectId idRestaurante;
     private List<Pair<ObjectId, Integer>> platos;
     private String horaPedido;
     
+    @Autowired
     private ClientesService clientesService;
+    @Autowired
     private RestaurantesService restaurantesService;
+    @Autowired
     private PlatosService platosService;
+    @Autowired
 
     public PedidosFactory(ObjectId idCliente, ObjectId idRestaurante, List<Pair<ObjectId, Integer>> platos, String horaPedido) {
         this.idCliente = idCliente;

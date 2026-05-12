@@ -2,12 +2,14 @@ package es.grupoO.FastFood.hasher;
 
 import es.grupoO.FastFood.services.ClientesService;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import es.grupoO.FastFood.model.entity.Cliente;
 
 @Component
 public final class HashMaker {
+    @Autowired
     private ClientesService clientesService;
     private BCryptPasswordEncoder encoder;
 

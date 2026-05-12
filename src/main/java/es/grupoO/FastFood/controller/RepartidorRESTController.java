@@ -4,13 +4,16 @@ import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.services.*;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class RepartidorRESTController {
+    @Autowired
     private final PedidosService pedidosService;
+    @Autowired
     private final RepartidoresService repartidoresService;
 
     public RepartidorRESTController(PedidosService pedidosService, RepartidoresService repartidoresService){

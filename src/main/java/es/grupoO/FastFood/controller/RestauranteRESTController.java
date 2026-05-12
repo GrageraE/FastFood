@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.controller;
 
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import es.grupoO.FastFood.services.RestaurantesService;
 import es.grupoO.FastFood.services.PlatosService;
@@ -11,9 +12,11 @@ import java.util.List;
 
 @RestController
 public class RestauranteRESTController {
-
+    @Autowired
     private final RestaurantesService restaurantesService;
+    @Autowired
     private final PlatosService platosService;
+    @Autowired
     private final PedidosService pedidosService;
 
     public RestauranteRESTController(RestaurantesService restaurantesService, PlatosService platosService, PedidosService pedidosService) {
@@ -37,11 +40,11 @@ public class RestauranteRESTController {
     }
 
     @PostMapping("/restaurantes/register")
-    public void insertarRestaurante(@RequestParam String nombre,@RequestParam  int categoria,@RequestParam  String direccion,
-                                    @RequestParam String telefono,@RequestParam  String email,@RequestParam  String horaApertura,
-                                    @RequestParam String horaCierre,@RequestParam  String passwd)
+    public Restaurante insertarRestaurante(@RequestParam String nombre, @RequestParam int categoria, @RequestParam  String direccion,
+                                    @RequestParam String telefono, @RequestParam  String email, @RequestParam String horaApertura,
+                                    @RequestParam String horaCierre, @RequestParam String passwd)
     {
-        this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
+        return this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
     }
 
     @DeleteMapping("/restaurantes/{idRest}")
@@ -73,7 +76,7 @@ public class RestauranteRESTController {
     public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int estado) {
         this.pedidosService.cambiarEstado(idPedido, estado);
         }
-    
+
     @PostMapping("/restaurantes/{idRest}/platos/{idPlato}/rebaja")
     public void establecerRebaja(@PathVariable ObjectId idRest, @PathVariable ObjectId idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);

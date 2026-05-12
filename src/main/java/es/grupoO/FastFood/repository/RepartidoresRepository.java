@@ -6,6 +6,7 @@ import es.grupoO.FastFood.model.valueobject.Email;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 
 public interface RepartidoresRepository extends MongoRepository<Repartidor, ObjectId> {
     @Query("{email: '?0'}")

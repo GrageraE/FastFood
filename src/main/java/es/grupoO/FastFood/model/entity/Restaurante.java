@@ -4,8 +4,6 @@ import java.time.LocalTime;
 
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

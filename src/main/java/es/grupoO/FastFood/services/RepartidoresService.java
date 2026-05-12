@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.services;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.repository.RepartidoresRepository;
@@ -7,7 +8,7 @@ import es.grupoO.FastFood.repository.RepartidoresRepository;
 
 @Service
 public class RepartidoresService {
-
+    @Autowired
     private RepartidoresRepository repository;
 
     public Repartidor validar(String email, String passwd) {

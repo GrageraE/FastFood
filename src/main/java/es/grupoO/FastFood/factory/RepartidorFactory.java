@@ -5,7 +5,6 @@ import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.valueobject.Email;
 import org.springframework.stereotype.Component;
 
-@Component
 public class RepartidorFactory {
     private String nombre;
     private String telefono;

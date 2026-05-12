@@ -4,12 +4,10 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
-import org.springframework.stereotype.Component;
 import es.grupoO.FastFood.hasher.HashMaker;
 
 import java.time.LocalTime;
 
-@Component
 public class RestauranteFactory {
     private String nombre;
     private String direccion;
@@ -19,7 +17,7 @@ public class RestauranteFactory {
     private int categoria;
     private String email;
     private String passwd;
-    
+
     private HashMaker hasher;
 
     public RestauranteFactory(String nombre, String direccion,
@@ -42,11 +40,11 @@ public class RestauranteFactory {
         Email emailParsed = Email.parse(this.email);
 
         String hashPasswd = hasher.encoder(passwd);
-        
+
         CategoriaRestaurante cat = CategoriaRestaurante.values()[this.categoria];
-        
+
         Valoracion val = new Valoracion();
-        
+
         return new Restaurante(this.nombre, this.direccion, this.telefono,
                 horaAp, horaC, cat, val, emailParsed, hashPasswd);
     }
