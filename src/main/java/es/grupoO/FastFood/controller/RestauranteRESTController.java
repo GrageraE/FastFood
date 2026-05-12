@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.controller;
 
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 import es.grupoO.FastFood.services.RestaurantesService;
 import es.grupoO.FastFood.services.PlatosService;
@@ -30,7 +31,7 @@ public class RestauranteRESTController {
     }
 
     @PostMapping("/buscarRestaurante")
-    public Restaurante buscarRestaurantePorID(@RequestParam long idRest) {
+    public Restaurante buscarRestaurantePorID(@RequestParam ObjectId idRest) {
 
         return this.restaurantesService.buscarRestaurantePorID(idRest);
     }
@@ -44,37 +45,37 @@ public class RestauranteRESTController {
     }
 
     @DeleteMapping("/restaurantes/{idRest}")
-    public void borrarRestaurante(@PathVariable long idRest) {
+    public void borrarRestaurante(@PathVariable ObjectId idRest) {
         this.restaurantesService.borrarRestaurante(idRest);
     }
 
     @GetMapping("/restaurantes/{idRest}/platos")
-    public List<Plato> buscarPlato(@PathVariable long idRest){
+    public List<Plato> buscarPlato(@PathVariable ObjectId idRest){
         return this.platosService.buscarPlato(idRest);
     }
 
     @GetMapping("/restaurantes/{idRest}/platos/{categoria}")
-    public List<Plato> filtrarPlatos(@PathVariable long idRest, @PathVariable int categoria) {
+    public List<Plato> filtrarPlatos(@PathVariable ObjectId idRest, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
     @PostMapping("/restaurantes/{idRest}/platos")
-    public void insertarPlato(@PathVariable long idRest,@RequestParam String nombre,@RequestParam int categoria, @RequestParam double precio) {
+    public void insertarPlato(@PathVariable ObjectId idRest,@RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
     @DeleteMapping("/restaurantes/{_idRest}/platos/{idPlato}")
-    public void borrarPlato(@PathVariable long _idRest, @PathVariable long idPlato) {
+    public void borrarPlato(@PathVariable ObjectId _idRest, @PathVariable ObjectId idPlato) {
         this.platosService.borrarPlato(idPlato);
     }
 
     @PostMapping("/pedidos/{idPedido}/entregar")
-    public void cambiarEstadoPedido(@PathVariable long idPedido, @RequestParam int estado) {
+    public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int estado) {
         this.pedidosService.cambiarEstado(idPedido, estado);
         }
     
     @PostMapping("/restaurantes/{idRest}/platos/{idPlato}/rebaja")
-    public void establecerRebaja(@PathVariable long idRest, @PathVariable long idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
+    public void establecerRebaja(@PathVariable ObjectId idRest, @PathVariable ObjectId idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
     }
 }

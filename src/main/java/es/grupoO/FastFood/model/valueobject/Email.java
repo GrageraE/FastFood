@@ -20,4 +20,11 @@ public class Email {
     public String getServidor() {
         return servidor;
     }
+    
+    public static Email parse(String dir) {
+        String[] splitted = dir.split("@");
+        String userName = splitted[0];
+        String domain  = splitted[1];
+        return new Email(userName, domain);
+    }
 }

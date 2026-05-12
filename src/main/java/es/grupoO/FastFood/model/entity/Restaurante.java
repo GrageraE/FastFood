@@ -4,6 +4,9 @@ import java.time.LocalTime;
 
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -11,7 +14,7 @@ import org.springframework.data.annotation.Id;
 @Document("Restaurantes")
 public class Restaurante {
     @Id
-    private long idRestaurante;
+    private ObjectId idRestaurante;
 
     private String nombre;
 
@@ -25,14 +28,15 @@ public class Restaurante {
 
     private CategoriaRestaurante categoria;
 
+    private String hashPassword;
+    
     @DBRef
     private Valoracion valoracion;
 
     private Email email;
 
-    public Restaurante(long idRestaurante, String nombre, String direccion, String telefono, LocalTime horaApertura,
-            LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email) {
-        this.idRestaurante = idRestaurante;
+    public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura,
+            LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, String password) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -41,13 +45,14 @@ public class Restaurante {
         this.categoria = categoria;
         this.valoracion = valoracion;
         this.email = email;
+        this.hashPassword = password;
     }
 
-    public long getIdRestaurante() {
+    public ObjectId getIdRestaurante() {
         return idRestaurante;
     }
 
-    public void setIdRestaurante(long idRestaurante) {
+    public void setIdRestaurante(ObjectId idRestaurante) {
         this.idRestaurante = idRestaurante;
     }
 
@@ -117,5 +122,13 @@ public class Restaurante {
 
     public Boolean estaAbierto(LocalTime hora) {
         return hora.isAfter(this.horaApertura) && hora.isBefore(this.horaCierre);
+    }
+
+    public String gethashPassword(){
+        return this.hashPassword;
+    }
+
+    public void setHashPassword(String hashPassword) {
+        this.hashPassword = hashPassword;
     }
 }

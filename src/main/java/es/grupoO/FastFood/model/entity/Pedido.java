@@ -6,6 +6,9 @@ import es.grupoO.FastFood.model.valueobject.Precio;
 import java.util.ArrayList;
 import java.time.LocalTime;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("Pedidos")
 public class Pedido {
     @Id
-    private int idPedido;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private ObjectId idPedido;
 
     @DBRef
     private Cliente cliente;
@@ -31,9 +35,8 @@ public class Pedido {
 
     private LocalTime horaPedido;
 
-    public Pedido(int idPedido, Cliente cliente, Restaurante restaurante, ArrayList<LineaPlatos> lineasPlatos) {
+    public Pedido(Cliente cliente, Restaurante restaurante, ArrayList<LineaPlatos> lineasPlatos) {
         this.restaurante = restaurante;
-        this.idPedido = idPedido;
         this.cliente = cliente;
 
         this.repartidor = null;
@@ -43,7 +46,7 @@ public class Pedido {
         this.platos = lineasPlatos;
     }
 
-    public int getIdPedido() {
+    public ObjectId getIdPedido() {
         return idPedido;
     }
 

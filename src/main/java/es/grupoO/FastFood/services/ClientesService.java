@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.repository.ClientesRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +16,11 @@ public class ClientesService {
         // TODO
     }
     
-    public Cliente buscarClientePorID(long idCliente) {
+    public Cliente buscarClientePorID(ObjectId idCliente) {
         // TODO: Que hacer si el ID no existe?
         return this.repositoy.findById(idCliente).get();
+    }
+    public void passwdChanger(ObjectId idCliente, String newPasswd) {
+        //TODO
     }
 }

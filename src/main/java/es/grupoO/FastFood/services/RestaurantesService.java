@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class RestaurantesService {
         return null;
     }
 
-    public Restaurante buscarRestaurantePorID(long idRest) {
+    public Restaurante buscarRestaurantePorID(ObjectId idRest) {
         return this.repository.findById(idRest).get();
     }
 
@@ -28,11 +29,15 @@ public class RestaurantesService {
         // TODO
     }
 
-    public void borrarRestaurante(long id) {
+    public void borrarRestaurante(ObjectId id) {
         this.repository.deleteById(id);
     }
 
-    public void actualizarValoracion(long id, int valor) {
+    public void actualizarValoracion(ObjectId id, int valor) {
         // TODO
+    }
+    
+    public void passwdChanger(ObjectId idCliente, String newPasswd) {
+        //TODO
     }
 }

@@ -3,6 +3,7 @@ package es.grupoO.FastFood.controller;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.services.*;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +30,12 @@ public class RepartidorRESTController {
     }
 
     @GetMapping("/repartidor/{idRepar}")
-    public Repartidor buscarRepartidorPorID(@PathVariable long idRepar){
+    public Repartidor buscarRepartidorPorID(@PathVariable ObjectId idRepar){
         return this.repartidoresService.buscarRepartidorPorID(idRepar);
     }
 
     @DeleteMapping("/repartidor/{idRepar}")
-    public void borrarRepartidor(@PathVariable long idRepar) {
+    public void borrarRepartidor(@PathVariable ObjectId idRepar) {
         this.repartidoresService.borrarRepartidor(idRepar);
     }
 
@@ -44,12 +45,12 @@ public class RepartidorRESTController {
     }
 
     @PostMapping("/pedidos/{idPedido}/estado")
-    public void cambiarEstadoPedido(@PathVariable long idPedido, @RequestParam int nuevoEstado) {
+    public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int nuevoEstado) {
         this.pedidosService.cambiarEstado(idPedido, nuevoEstado);
     }
 
     @PostMapping("/pedidos/{idPedido}/asignar")
-    public void asignarPedido(@PathVariable long idPedido, @RequestParam long idRepartidor) {
+    public void asignarPedido(@PathVariable ObjectId idPedido, @RequestParam ObjectId idRepartidor) {
         this.pedidosService.asignarPedido(idPedido, idRepartidor);
     }
 }

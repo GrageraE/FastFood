@@ -3,23 +3,31 @@ package es.grupoO.FastFood.model.entity;
 import java.time.LocalDate;
 
 import es.grupoO.FastFood.model.valueobject.Precio;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Rebaja")
 public class Rebaja {
     @Id
-    private long idRebaja;
+    private ObjectId idRebaja;
 
     private Precio nuevoPrecio;
 
     private LocalDate fechaLimite;
 
-    public long getIdRebaja() {
+    public Rebaja(Precio nuevoPrecio, LocalDate fechaLimite) {
+        this.nuevoPrecio = nuevoPrecio;
+        this.fechaLimite = fechaLimite;
+    }
+
+    public ObjectId getIdRebaja() {
         return idRebaja;
     }
 
-    public void setIdRebaja(long idRebaja) {
+    public void setIdRebaja(ObjectId idRebaja) {
         this.idRebaja = idRebaja;
     }
 

@@ -2,6 +2,9 @@ package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.state.CategoriaPlato;
 import es.grupoO.FastFood.model.valueobject.Precio;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -9,7 +12,7 @@ import org.springframework.data.annotation.Id;
 @Document("Plato")
 public class Plato {
     @Id
-    private long idPlato;
+    private ObjectId idPlato;
 
     private String nombre;
 
@@ -19,15 +22,23 @@ public class Plato {
     private Precio precio;
 
     private CategoriaPlato categoriaPlato;
-
+    
     @DBRef
     private Rebaja rebaja;
 
-    public long getIdPlato() {
+    public Plato(String nombre, Restaurante restaurante, Precio precio, CategoriaPlato categoriaPlato) {
+        this.nombre = nombre;
+        this.restaurante = restaurante;
+        this.precio = precio;
+        this.categoriaPlato = categoriaPlato;
+        this.rebaja = null;
+    }
+
+    public ObjectId getIdPlato() {
         return idPlato;
     }
 
-    public void setIdPlato(long idPlato) {
+    public void setIdPlato(ObjectId idPlato) {
         this.idPlato = idPlato;
     }
 

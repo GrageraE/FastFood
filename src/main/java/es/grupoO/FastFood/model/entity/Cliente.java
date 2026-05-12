@@ -1,13 +1,16 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Email;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Cliente")
 public class Cliente {
     @Id
-    private long idCliente;
+    private ObjectId idCliente;
 
     private String nombre;
 
@@ -17,15 +20,17 @@ public class Cliente {
 
     private Email emailCliente;
 
-    public Cliente(int idCliente, String nombre, String direccionEnvio, String telefonoContacto, Email emailCliente) {
-        this.idCliente = idCliente;
+    private String hashPassword;
+
+    public Cliente(String nombre, String direccionEnvio, String telefonoContacto, Email emailCliente, String hashPassword) {
         this.nombre = nombre;
         this.direccionEnvio = direccionEnvio;
         this.telefonoContacto = telefonoContacto;
         this.emailCliente = emailCliente;
+        this.hashPassword = hashPassword;
     }
 
-    public long getIdCliente() {
+    public ObjectId getIdCliente() {
         return idCliente;
     }
 
@@ -47,5 +52,13 @@ public class Cliente {
 
     public void setEmail(Email emailCliente) {
         this.emailCliente = emailCliente;
+    }
+
+    public String gethashPassword(){
+        return this.hashPassword;
+    }
+
+    public void setHashPassword(String hashPassword) {
+        this.hashPassword = hashPassword;
     }
 }

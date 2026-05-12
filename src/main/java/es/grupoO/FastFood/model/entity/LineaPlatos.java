@@ -1,6 +1,9 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Precio;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -8,7 +11,7 @@ import org.springframework.data.annotation.Id;
 @Document("LineaPlatos")
 public class LineaPlatos {
     @Id
-    private long idLineaPlatos;
+    private ObjectId idLineaPlatos;
 
     @DBRef
     private Plato plato;

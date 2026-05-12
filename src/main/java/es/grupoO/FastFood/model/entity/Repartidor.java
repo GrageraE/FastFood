@@ -1,25 +1,45 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Email;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Repartidor")
 public class Repartidor {
     @Id
-    private int idRepartidor;
+    private ObjectId idRepartidor;
     
     private String nombre;
     
     private String telefonoContacto;
 
     private Email emailRepartidor;
+
+    private String hashPassword;
     
-    public int getIdRepartidor() {
+    public String getHashPassword() {
+        return hashPassword;
+    }
+
+    public void setHashPassword(String hashPassword) {
+        this.hashPassword = hashPassword;
+    }
+    
+    public Repartidor(String nombre, String telefonoContacto, Email emailRepartidor, String hashPassword) {
+        this.nombre = nombre;
+        this.telefonoContacto = telefonoContacto;
+        this.emailRepartidor = emailRepartidor;
+        this.hashPassword = hashPassword;
+    }
+
+    public ObjectId getIdRepartidor() {
         return idRepartidor;
     }
 
-    public void setIdRepartidor(int idRepartidor) {
+    public void setIdRepartidor(ObjectId idRepartidor) {
         this.idRepartidor = idRepartidor;
     }
 

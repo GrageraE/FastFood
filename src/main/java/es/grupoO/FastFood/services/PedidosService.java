@@ -2,6 +2,7 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.PedidosRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,24 +11,24 @@ import java.util.List;
 public class PedidosService {
     private PedidosRepository repository;
 
-    public Pedido realizarPedido(long idCliente, long idRest, List<Pair<Long, Integer>> platos) {
+    public Pedido realizarPedido(ObjectId idCliente, ObjectId idRest, List<Pair<ObjectId, Integer>> platos) {
         // TODO
         return null;
     }
 
-    public Pedido buscarPedidoPorID(long idPedido) {
+    public Pedido buscarPedidoPorID(ObjectId idPedido) {
         return this.repository.findById(idPedido).get();
     }
     
-    public void anularPedido(long idPedido) {
+    public void anularPedido(ObjectId idPedido) {
         this.repository.deleteById(idPedido);
     }
     
-    public void cambiarEstado(long idPedido, int estado) {
+    public void cambiarEstado(ObjectId idPedido, int estado) {
         // TODO
     }
     
-    public void asignarPedido(long idPedido, long idRepartidor) {
+    public void asignarPedido(ObjectId idPedido, ObjectId idRepartidor) {
         // TODO
     }
     

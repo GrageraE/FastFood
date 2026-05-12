@@ -1,16 +1,24 @@
 package es.grupoO.FastFood.model.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Valoracion")
 public class Valoracion {
     @Id
-    private long idValoracion;
+    private ObjectId idValoracion;
     
     private int nValoraciones;
     
     private double valor;
+    
+    public Valoracion() {
+        this.valor = 0.0;
+        this.nValoraciones = 0;
+    }
     
     public Valoracion(double valor, int nValoraciones) {
         this.valor = valor;
