@@ -20,4 +20,5 @@ public interface PedidosRepository extends MongoRepository<Pedido, ObjectId> {
 
     @Query("{estadoPedido: '?0'}")
     List<Pedido> findAllByEstadoPedido(EstadoPedido estado);
+
 }

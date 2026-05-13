@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.services;
 
+import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.factory.PlatosFactory;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Rebaja;
@@ -27,16 +28,16 @@ public class PlatosService {
     private RebajasRepository rebajasRepository;
 
     public Plato buscarPlatoPorID(ObjectId platoId) {
-        return this.platosRepository.findById(platoId).get();
+        return this.platosRepository.findById(platoId).orElse(null);
     }
 
     public List<Plato> buscarPlato(ObjectId idRestaurante) {
-        Restaurante rest = this.restRepo.findById(idRestaurante).get();
+        Restaurante rest = this.restRepo.findById(idRestaurante).orElse(null);
         return this.platosRepository.findAllByRestauranteIdRestaurante(rest);
     }
 
     public List<Plato> filtrarPlatos(ObjectId idRestaurante, int categoria) {
-        Restaurante rest = this.restRepo.findById(idRestaurante).get();
+        Restaurante rest = this.restRepo.findById(idRestaurante).orElse(null);
 
         // TODO: Revisar categoria
         CategoriaPlato cat = CategoriaPlato.values()[categoria];
@@ -61,7 +62,7 @@ public class PlatosService {
         
         Plato plato = this.buscarPlatoPorID(idPlato);
         if(plato == null) {
-            // TODO: Error
+            throw new NoExistDBException("El plato no esta registrado");
         }
         
         plato.setRebaja(rebaja);

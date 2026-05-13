@@ -33,7 +33,7 @@ public class RestauranteRESTController {
         return restaurantesService.validar(email, password);
     }
 
-    @PostMapping("/restaurantes/register")
+    @PostMapping("/restaurantes/registro")
     public Restaurante insertarRestaurante(@RequestParam String nombre, @RequestParam int categoria, @RequestParam  String direccion,
                                     @RequestParam String telefono, @RequestParam  String email, @RequestParam String horaApertura,
                                     @RequestParam String horaCierre, @RequestParam String passwd)

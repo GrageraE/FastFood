@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.factory.PedidosFactory;
 
 import java.util.List;
-
+import java.util.Optional;
+import es.grupoO.FastFood.exceptions.NoExistDBException;
 @Service
 public class PedidosService {
     @Autowired
@@ -39,13 +40,18 @@ public class PedidosService {
     }
 
     public Pedido buscarPedidoPorID(ObjectId idPedido) {
-        //TODO puede petar
-        return this.pedidosRepository.findById(idPedido).get();
+        Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
+        if(pedido == null) {
+            throw new NoExistDBException("El pedido no esta registrado");
+        }
+        return pedido;
     }
     
     public void anularPedido(ObjectId idPedido) {
-        // TODO: puede petar
-        Pedido pedido = this.pedidosRepository.findById(idPedido).get();
+        Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
+        if(pedido == null) {
+            throw new NoExistDBException("El pedido no esta registrado");
+        }
 
         for(LineaPlatos linea : pedido.getPlatos()) {
             this.lineaPlatosRepository.deleteById(linea.getId());
@@ -55,9 +61,10 @@ public class PedidosService {
     }
     
     public void cambiarEstado(ObjectId idPedido, int estado) {
-        // TODO puede petar
-        Pedido pedido = this.pedidosRepository.findById(idPedido).get();
-        // TODO: puede petar
+        Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
+        if(pedido == null) {
+            throw new NoExistDBException("El pedido no esta registrado");
+        }
         EstadoPedido estadoPedido = EstadoPedido.values()[estado];
         pedido.setEstado(estadoPedido);
     }
@@ -65,6 +72,9 @@ public class PedidosService {
     public void asignarPedido(ObjectId idPedido, ObjectId idRepartidor) {
         // TODO: Errores
         Pedido pedido = this.buscarPedidoPorID(idPedido);
+        if(pedido == null) {
+            throw new NoExistDBException("El pedido no esta registrado");
+        }
         Repartidor rep = this.repartidoresService.buscarRepartidorPorID(idRepartidor);
 
         if(!pedido.repartidorAsignado()) {

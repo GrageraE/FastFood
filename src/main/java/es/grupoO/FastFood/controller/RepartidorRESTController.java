@@ -26,7 +26,7 @@ public class RepartidorRESTController {
         return this.repartidoresService.validar(email, passwd);
     }
 
-    @PostMapping("/repartidores")
+    @PostMapping("/repartidores/registro")
     public void insertarRepartidor(@RequestParam String nombre, @RequestParam String telefono,
                                    @RequestParam String email, @RequestParam String passwd) {
         this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);
