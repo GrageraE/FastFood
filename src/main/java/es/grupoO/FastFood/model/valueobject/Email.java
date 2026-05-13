@@ -10,10 +10,6 @@ public class Email {
         this.servidor = servidor;
     }
 
-    public String getEmail() {
-        return userName + "@" + servidor;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -26,5 +22,10 @@ public class Email {
         String userName = splitted[0];
         String domain  = splitted[1];
         return new Email(userName, domain);
+    }
+    
+    @Override
+    public String toString() {
+        return userName + "@" + servidor;
     }
 }

@@ -24,6 +24,10 @@ public class LineaPlatos {
     public int getCantidad() {
         return cantidad;
     }
+    
+    public ObjectId getId() {
+        return this.idLineaPlatos;
+    }
 
     public Precio precioSubtotal() {
         // TODO: Hacer precio

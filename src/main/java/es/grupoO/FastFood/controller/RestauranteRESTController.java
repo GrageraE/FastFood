@@ -33,12 +33,6 @@ public class RestauranteRESTController {
         return restaurantesService.validar(email, password);
     }
 
-    @PostMapping("/buscarRestaurante")
-    public Restaurante buscarRestaurantePorID(@RequestParam ObjectId idRest) {
-
-        return this.restaurantesService.buscarRestaurantePorID(idRest);
-    }
-
     @PostMapping("/restaurantes/register")
     public Restaurante insertarRestaurante(@RequestParam String nombre, @RequestParam int categoria, @RequestParam  String direccion,
                                     @RequestParam String telefono, @RequestParam  String email, @RequestParam String horaApertura,
@@ -47,37 +41,42 @@ public class RestauranteRESTController {
         return this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
     }
 
-    @DeleteMapping("/restaurantes/{idRest}")
+    @GetMapping("/restaurantes/{idRest}")
+    public Restaurante buscarRestaurantePorID(@PathVariable ObjectId idRest) {
+        return this.restaurantesService.buscarRestaurantePorID(idRest);
+    }
+
+    @DeleteMapping("/restaurante/{idRest}")
     public void borrarRestaurante(@PathVariable ObjectId idRest) {
         this.restaurantesService.borrarRestaurante(idRest);
     }
 
-    @GetMapping("/restaurantes/{idRest}/platos")
+    @GetMapping("/restaurante/{idRest}/platos")
     public List<Plato> buscarPlato(@PathVariable ObjectId idRest){
         return this.platosService.buscarPlato(idRest);
     }
 
-    @GetMapping("/restaurantes/{idRest}/platos/{categoria}")
+    @GetMapping("/restaurante/{idRest}/platos/{categoria}")
     public List<Plato> filtrarPlatos(@PathVariable ObjectId idRest, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
-    @PostMapping("/restaurantes/{idRest}/platos")
+    @PostMapping("/restaurante/{idRest}/platos")
     public void insertarPlato(@PathVariable ObjectId idRest,@RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
-    @DeleteMapping("/restaurantes/{_idRest}/platos/{idPlato}")
+    @DeleteMapping("/restaurante/{_idRest}/platos/{idPlato}")
     public void borrarPlato(@PathVariable ObjectId _idRest, @PathVariable ObjectId idPlato) {
         this.platosService.borrarPlato(idPlato);
     }
 
-    @PostMapping("/pedidos/{idPedido}/entregar")
+    @PostMapping("/pedidos/{idPedido}/estado")
     public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int estado) {
         this.pedidosService.cambiarEstado(idPedido, estado);
-        }
+    }
 
-    @PostMapping("/restaurantes/{idRest}/platos/{idPlato}/rebaja")
+    @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
     public void establecerRebaja(@PathVariable ObjectId idRest, @PathVariable ObjectId idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
     }

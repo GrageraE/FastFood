@@ -1,9 +1,8 @@
 package es.grupoO.FastFood.repository;
 
-import es.grupoO.FastFood.model.entity.Rebaja;
+import es.grupoO.FastFood.model.entity.LineaPlatos;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface RebajasRepository extends MongoRepository<Rebaja, ObjectId> {
-
+public interface LineaPlatosRepository extends MongoRepository<LineaPlatos, ObjectId> {
 }

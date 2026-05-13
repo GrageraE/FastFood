@@ -51,12 +51,16 @@ public class Pedido {
         return this.estadoPedido;
     }
 
-    public void setEstado() {
+    public void avanzarEstado() {
         switch (this.estadoPedido) {
             case EN_PREPARACION -> this.estadoPedido = EstadoPedido.LISTO_PARA_ENTREGAR;
             case LISTO_PARA_ENTREGAR -> this.estadoPedido = EstadoPedido.EN_REPARTO;
             case EN_REPARTO -> this.estadoPedido = EstadoPedido.ENTREGADO;
         }
+    }
+    
+    public void setEstado(EstadoPedido estado) {
+        this.estadoPedido = estado;
     }
 
     public void asignarRepartidor(Repartidor repartidor) {
@@ -97,5 +101,9 @@ public class Pedido {
 
     public LocalTime fechaRealizacion(){
         return this.horaPedido;
+    }
+
+    public EstadoPedido getEstadoPedido(){
+        return this.estadoPedido;
     }
 }

@@ -34,7 +34,7 @@ public class Restaurante {
     private Email email;
 
     public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura,
-            LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, String password) {
+            LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, String hashPassword) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -43,7 +43,7 @@ public class Restaurante {
         this.categoria = categoria;
         this.valoracion = valoracion;
         this.email = email;
-        this.hashPassword = password;
+        this.hashPassword = hashPassword;
     }
 
     public ObjectId getIdRestaurante() {

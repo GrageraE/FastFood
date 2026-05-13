@@ -44,12 +44,8 @@ public class RepartidorRESTController {
 
     @GetMapping("/pedidos/disponibles")
     public List<Pedido> buscarPedidosRepartir(@RequestParam long ubicacion) {
+        // TODO: Cambiar tipo de parametro a GeoJSON
         return this.pedidosService.buscarPedidosARepartir(ubicacion);
-    }
-
-    @PostMapping("/pedidos/{idPedido}/estado")
-    public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int nuevoEstado) {
-        this.pedidosService.cambiarEstado(idPedido, nuevoEstado);
     }
 
     @PostMapping("/pedidos/{idPedido}/asignar")

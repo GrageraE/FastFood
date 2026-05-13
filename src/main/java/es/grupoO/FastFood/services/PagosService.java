@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PagosService {
-    public void realizarPago(double cantidad) {
-        // TODO: Crear placeholder de pasarela de pago
+    public String realizarPago(double cantidad) {
+        return "No hay contrato";
     }
 }
