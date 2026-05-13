@@ -4,7 +4,7 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
-import es.grupoO.FastFood.hasher.HashMaker;
+import es.grupoO.FastFood.auth.HashMaker;
 
 import java.time.LocalTime;
 

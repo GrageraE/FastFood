@@ -1,4 +1,4 @@
-package es.grupoO.FastFood.hasher;
+package es.grupoO.FastFood.auth;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

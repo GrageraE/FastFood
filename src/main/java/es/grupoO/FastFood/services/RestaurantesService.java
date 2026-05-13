@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import es.grupoO.FastFood.hasher.HashMaker;
+import es.grupoO.FastFood.auth.HashMaker;
 
 
 @Service

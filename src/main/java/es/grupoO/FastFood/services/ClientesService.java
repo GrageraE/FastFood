@@ -1,6 +1,6 @@
 package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.factory.ClienteFactory;
-import es.grupoO.FastFood.hasher.HashMaker;
+import es.grupoO.FastFood.auth.HashMaker;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.repository.ClientesRepository;

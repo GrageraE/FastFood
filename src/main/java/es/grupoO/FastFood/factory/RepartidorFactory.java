@@ -1,9 +1,8 @@
 package es.grupoO.FastFood.factory;
 
-import es.grupoO.FastFood.hasher.HashMaker;
+import es.grupoO.FastFood.auth.HashMaker;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.valueobject.Email;
-import org.springframework.stereotype.Component;
 
 public class RepartidorFactory {
     private String nombre;
