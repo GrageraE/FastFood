@@ -22,7 +22,7 @@ services:
   compass:
     image: 'haohanyang/compass-web'
     environment:
-      - 'CW_MONGO_URI=mongodb://127.0.0.1:27017'
+      - 'CW_MONGO_URI=mongodb://root:secret@mongodb:27017?authSource=admin'
     depends_on:
       - 'mongodb'
     ports:
