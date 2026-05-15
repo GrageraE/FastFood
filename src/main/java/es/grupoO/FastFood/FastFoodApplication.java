@@ -29,21 +29,28 @@ public class FastFoodApplication {
 			http
 					.csrf(AbstractHttpConfigurer::disable)
 					.authorizeHttpRequests(auth -> auth
+							// Permitir registro y login sin necesidad de autenticarse previamente
 							.requestMatchers(HttpMethod.POST, "/clientes/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/clientes/validar").permitAll()
 							.requestMatchers(HttpMethod.POST, "/restaurantes/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/restaurantes/validar").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidores/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidores/validar").permitAll()
-
-							.requestMatchers(HttpMethod.GET, "/clientes/**").hasRole("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/restaurantes/**/valoracion").hasRole("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/pedidos/**/asignar").hasRole("REPARTIDOR")
-							.requestMatchers(HttpMethod.POST, "/pedidos/**/estado").hasRole("RESTAURANTE")
-							.requestMatchers(HttpMethod.POST, "/restaurantes/**/platos/**/rebaja").hasRole("RESTAURANTE")
+							// Exigir roles especificos para determinados endpoints
+							.requestMatchers(HttpMethod.GET, "/clientes/{id}").hasRole("CLIENTE")
+							.requestMatchers(HttpMethod.POST, "/restaurantes/{id}/valoracion").hasRole("CLIENTE")
+							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasRole("REPARTIDOR")
+							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/estado").hasRole("RESTAURANTE")
+							.requestMatchers(HttpMethod.POST, "/restaurantes/{id_rest}/platos/{id_plato}/rebaja").hasRole("RESTAURANTE")
+							// Permitir usar swagger sin autenticarse
+							.requestMatchers("/swagger-ui.html").permitAll()
+							.requestMatchers("/swagger-ui/**").permitAll()
+							.requestMatchers("/v3/api-docs.yaml").permitAll()
+							.requestMatchers("/v3/api-docs/**").permitAll()
+							// Resto de endpoints: requieren simplemente estar autenticados
 							.anyRequest().authenticated()
 					)
-					.addFilterAfter(new FilterInterceptor(), UsernamePasswordAuthenticationFilter.class);
+					.addFilterBefore(new FilterInterceptor(), UsernamePasswordAuthenticationFilter.class);
 			return http.build();
 		}
 	}

@@ -94,16 +94,15 @@ public class AuthService {
 
         String token = Jwts
             .builder()
-            .setId("FastFoodV1")
-            .setSubject(username)
+            .id("FastFoodV1")
+            .subject(username)
             .claim("authorities",
                     grantedAuthorities.stream()
                             .map(GrantedAuthority::getAuthority)
                             .collect(Collectors.toList()))
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + 600000))
-            .signWith(SignatureAlgorithm.HS512,
-                    this.key).compact();
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + 600000))
+            .signWith(this.key).compact();
 
         return "Bearer " + token;
     }

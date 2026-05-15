@@ -2,6 +2,7 @@ package es.grupoO.FastFood.auth;
 
 import es.grupoO.FastFood.services.AuthService;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,12 +26,13 @@ public class FilterInterceptor extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain handler)
-            throws IOException {
+            throws IOException, ServletException {
         // 1. Extraer el token de la cabecera HTTP "Authorization" y el endpoint solicitado
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falta el token de autenticacion");
+            handler.doFilter(request, response);
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falta el token de autenticacion");
             return;
         }
 
