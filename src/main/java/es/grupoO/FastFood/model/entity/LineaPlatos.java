@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 @Document("LineaPlatos")
 public class LineaPlatos {
     @Id
-    private ObjectId idLineaPlatos;
+    private String idLineaPlatos;
 
     @DBRef
     private Plato plato;
@@ -25,7 +25,7 @@ public class LineaPlatos {
         return cantidad;
     }
     
-    public ObjectId getId() {
+    public String getId() {
         return this.idLineaPlatos;
     }
 

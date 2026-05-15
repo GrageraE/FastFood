@@ -2,19 +2,15 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.factory.RestauranteFactory;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
-import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import es.grupoO.FastFood.repository.ValoracionesRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import es.grupoO.FastFood.auth.HashMaker;
 
 import es.grupoO.FastFood.exceptions.NoExistDBException;
-import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
-import es.grupoO.FastFood.exceptions.NoMatchingPasswordException;
 
 @Service
 public class RestaurantesService {
@@ -31,7 +27,7 @@ public class RestaurantesService {
         return data.getFirst();
     }
 
-    public Restaurante buscarRestaurantePorID(ObjectId idRest) {
+    public Restaurante buscarRestaurantePorID(String idRest) {
         Restaurante rest = this.repository.findById(idRest).orElse(null);
         if(rest == null) {
             throw new NoExistDBException("El restaurante no existe");
@@ -58,7 +54,7 @@ public class RestaurantesService {
         return restaurante;
     }
 
-    public void borrarRestaurante(ObjectId id) {
+    public void borrarRestaurante(String id) {
         Restaurante restaurante = this.buscarRestaurantePorID(id);
         if(restaurante == null) {
             throw new NoExistDBException("El restaurante no existe");
@@ -66,7 +62,7 @@ public class RestaurantesService {
         this.repository.deleteById(id);
     }
 
-    public void actualizarValoracion(ObjectId id, int valor) {
+    public void actualizarValoracion(String id, int valor) {
         Restaurante restaurante = this.buscarRestaurantePorID(id);
         if(restaurante == null) {
             throw new NoExistDBException("El restaurante no existe");
@@ -78,7 +74,7 @@ public class RestaurantesService {
         this.valoracionesRepository.save(valoracion);
     }
 
-    public void passwdChanger(ObjectId idRest, String newPasswd) {
+    public void passwdChanger(String idRest, String newPasswd) {
         //TODO comprobar que el usuario cambia su propia contraseña
         Restaurante rest = this.buscarRestaurantePorID(idRest);
         if(rest == null) {

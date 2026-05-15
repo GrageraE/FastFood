@@ -2,7 +2,6 @@ package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.state.CategoriaPlato;
 import es.grupoO.FastFood.model.valueobject.Precio;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -10,7 +9,7 @@ import org.springframework.data.annotation.Id;
 @Document("Plato")
 public class Plato {
     @Id
-    private ObjectId idPlato;
+    private String idPlato;
 
     private String nombre;
 
@@ -32,11 +31,11 @@ public class Plato {
         this.rebaja = null;
     }
 
-    public ObjectId getIdPlato() {
+    public String getIdPlato() {
         return idPlato;
     }
 
-    public void setIdPlato(ObjectId idPlato) {
+    public void setIdPlato(String idPlato) {
         this.idPlato = idPlato;
     }
 

@@ -1,7 +1,6 @@
 package es.grupoO.FastFood.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import es.grupoO.FastFood.services.RestaurantesService;
@@ -44,49 +43,49 @@ public class RestauranteRESTController {
 
     @GetMapping("/restaurantes/{idRest}")
     @SecurityRequirement(name = "authorization")
-    public Restaurante buscarRestaurantePorID(@PathVariable ObjectId idRest) {
+    public Restaurante buscarRestaurantePorID(@PathVariable String idRest) {
         return this.restaurantesService.buscarRestaurantePorID(idRest);
     }
 
     @DeleteMapping("/restaurante/{idRest}")
     @SecurityRequirement(name = "authorization")
-    public void borrarRestaurante(@PathVariable ObjectId idRest) {
+    public void borrarRestaurante(@PathVariable String idRest) {
         this.restaurantesService.borrarRestaurante(idRest);
     }
 
     @GetMapping("/restaurante/{idRest}/platos")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> buscarPlato(@PathVariable ObjectId idRest){
+    public List<Plato> buscarPlato(@PathVariable String idRest){
         return this.platosService.buscarPlato(idRest);
     }
 
     @GetMapping("/restaurante/{idRest}/platos/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable ObjectId idRest, @PathVariable int categoria) {
+    public List<Plato> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
     @PostMapping("/restaurante/{idRest}/platos")
     @SecurityRequirement(name = "authorization")
-    public void insertarPlato(@PathVariable ObjectId idRest,@RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
+    public void insertarPlato(@PathVariable String idRest,@RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
     @DeleteMapping("/restaurante/{_idRest}/platos/{idPlato}")
     @SecurityRequirement(name = "authorization")
-    public void borrarPlato(@PathVariable ObjectId _idRest, @PathVariable ObjectId idPlato) {
+    public void borrarPlato(@PathVariable String _idRest, @PathVariable String idPlato) {
         this.platosService.borrarPlato(idPlato);
     }
 
     @PostMapping("/pedidos/{idPedido}/estado")
     @SecurityRequirement(name = "authorization")
-    public void cambiarEstadoPedido(@PathVariable ObjectId idPedido, @RequestParam int estado) {
+    public void cambiarEstadoPedido(@PathVariable String idPedido, @RequestParam int estado) {
         this.pedidosService.cambiarEstado(idPedido, estado);
     }
 
     @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
     @SecurityRequirement(name = "authorization")
-    public void establecerRebaja(@PathVariable ObjectId idRest, @PathVariable ObjectId idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
+    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
     }
 }

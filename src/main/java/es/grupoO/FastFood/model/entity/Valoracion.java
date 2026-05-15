@@ -1,13 +1,12 @@
 package es.grupoO.FastFood.model.entity;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Valoracion")
 public class Valoracion {
     @Id
-    private ObjectId idValoracion;
+    private String idValoracion;
     
     private int nValoraciones;
     

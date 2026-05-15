@@ -1,14 +1,13 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Email;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Repartidor")
 public class Repartidor {
     @Id
-    private ObjectId idRepartidor;
+    private String idRepartidor;
     
     private String nombre;
     
@@ -33,11 +32,11 @@ public class Repartidor {
         this.hashPassword = hashPassword;
     }
 
-    public ObjectId getIdRepartidor() {
+    public String getIdRepartidor() {
         return idRepartidor;
     }
 
-    public void setIdRepartidor(ObjectId idRepartidor) {
+    public void setIdRepartidor(String idRepartidor) {
         this.idRepartidor = idRepartidor;
     }
 

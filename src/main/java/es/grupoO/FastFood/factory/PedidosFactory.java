@@ -5,16 +5,15 @@ import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.ClientesService;
 import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.RestaurantesService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PedidosFactory {
-    private ObjectId idCliente;
-    private ObjectId idRestaurante;
-    private List<Pair<ObjectId, Integer>> platos;
+    private String idCliente;
+    private String idRestaurante;
+    private List<Pair<String, Integer>> platos;
     
     @Autowired
     private ClientesService clientesService;
@@ -23,7 +22,7 @@ public class PedidosFactory {
     @Autowired
     private PlatosService platosService;
 
-    public PedidosFactory(ObjectId idCliente, ObjectId idRestaurante, List<Pair<ObjectId, Integer>> platos) {
+    public PedidosFactory(String idCliente, String idRestaurante, List<Pair<String, Integer>> platos) {
         this.idCliente = idCliente;
         this.idRestaurante = idRestaurante;
         this.platos = platos;
@@ -35,8 +34,8 @@ public class PedidosFactory {
 
         ArrayList<LineaPlatos> lineas = new ArrayList<>();
         
-        for(var linea : this.platos) {
-            ObjectId idPlato = linea.getFirst();
+        for(Pair<String, Integer> linea : this.platos) {
+            String idPlato = linea.getFirst();
             int cantidad = linea.getSecond();
 
             Plato plato = this.platosService.buscarPlatoPorID(idPlato);

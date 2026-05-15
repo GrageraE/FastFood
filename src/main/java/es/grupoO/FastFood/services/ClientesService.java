@@ -31,11 +31,11 @@ public class ClientesService {
         return data.getFirst();
     }
     
-    public Cliente buscarClientePorID(ObjectId idCliente) {
+    public Cliente buscarClientePorID(String idCliente) {
         return this.repository.findById(idCliente).get();
     }
     
-    public void passwdChanger(ObjectId idCliente, String newPasswd) {
+    public void passwdChanger(String idCliente, String newPasswd) {
         //TODO comprobar que el usuario cambia su propia contraseña
         Cliente cliente = this.buscarClientePorID(idCliente);
         if(cliente == null) {

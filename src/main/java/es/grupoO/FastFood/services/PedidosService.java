@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.factory.PedidosFactory;
 
 import java.util.List;
-import java.util.Optional;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
+
 @Service
 public class PedidosService {
     @Autowired
@@ -26,7 +26,7 @@ public class PedidosService {
     @Autowired
     private LineaPlatosRepository lineaPlatosRepository;
 
-    public Pedido realizarPedido(ObjectId idCliente, ObjectId idRest, List<Pair<ObjectId, Integer>> platos) {
+    public Pedido realizarPedido(String idCliente, String idRest, List<Pair<String, Integer>> platos) {
         PedidosFactory  pedidosFactory = new PedidosFactory(idCliente, idRest, platos);
 
         Pedido pedido = pedidosFactory.fabricarPedido();
@@ -39,7 +39,7 @@ public class PedidosService {
         return pedido;
     }
 
-    public Pedido buscarPedidoPorID(ObjectId idPedido) {
+    public Pedido buscarPedidoPorID(String idPedido) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
@@ -47,7 +47,7 @@ public class PedidosService {
         return pedido;
     }
     
-    public void anularPedido(ObjectId idPedido) {
+    public void anularPedido(String idPedido) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
@@ -60,7 +60,7 @@ public class PedidosService {
         this.pedidosRepository.deleteById(idPedido);
     }
     
-    public void cambiarEstado(ObjectId idPedido, int estado) {
+    public void cambiarEstado(String idPedido, int estado) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
@@ -69,7 +69,7 @@ public class PedidosService {
         pedido.setEstado(estadoPedido);
     }
     
-    public void asignarPedido(ObjectId idPedido, ObjectId idRepartidor) {
+    public void asignarPedido(String idPedido, String idRepartidor) {
         // TODO: Errores
         Pedido pedido = this.buscarPedidoPorID(idPedido);
         if(pedido == null) {

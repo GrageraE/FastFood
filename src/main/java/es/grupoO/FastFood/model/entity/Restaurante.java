@@ -4,7 +4,6 @@ import java.time.LocalTime;
 
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -12,7 +11,7 @@ import org.springframework.data.annotation.Id;
 @Document("Restaurantes")
 public class Restaurante {
     @Id
-    private ObjectId idRestaurante;
+    private String idRestaurante;
 
     private String nombre;
 
@@ -46,11 +45,11 @@ public class Restaurante {
         this.hashPassword = hashPassword;
     }
 
-    public ObjectId getIdRestaurante() {
+    public String getIdRestaurante() {
         return idRestaurante;
     }
 
-    public void setIdRestaurante(ObjectId idRestaurante) {
+    public void setIdRestaurante(String idRestaurante) {
         this.idRestaurante = idRestaurante;
     }
 

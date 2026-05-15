@@ -6,7 +6,6 @@ import es.grupoO.FastFood.model.valueobject.Precio;
 import java.util.ArrayList;
 import java.time.LocalTime;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("Pedidos")
 public class Pedido {
     @Id
-    private ObjectId idPedido;
+    private String idPedido;
 
     @DBRef
     private Cliente cliente;
@@ -43,7 +42,7 @@ public class Pedido {
         this.platos = lineasPlatos;
     }
 
-    public ObjectId getIdPedido() {
+    public String getIdPedido() {
         return idPedido;
     }
 

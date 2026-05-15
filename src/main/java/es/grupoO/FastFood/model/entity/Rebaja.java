@@ -3,14 +3,13 @@ package es.grupoO.FastFood.model.entity;
 import java.time.LocalDate;
 
 import es.grupoO.FastFood.model.valueobject.Precio;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Rebaja")
 public class Rebaja {
     @Id
-    private ObjectId idRebaja;
+    private String idRebaja;
 
     private Precio nuevoPrecio;
 
@@ -21,11 +20,11 @@ public class Rebaja {
         this.fechaLimite = fechaLimite;
     }
 
-    public ObjectId getIdRebaja() {
+    public String getIdRebaja() {
         return idRebaja;
     }
 
-    public void setIdRebaja(ObjectId idRebaja) {
+    public void setIdRebaja(String idRebaja) {
         this.idRebaja = idRebaja;
     }
 

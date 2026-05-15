@@ -1,14 +1,13 @@
 package es.grupoO.FastFood.model.entity;
 
 import es.grupoO.FastFood.model.valueobject.Email;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
 @Document("Cliente")
 public class Cliente {
     @Id
-    private ObjectId idCliente;
+    private String idCliente;
 
     private String nombre;
 
@@ -28,7 +27,7 @@ public class Cliente {
         this.hashPassword = hashPassword;
     }
 
-    public ObjectId getIdCliente() {
+    public String getIdCliente() {
         return idCliente;
     }
 

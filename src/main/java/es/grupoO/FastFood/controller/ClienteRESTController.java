@@ -6,7 +6,6 @@ import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.*;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +53,7 @@ public class ClienteRESTController {
 
     @GetMapping("/clientes/{idCliente}")
     @SecurityRequirement(name = "authorization")
-    public Cliente buscarClientePorID(@PathVariable ObjectId idCliente) {
+    public Cliente buscarClientePorID(@PathVariable String idCliente) {
         return this.clientesService.buscarClientePorID(idCliente);
     }
 
@@ -66,26 +65,26 @@ public class ClienteRESTController {
 
     @GetMapping("/restaurante/{idRestaurante}/platos")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> buscarPlato(@PathVariable ObjectId idRestaurante) {
+    public List<Plato> buscarPlato(@PathVariable String idRestaurante) {
         return this.platosService.buscarPlato(idRestaurante);
     }
 
     @GetMapping("/restaurante/{idRestaurante}/platos/categorias/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable ObjectId idRestaurante, @PathVariable int categoria) {
+    public List<Plato> filtrarPlatos(@PathVariable String idRestaurante, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRestaurante, categoria);
     }
 
     @PostMapping("/restaurante/{id}/valoracion")
     @SecurityRequirement(name = "authorization")
-    public void actualizarValoracion(@PathVariable ObjectId id, @RequestParam int valor) {
+    public void actualizarValoracion(@PathVariable String id, @RequestParam int valor) {
         this.restaurantesService.actualizarValoracion(id, valor);
     }
 
     @PostMapping("/pedidos")
     @SecurityRequirement(name = "authorization")
-    public Pedido realizarPedido(@RequestParam ObjectId idCliente, @RequestParam ObjectId idRest, 
-                                 @RequestParam List<Pair<ObjectId, Integer>> platos) {
+    public Pedido realizarPedido(@RequestParam String idCliente, @RequestParam String idRest,
+                                 @RequestParam List<Pair<String, Integer>> platos) {
         return this.pedidosService.realizarPedido(idCliente, idRest, platos);
     }
 

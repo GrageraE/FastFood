@@ -2,10 +2,8 @@ package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
-import es.grupoO.FastFood.exceptions.NoMatchingPasswordException;
 import es.grupoO.FastFood.factory.RepartidorFactory;
 import es.grupoO.FastFood.model.valueobject.Pair;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.model.entity.Repartidor;
@@ -26,7 +24,7 @@ public class RepartidoresService {
         return data.getFirst();
     }
 
-    public Repartidor buscarRepartidorPorID(ObjectId idRepar) {
+    public Repartidor buscarRepartidorPorID(String idRepar) {
         Repartidor repartidor = this.repository.findById(idRepar).orElse(null);
         if (repartidor == null) {
             throw new NoExistDBException("El repartidor no esta registrado");
@@ -45,7 +43,7 @@ public class RepartidoresService {
         this.repository.save(repartidor);
     }
 
-    public void borrarRepartidor(ObjectId idRepar) {
+    public void borrarRepartidor(String idRepar) {
         Repartidor repartidor = this.repository.findById(idRepar).orElse(null);
         if (repartidor == null) {
             throw new NoExistDBException("El repartidor no esta registrado");
@@ -53,7 +51,7 @@ public class RepartidoresService {
         this.repository.deleteById(idRepar);
     }
 
-    public void passwdChanger(ObjectId idRepartidor, String newPasswd) {
+    public void passwdChanger(String idRepartidor, String newPasswd) {
         Repartidor repartidor = this.buscarRepartidorPorID(idRepartidor);
         if(repartidor == null) {
             throw new NoExistDBException("El repartidor no esta registrado");
