@@ -3,6 +3,7 @@ package es.grupoO.FastFood.controller;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.services.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,22 +34,26 @@ public class RepartidorRESTController {
     }
 
     @GetMapping("/repartidor/{idRepar}")
+    @SecurityRequirement(name = "authorization")
     public Repartidor buscarRepartidorPorID(@PathVariable ObjectId idRepar){
         return this.repartidoresService.buscarRepartidorPorID(idRepar);
     }
 
     @DeleteMapping("/repartidor/{idRepar}")
+    @SecurityRequirement(name = "authorization")
     public void borrarRepartidor(@PathVariable ObjectId idRepar) {
         this.repartidoresService.borrarRepartidor(idRepar);
     }
 
     @GetMapping("/pedidos/disponibles")
+    @SecurityRequirement(name = "authorization")
     public List<Pedido> buscarPedidosRepartir(@RequestParam long ubicacion) {
         // TODO: Cambiar tipo de parametro a GeoJSON
         return this.pedidosService.buscarPedidosARepartir(ubicacion);
     }
 
     @PostMapping("/pedidos/{idPedido}/asignar")
+    @SecurityRequirement(name = "authorization")
     public void asignarPedido(@PathVariable ObjectId idPedido, @RequestParam ObjectId idRepartidor) {
         this.pedidosService.asignarPedido(idPedido, idRepartidor);
     }
