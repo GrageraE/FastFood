@@ -8,6 +8,9 @@ import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.PedidosService;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Plato;
+
+import es.grupoO.FastFood.dto.RestauranteLoginDTO;
+
 import java.util.List;
 
 @RestController
@@ -26,10 +29,7 @@ public class RestauranteRESTController {
     }
 
     @PostMapping("/restaurantes/validar")
-    public Restaurante validarRestaurante(
-            @RequestParam String email,
-            @RequestParam String password) {
-
+    public RestauranteLoginDTO validarRestaurante(@RequestParam String email, @RequestParam String password) {
         return restaurantesService.validar(email, password);
     }
 

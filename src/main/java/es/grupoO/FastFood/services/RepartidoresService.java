@@ -1,8 +1,10 @@
 package es.grupoO.FastFood.services;
 
+import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
 import es.grupoO.FastFood.factory.RepartidorFactory;
+import es.grupoO.FastFood.mapper.RepartidorLoginMapper;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,12 @@ public class RepartidoresService {
     private RepartidoresRepository repository;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private RepartidorLoginMapper repartidorMapper;
 
-    public Repartidor validar(String email, String passwd) {
+    public RepartidorLoginDTO validar(String email, String passwd) {
         Pair<Repartidor, String> data = this.authService.loginRepartidor(email, passwd);
-        // TODO: Token
-        return data.getFirst();
+        return this.repartidorMapper.fromPair(data);
     }
 
     public Repartidor buscarRepartidorPorID(String idRepar) {
@@ -32,7 +35,7 @@ public class RepartidoresService {
         return repartidor;
     }
 
-    public void insertarRepartidor(String nombre, String telefono, String email, String passwd) {
+    public Repartidor insertarRepartidor(String nombre, String telefono, String email, String passwd) {
         if(this.repository.findByEmail(Email.parse(email)) == null) {
             throw new UsernameAlreadyExistException("El repartidor ya existe");
         }
@@ -41,6 +44,7 @@ public class RepartidoresService {
         Repartidor repartidor = repartidorFactory.fabricarRepartidor();
         
         this.repository.save(repartidor);
+        return repartidor;
     }
 
     public void borrarRepartidor(String idRepar) {

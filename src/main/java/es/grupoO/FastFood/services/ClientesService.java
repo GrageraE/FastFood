@@ -1,11 +1,12 @@
 package es.grupoO.FastFood.services;
+
+import es.grupoO.FastFood.dto.ClienteLoginDTO;
 import es.grupoO.FastFood.factory.ClienteFactory;
 import es.grupoO.FastFood.auth.HashMaker;
+import es.grupoO.FastFood.mapper.ClienteLoginMapper;
 import es.grupoO.FastFood.model.entity.Cliente;
-import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.ClientesRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
@@ -17,18 +18,21 @@ public class ClientesService {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    ClienteLoginMapper clienteMapper;
     
-    public void insertarCliente(String nombre, String direccion, String telefono, String email, String passwd) {
+    public Cliente insertarCliente(String nombre, String direccion, String telefono, String email, String passwd) {
         ClienteFactory clienteFactory = new ClienteFactory(nombre, direccion, telefono, email, passwd);
         Cliente cliente = clienteFactory.crearCliente();
-        
+
         this.repository.save(cliente);
+        return cliente;
     }
 
-    public Cliente validar(String email, String passwd) {
+    public ClienteLoginDTO validar(String email, String passwd) {
         Pair<Cliente, String> data = this.authService.loginCliente(email, passwd);
-        // TODO: Entregar token
-        return data.getFirst();
+        return this.clienteMapper.fromPair(data);
     }
     
     public Cliente buscarClientePorID(String idCliente) {

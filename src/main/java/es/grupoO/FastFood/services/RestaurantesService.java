@@ -1,5 +1,7 @@
 package es.grupoO.FastFood.services;
+import es.grupoO.FastFood.dto.RestauranteLoginDTO;
 import es.grupoO.FastFood.factory.RestauranteFactory;
+import es.grupoO.FastFood.mapper.RestauranteLoginMapper;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.valueobject.Pair;
@@ -20,11 +22,12 @@ public class RestaurantesService {
     private ValoracionesRepository valoracionesRepository;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private RestauranteLoginMapper restauranteMapper;
 
-    public Restaurante validar(String email, String passwd) {
+    public RestauranteLoginDTO validar(String email, String passwd) {
         Pair<Restaurante, String> data = this.authService.loginRestaurante(email, passwd);
-        // TODO: Token
-        return data.getFirst();
+        return this.restauranteMapper.fromPair(data);
     }
 
     public Restaurante buscarRestaurantePorID(String idRest) {

@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import es.grupoO.FastFood.dto.RepartidorLoginDTO;
+
 import java.util.List;
 
 @RestController
@@ -22,14 +24,14 @@ public class RepartidorRESTController {
     }
 
     @PostMapping("/repartidores/validar")
-    public Repartidor validar(@RequestParam String email, @RequestParam String passwd) {
+    public RepartidorLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
         return this.repartidoresService.validar(email, passwd);
     }
 
     @PostMapping("/repartidores/registro")
-    public void insertarRepartidor(@RequestParam String nombre, @RequestParam String telefono,
+    public Repartidor insertarRepartidor(@RequestParam String nombre, @RequestParam String telefono,
                                    @RequestParam String email, @RequestParam String passwd) {
-        this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);
+        return this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);
     }
 
     @GetMapping("/repartidor/{idRepar}")

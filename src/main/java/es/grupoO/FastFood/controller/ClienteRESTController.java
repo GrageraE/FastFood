@@ -9,6 +9,8 @@ import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import es.grupoO.FastFood.dto.ClienteLoginDTO;
+
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
@@ -41,14 +43,14 @@ public class ClienteRESTController {
     }
 
     @PostMapping("/clientes/validar")
-    public Cliente validar(@RequestParam String email, @RequestParam String passwd) {
+    public ClienteLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
         return this.clientesService.validar(email, passwd);
     }
 
     @PostMapping("/clientes/registro")
-    public void insertarCliente(@RequestParam String nombre, @RequestParam String direccion, @RequestParam String telefono, 
+    public Cliente insertarCliente(@RequestParam String nombre, @RequestParam String direccion, @RequestParam String telefono,
                                 @RequestParam String email, @RequestParam String passwd) {
-        this.clientesService.insertarCliente(nombre, direccion, telefono, email, passwd);
+        return this.clientesService.insertarCliente(nombre, direccion, telefono, email, passwd);
     }
 
     @GetMapping("/clientes/{idCliente}")
