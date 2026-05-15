@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 public class FilterInterceptor extends OncePerRequestFilter {
     public FilterInterceptor() {}
 
-    // TODO: Reestablecer contexto de autenticacion
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain handler)
             throws IOException, ServletException {
@@ -31,8 +29,8 @@ public class FilterInterceptor extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
+            SecurityContextHolder.clearContext();
             handler.doFilter(request, response);
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falta el token de autenticacion");
             return;
         }
 
@@ -46,7 +44,7 @@ public class FilterInterceptor extends OncePerRequestFilter {
                     .parseSignedClaims(token)
                     .getPayload();
 
-            // 3. Control de acceso rudimentario basado en la URL
+            // 3. Control de acceso
             List<String> roles = (List<String>) claims.get("authorities");
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
@@ -59,6 +57,7 @@ public class FilterInterceptor extends OncePerRequestFilter {
 //            request.setAttribute("rol", rol);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token invalido o expirado");
+            SecurityContextHolder.clearContext();
         }
     }
 }

@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import io.swagger.v3.oas.models.media.StringSchema;
+import org.bson.types.ObjectId;
+import org.springdoc.core.utils.SpringDocUtils;
 
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = "es.grupoO.FastFood.repository")
@@ -19,6 +22,13 @@ public class FastFoodApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FastFoodApplication.class, args);
+	}
+
+	@Configuration
+	class SwaggerConfig {
+		static {
+			SpringDocUtils.getConfig().replaceWithSchema(ObjectId.class, new StringSchema());
+		}
 	}
 
 	@EnableWebSecurity
