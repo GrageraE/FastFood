@@ -28,7 +28,7 @@ public class FilterInterceptor extends OncePerRequestFilter {
         // 1. Extraer el token de la cabecera HTTP "Authorization" y el endpoint solicitado
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             SecurityContextHolder.clearContext();
             handler.doFilter(request, response);
             return;

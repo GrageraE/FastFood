@@ -92,6 +92,7 @@ public class FastFoodApplication {
 							.requestMatchers("/v3/api-docs.yaml").permitAll()
 							.requestMatchers("/v3/api-docs/**").permitAll()
 							// Resto de endpoints: requieren simplemente estar autenticados
+							.requestMatchers("/error").permitAll()
 							.anyRequest().authenticated()
 					)
 					.addFilterBefore(new FilterInterceptor(), UsernamePasswordAuthenticationFilter.class);
