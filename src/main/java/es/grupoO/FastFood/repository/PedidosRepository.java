@@ -10,13 +10,13 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface PedidosRepository extends MongoRepository<Pedido, String> {
-    @Query("{cliente: '?0'}")
+    @Query("{'cliente': ?0}")
     List<Pedido> findAllByClienteIdCliente(Cliente cliente);
 
-    @Query("{restaurante: '?0'}")
+    @Query("{'restaurante': ?0}")
     List<Pedido> findAllByRestauranteIdRestaurante(Restaurante rest);
 
-    @Query("{estadoPedido: '?0'}")
+    @Query("{'estadoPedido': ?0}")
     List<Pedido> findAllByEstadoPedido(EstadoPedido estado);
 
 }

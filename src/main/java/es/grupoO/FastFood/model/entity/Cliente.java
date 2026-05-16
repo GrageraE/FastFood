@@ -15,15 +15,15 @@ public class Cliente {
 
     private String telefonoContacto;
 
-    private Email emailCliente;
+    private Email email;
 
     private String hashPassword;
 
-    public Cliente(String nombre, String direccionEnvio, String telefonoContacto, Email emailCliente, String hashPassword) {
+    public Cliente(String nombre, String direccionEnvio, String telefonoContacto, Email email, String hashPassword) {
         this.nombre = nombre;
         this.direccionEnvio = direccionEnvio;
         this.telefonoContacto = telefonoContacto;
-        this.emailCliente = emailCliente;
+        this.email = email;
         this.hashPassword = hashPassword;
     }
 
@@ -44,11 +44,11 @@ public class Cliente {
     }
 
     public Email getEmail(){
-        return this.emailCliente;
+        return this.email;
     }
 
-    public void setEmail(Email emailCliente) {
-        this.emailCliente = emailCliente;
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
     public String gethashPassword(){

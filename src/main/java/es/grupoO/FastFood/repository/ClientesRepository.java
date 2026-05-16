@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 public interface ClientesRepository extends MongoRepository<Cliente, String> {
-    @Query("{email: '?0'}")
+    @Query("{'email': ?0}")
     Cliente findByEmail(Email email);
 }

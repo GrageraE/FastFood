@@ -9,10 +9,10 @@ import es.grupoO.FastFood.model.state.CategoriaPlato;
 import java.util.List;
 
 public interface PlatosRepository extends MongoRepository<Plato, String> {
-    @Query("{restaurante: '?0'}")
+    @Query("{'restaurante': ?0}")
     List<Plato> findAllByRestauranteIdRestaurante(Restaurante rest);
 
-    @Query("{restaurante: '?0', categoriaPlato: '?1'}")
+    @Query("{'restaurante': ?0, 'categoriaPlato': ?1}")
     List<Plato> findAllByRestauranteIdRestauranteAndTipoPlato(Restaurante rest, CategoriaPlato categoria);
     
 }

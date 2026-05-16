@@ -12,9 +12,9 @@ public interface RestaurantesRepository extends MongoRepository<Restaurante, Str
     @Query("{'email': ?0}")
     Restaurante findByEmail(Email email);
 
-    @Query("{nombre: '?0'}")
+    @Query("{'nombre': ?0}")
     List<Restaurante> findAllByNombreContaining(String nombre);
     
-    @Query("{categoria: '?0'}")
+    @Query("{'categoria': ?0}")
     List<Restaurante> findAllByCategoria(CategoriaRestaurante categoria);
 }
