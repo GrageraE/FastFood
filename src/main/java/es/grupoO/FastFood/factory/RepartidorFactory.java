@@ -17,6 +17,7 @@ public class RepartidorFactory {
         this.telefono = telefono;
         this.email = email;
         this.passwd = passwd;
+        this.hasher = new HashMaker();
     }
     
     public Repartidor fabricarRepartidor() {

@@ -36,7 +36,7 @@ public class RepartidoresService {
     }
 
     public Repartidor insertarRepartidor(String nombre, String telefono, String email, String passwd) {
-        if(this.repository.findByEmail(Email.parse(email)) == null) {
+        if(this.repository.findByEmail(Email.parse(email)) != null) {
             throw new UsernameAlreadyExistException("El repartidor ya existe");
         }
         
