@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RepartidorLoginMapper {
+    @Mapping(target = "idRepartidor", source = "repartidor.idRepartidor")
+    @Mapping(target = "email", source = "repartidor.email")
     @Mapping(target = "token", source = "token")
     RepartidorLoginDTO toDTO(Repartidor repartidor, String token);
 

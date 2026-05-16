@@ -13,7 +13,7 @@ public class Repartidor {
     
     private String telefonoContacto;
 
-    private Email emailRepartidor;
+    private Email email;
 
     private String hashPassword;
     
@@ -25,10 +25,10 @@ public class Repartidor {
         this.hashPassword = hashPassword;
     }
     
-    public Repartidor(String nombre, String telefonoContacto, Email emailRepartidor, String hashPassword) {
+    public Repartidor(String nombre, String telefonoContacto, Email email, String hashPassword) {
         this.nombre = nombre;
         this.telefonoContacto = telefonoContacto;
-        this.emailRepartidor = emailRepartidor;
+        this.email = email;
         this.hashPassword = hashPassword;
     }
 
@@ -57,10 +57,10 @@ public class Repartidor {
     }
 
     public Email getEmail() {
-        return this.emailRepartidor;
+        return this.email;
     }
 
     public void setEmail(Email emailRepartidor) {
-        this.emailRepartidor = emailRepartidor;
+        this.email = emailRepartidor;
     }
 }

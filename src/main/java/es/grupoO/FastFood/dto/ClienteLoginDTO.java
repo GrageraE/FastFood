@@ -5,7 +5,7 @@ import es.grupoO.FastFood.model.valueobject.Email;
 public class ClienteLoginDTO {
     private String idCliente;
 
-    private Email emailCliente;
+    private Email email;
 
     private String token;
 
@@ -17,11 +17,19 @@ public class ClienteLoginDTO {
         return idCliente;
     }
 
-    public Email getEmailCliente() {
-        return emailCliente;
+    public Email getEmail() {
+        return email;
     }
 
     public String getToken() {
         return token;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
     }
 }

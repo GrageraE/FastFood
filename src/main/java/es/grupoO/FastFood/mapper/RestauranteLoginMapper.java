@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RestauranteLoginMapper {
+    @Mapping(target = "idRestaurante", source = "restaurante.idRestaurante")
+    @Mapping(target = "email", source = "restaurante.email")
     @Mapping(target = "token", source = "token")
     RestauranteLoginDTO toDTO(Restaurante restaurante, String token);
 

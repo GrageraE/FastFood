@@ -24,4 +24,12 @@ public class RestauranteLoginDTO {
     public String getToken() {
         return token;
     }
+
+    public void setIdRestaurante(String idRestaurante) {
+        this.idRestaurante = idRestaurante;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
 }
