@@ -7,7 +7,6 @@ import es.grupoO.FastFood.model.state.EstadoPedido;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.LineaPlatosRepository;
 import es.grupoO.FastFood.repository.PedidosRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.factory.PedidosFactory;
@@ -19,15 +18,21 @@ import es.grupoO.FastFood.exceptions.NoExistDBException;
 public class PedidosService {
     @Autowired
     private PedidosRepository pedidosRepository;
-
     @Autowired
     private RepartidoresService repartidoresService;
-
     @Autowired
     private LineaPlatosRepository lineaPlatosRepository;
+    @Autowired
+    private ClientesService clientesService;
+    @Autowired
+    private RestaurantesService restaurantesService;
+    @Autowired
+    private PlatosService platosService;
 
     public Pedido realizarPedido(String idCliente, String idRest, List<Pair<String, Integer>> platos) {
-        PedidosFactory  pedidosFactory = new PedidosFactory(idCliente, idRest, platos);
+        PedidosFactory  pedidosFactory = new PedidosFactory(
+                idCliente, idRest, platos, this.clientesService, this.restaurantesService, this.platosService
+        );
 
         Pedido pedido = pedidosFactory.fabricarPedido();
 

@@ -6,7 +6,6 @@ import es.grupoO.FastFood.model.state.CategoriaPlato;
 import es.grupoO.FastFood.model.state.Divisa;
 import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.services.RestaurantesService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PlatosFactory {
     private String nombre;
@@ -14,14 +13,15 @@ public class PlatosFactory {
     private double precio;
     private int categoriaPlato;
     
-    @Autowired
     private RestaurantesService restaurantesService;
 
-    public PlatosFactory(String nombre, String idRestaurante, double precio, int categoriaPlato) {
+    public PlatosFactory(String nombre, String idRestaurante, double precio, int categoriaPlato,
+                         RestaurantesService restaurantesService) {
         this.nombre = nombre; 
         this.idRestaurante = idRestaurante;
         this.precio = precio;
         this.categoriaPlato = categoriaPlato;
+        this.restaurantesService = restaurantesService;
     }
     
     public Plato fabricarPlato() {

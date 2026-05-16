@@ -53,11 +53,11 @@ public class RestauranteRESTController {
         this.restaurantesService.borrarRestaurante(idRest);
     }
 
-    @GetMapping("/restaurante/{idRest}/platos")
-    @SecurityRequirement(name = "authorization")
-    public List<Plato> buscarPlato(@PathVariable String idRest){
-        return this.platosService.buscarPlato(idRest);
-    }
+//    @GetMapping("/restaurante/{idRest}/platos")
+//    @SecurityRequirement(name = "authorization")
+//    public List<Plato> buscarPlato(@PathVariable String idRest){
+//        return this.platosService.buscarPlato(idRest);
+//    }
 
     @GetMapping("/restaurante/{idRest}/platos/{categoria}")
     @SecurityRequirement(name = "authorization")

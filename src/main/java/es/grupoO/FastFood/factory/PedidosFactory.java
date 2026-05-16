@@ -5,7 +5,6 @@ import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.ClientesService;
 import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.RestaurantesService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +14,20 @@ public class PedidosFactory {
     private String idRestaurante;
     private List<Pair<String, Integer>> platos;
     
-    @Autowired
     private ClientesService clientesService;
-    @Autowired
     private RestaurantesService restaurantesService;
-    @Autowired
     private PlatosService platosService;
 
-    public PedidosFactory(String idCliente, String idRestaurante, List<Pair<String, Integer>> platos) {
+    public PedidosFactory(String idCliente, String idRestaurante, List<Pair<String, Integer>> platos,
+                          ClientesService clientesService, RestaurantesService restaurantesService, PlatosService platosService) {
         this.idCliente = idCliente;
         this.idRestaurante = idRestaurante;
         this.platos = platos;
+        this.clientesService = clientesService;
+        this.restaurantesService = restaurantesService;
+        this.platosService = platosService;
     }
-    
+
     public Pedido fabricarPedido() {
         Cliente cliente = this.clientesService.buscarClientePorID(this.idCliente);
         Restaurante restaurante = this.restaurantesService.buscarRestaurantePorID(this.idRestaurante);

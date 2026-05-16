@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PlatosRepository extends MongoRepository<Plato, String> {
     @Query("{'restaurante': ?0}")
-    List<Plato> findAllByRestauranteIdRestaurante(Restaurante rest);
+    List<Plato> findAllByRestaurante(Restaurante rest);
 
     @Query("{'restaurante': ?0, 'categoriaPlato': ?1}")
     List<Plato> findAllByRestauranteIdRestauranteAndTipoPlato(Restaurante rest, CategoriaPlato categoria);

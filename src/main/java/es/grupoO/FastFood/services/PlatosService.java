@@ -22,6 +22,8 @@ public class PlatosService {
     @Autowired
     private RestaurantesRepository restRepo;
     @Autowired
+    private RestaurantesService restaurantesService;
+    @Autowired
     private PlatosRepository platosRepository;
     @Autowired
     private RebajasRepository rebajasRepository;
@@ -32,7 +34,7 @@ public class PlatosService {
 
     public List<Plato> buscarPlato(String idRestaurante) {
         Restaurante rest = this.restRepo.findById(idRestaurante).orElse(null);
-        return this.platosRepository.findAllByRestauranteIdRestaurante(rest);
+        return this.platosRepository.findAllByRestaurante(rest);
     }
 
     public List<Plato> filtrarPlatos(String idRestaurante, int categoria) {
@@ -45,7 +47,7 @@ public class PlatosService {
     }
     
     public void insertarPlato(String idRest, String nombre, int categoria, double precio) {
-        PlatosFactory platosFactory = new PlatosFactory(nombre, idRest, precio, categoria);
+        PlatosFactory platosFactory = new PlatosFactory(nombre, idRest, precio, categoria, this.restaurantesService);
         Plato plato = platosFactory.fabricarPlato();
         this.platosRepository.save(plato);
     }
