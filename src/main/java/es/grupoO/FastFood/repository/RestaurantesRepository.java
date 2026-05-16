@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface RestaurantesRepository extends MongoRepository<Restaurante, String> {
-    @Query("{email: '?0'}")
+    @Query("{'email': ?0}")
     Restaurante findByEmail(Email email);
 
     @Query("{nombre: '?0'}")

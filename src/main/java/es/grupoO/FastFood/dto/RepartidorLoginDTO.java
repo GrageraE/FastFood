@@ -12,4 +12,16 @@ public class RepartidorLoginDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getIdRepartidor() {
+        return idRepartidor;
+    }
+
+    public Email getEmailRepartidor() {
+        return emailRepartidor;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

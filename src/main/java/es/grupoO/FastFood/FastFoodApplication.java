@@ -81,12 +81,11 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/repartidores/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidores/validar").permitAll()
 							// Exigir roles especificos para determinados endpoints
-							// TODO: En vez de usar hasRole(), usar hasAuthorization() ??
-							.requestMatchers(HttpMethod.GET, "/clientes/{id}").hasRole("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/restaurantes/{id}/valoracion").hasRole("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasRole("REPARTIDOR")
-							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/estado").hasRole("RESTAURANTE")
-							.requestMatchers(HttpMethod.POST, "/restaurantes/{id_rest}/platos/{id_plato}/rebaja").hasRole("RESTAURANTE")
+							.requestMatchers(HttpMethod.GET, "/clientes/{id}").hasAuthority("CLIENTE")
+							.requestMatchers(HttpMethod.POST, "/restaurantes/{id}/valoracion").hasAuthority("CLIENTE")
+							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority("REPARTIDOR")
+							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/estado").hasAuthority("RESTAURANTE")
+							.requestMatchers(HttpMethod.POST, "/restaurantes/{id_rest}/platos/{id_plato}/rebaja").hasAuthority("RESTAURANTE")
 							// Permitir usar swagger sin autenticarse
 							.requestMatchers("/swagger-ui.html").permitAll()
 							.requestMatchers("/swagger-ui/**").permitAll()

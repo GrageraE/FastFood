@@ -12,4 +12,16 @@ public class RestauranteLoginDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getIdRestaurante() {
+        return idRestaurante;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

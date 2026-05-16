@@ -12,4 +12,16 @@ public class ClienteLoginDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public Email getEmailCliente() {
+        return emailCliente;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
