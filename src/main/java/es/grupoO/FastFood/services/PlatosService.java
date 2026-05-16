@@ -11,6 +11,7 @@ import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.repository.PlatosRepository;
 import es.grupoO.FastFood.repository.RebajasRepository;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,17 +34,14 @@ public class PlatosService {
     }
 
     public List<Plato> buscarPlato(String idRestaurante) {
-        Restaurante rest = this.restRepo.findById(idRestaurante).orElse(null);
-        return this.platosRepository.findAllByRestaurante(rest);
+        return this.platosRepository.findAllByRestaurante(idRestaurante);
     }
 
     public List<Plato> filtrarPlatos(String idRestaurante, int categoria) {
-        Restaurante rest = this.restRepo.findById(idRestaurante).orElse(null);
-
         // TODO: Revisar categoria
         CategoriaPlato cat = CategoriaPlato.values()[categoria];
 
-        return this.platosRepository.findAllByRestauranteIdRestauranteAndTipoPlato(rest, cat);
+        return this.platosRepository.findAllByRestauranteIdAndCategoria(idRestaurante, cat);
     }
     
     public void insertarPlato(String idRest, String nombre, int categoria, double precio) {
