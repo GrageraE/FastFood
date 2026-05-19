@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.model.valueobject.Email;
 import org.springframework.security.core.Authentication;
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
+import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
 
 @Service
 public class ClientesService {
@@ -25,6 +27,14 @@ public class ClientesService {
     ClienteLoginMapper clienteMapper;
     
     public Cliente insertarCliente(String nombre, String direccion, String telefono, String email, String passwd) {
+        if (!Email.validarEmail(email)) {
+            throw new NotValidEmailException("El email no es válido");
+        }
+        if(this.repository.findByEmail(Email.parse(email)) != null) {
+            throw new UsernameAlreadyExistException("El cliente ya existe");
+        }
+
+
         ClienteFactory clienteFactory = new ClienteFactory(nombre, direccion, telefono, email, passwd);
         Cliente cliente = clienteFactory.crearCliente();
 

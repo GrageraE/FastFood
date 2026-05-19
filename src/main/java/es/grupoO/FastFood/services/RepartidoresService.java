@@ -14,7 +14,8 @@ import es.grupoO.FastFood.repository.RepartidoresRepository;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
 import org.springframework.security.core.Authentication;
-
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
+import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
 @Service
 public class RepartidoresService {
     @Autowired
@@ -38,6 +39,10 @@ public class RepartidoresService {
     }
 
     public Repartidor insertarRepartidor(String nombre, String telefono, String email, String passwd) {
+        if (!Email.validarEmail(email)) {
+            throw new NotValidEmailException("El email no es válido");
+        }
+
         if(this.repository.findByEmail(Email.parse(email)) != null) {
             throw new UsernameAlreadyExistException("El repartidor ya existe");
         }

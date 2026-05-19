@@ -24,6 +24,14 @@ public class Email {
         return new Email(userName, domain);
     }
     
+    public static boolean validarEmail(String email) {
+        String[] parts = email.split("@");
+        if (parts.length != 2) {
+            return false;
+        }
+        return !parts[0].isEmpty() && !parts[1].isEmpty();
+    }
+
     @Override
     public String toString() {
         return userName + "@" + servidor;

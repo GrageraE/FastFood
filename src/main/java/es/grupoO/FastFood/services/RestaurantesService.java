@@ -14,7 +14,8 @@ import es.grupoO.FastFood.auth.HashMaker;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.model.valueobject.Email;
-
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
+import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
 @Service
 public class RestaurantesService {
     @Autowired
@@ -49,7 +50,14 @@ public class RestaurantesService {
 
     public Restaurante insertarRestaurante(String nombre, int categoria, String direccion,String telefono, 
         String email, String horaApertura, String horaCierre, String passwd){
-        //TODO comprobar condiciones de insercion
+
+        if (!Email.validarEmail(email)) {
+            throw new NotValidEmailException("El email no es válido");
+        }   
+            if(this.repository.findByEmail(Email.parse(email)) != null) {
+                throw new UsernameAlreadyExistException("El restaurante ya existe");
+            }
+
         RestauranteFactory fact = new RestauranteFactory(nombre, direccion, telefono, horaApertura, horaCierre, categoria, email, passwd);
         Restaurante restaurante = fact.fabricarRestaurante();
         Valoracion val = restaurante.getValoracion();
