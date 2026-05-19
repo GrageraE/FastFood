@@ -1,5 +1,7 @@
 package es.grupoO.FastFood.controller;
 
+import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.RepartidorInsertDTO;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.services.*;
@@ -10,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RepartidorRESTController {
@@ -24,13 +27,18 @@ public class RepartidorRESTController {
     }
 
     @PostMapping("/repartidor/validar")
-    public RepartidorLoginDTO validar(@RequestBody String email, @RequestBody String passwd) {
+    public RepartidorLoginDTO validar(@RequestBody FormLoginDTO form) {
+        String email = form.getEmail();
+        String passwd = form.getPasswd();
         return this.repartidoresService.validar(email, passwd);
     }
 
     @PostMapping("/repartidor/registro")
-    public Repartidor insertarRepartidor(@RequestBody String nombre, @RequestBody String telefono,
-                                   @RequestBody String email, @RequestBody String passwd) {
+    public Repartidor insertarRepartidor(@RequestBody RepartidorInsertDTO data) {
+        String nombre = data.getNombre();
+        String telefono = data.getTelefono();
+        String email = data.getEmail();
+        String passwd = data.getPassw();
         return this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);
     }
 

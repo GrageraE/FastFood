@@ -4,10 +4,15 @@ import es.grupoO.FastFood.factory.RestauranteFactory;
 import es.grupoO.FastFood.mapper.RestauranteLoginMapper;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
+import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import es.grupoO.FastFood.repository.ValoracionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import es.grupoO.FastFood.auth.HashMaker;
@@ -40,11 +45,14 @@ public class RestaurantesService {
         return rest;
     }
 
-    public List<Restaurante> buscarRestaurante(String nombre) {
-        List<Restaurante> restaurantes = this.repository.findAllByNombreContaining(nombre);
-        if(restaurantes == null) {
-            throw new NoExistDBException("El restaurante no existe");
-        }
+    public Page<Restaurante> buscarRestaurante(String nombre, Pageable paginacion) {
+        Page<Restaurante> restaurantes = this.repository.findAllByNombreContainingPaginado(nombre, paginacion);
+        return restaurantes;
+    }
+
+    public Page<Restaurante> buscarRestaurante(int categoria, Pageable paginacion) {
+        CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
+        Page<Restaurante> restaurantes = this.repository.findAllByCategoriaPaginado(cat, paginacion);
         return restaurantes;
     }
 

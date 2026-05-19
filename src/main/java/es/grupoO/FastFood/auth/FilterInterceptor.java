@@ -52,9 +52,6 @@ public class FilterInterceptor extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            // Inyectar el usuario en los atributos de la petición por si el controlador lo necesita
-//            request.setAttribute("id", claims.getSubject());
-//            request.setAttribute("rol", rol);
             handler.doFilter(request, response);
         } catch (Exception e) {
             // TODO: Continuar con los filtros??

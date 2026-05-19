@@ -1,5 +1,7 @@
 package es.grupoO.FastFood.controller;
 
+import es.grupoO.FastFood.dto.ClienteInsertDTO;
+import es.grupoO.FastFood.dto.FormLoginDTO;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Plato;
@@ -7,6 +9,10 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.core.Authentication;
@@ -16,6 +22,8 @@ import es.grupoO.FastFood.dto.ClienteLoginDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ClienteRESTController {
@@ -45,13 +53,19 @@ public class ClienteRESTController {
     }
 
     @PostMapping("/cliente/validar")
-    public ClienteLoginDTO validar(@RequestBody String email, @RequestBody String passwd) {
+    public ClienteLoginDTO validar(@RequestBody FormLoginDTO form) {
+        String email = form.getEmail();
+        String passwd = form.getPasswd();
         return this.clientesService.validar(email, passwd);
     }
 
     @PostMapping("/cliente/registro")
-    public Cliente insertarCliente(@RequestBody String nombre, @RequestBody String direccion, @RequestBody String telefono,
-                                @RequestBody String email, @RequestBody String passwd) {
+    public Cliente insertarCliente(@RequestBody ClienteInsertDTO data) {
+        String nombre = data.getNombre();
+        String direccion = data.getDireccion();
+        String telefono = data.getTelefono();
+        String email = data.getEmail();
+        String passwd = data.getPasswd();
         return this.clientesService.insertarCliente(nombre, direccion, telefono, email, passwd);
     }
 
@@ -63,8 +77,20 @@ public class ClienteRESTController {
 
     @GetMapping("/restaurante/buscar")
     @SecurityRequirement(name = "authorization")
-    public List<Restaurante> buscarRestaurante(@RequestParam String nombre) {
-        return this.restaurantesService.buscarRestaurante(nombre);
+    public Page<Restaurante> buscarRestaurante(@RequestParam String nombre,
+                                               @RequestParam(required = false, defaultValue = "0") int pagina,
+                                               @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size, Sort.by("nombre").ascending());
+        return this.restaurantesService.buscarRestaurante(nombre, paginacion);
+    }
+
+    @GetMapping("/restaurante/buscarCategoria")
+    @SecurityRequirement(name = "authorization")
+    public Page<Restaurante> buscarRestauranteCat(@RequestParam int categoria,
+                                                  @RequestParam(required = false, defaultValue = "0") int pagina,
+                                                  @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size, Sort.by("nombre").ascending());
+        return this.restaurantesService.buscarRestaurante(categoria, paginacion);
     }
 
     @GetMapping("/restaurante/{idRestaurante}/platos")

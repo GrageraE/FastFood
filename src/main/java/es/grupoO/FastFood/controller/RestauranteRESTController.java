@@ -1,5 +1,7 @@
 package es.grupoO.FastFood.controller;
 
+import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.RestauranteInsertDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RestauranteLoginDTO;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RestauranteRESTController {
@@ -29,15 +32,23 @@ public class RestauranteRESTController {
     }
 
     @PostMapping("/restaurante/validar")
-    public RestauranteLoginDTO validarRestaurante(@RequestBody String email, @RequestBody String password) {
+    public RestauranteLoginDTO validarRestaurante(@RequestBody FormLoginDTO form) {
+        String email = form.getEmail();
+        String password = form.getPasswd();
         return restaurantesService.validar(email, password);
     }
 
     @PostMapping("/restaurante/registro")
-    public Restaurante insertarRestaurante(@RequestBody String nombre, @RequestBody int categoria, @RequestBody String direccion,
-                                    @RequestBody String telefono, @RequestBody  String email, @RequestBody String horaApertura,
-                                    @RequestBody String horaCierre, @RequestBody String passwd)
+    public Restaurante insertarRestaurante(@RequestBody RestauranteInsertDTO insertDTO)
     {
+        String nombre = insertDTO.getNombre();
+        int categoria = insertDTO.getCategoria();
+        String direccion = insertDTO.getDireccion();
+        String telefono = insertDTO.getTelefono();
+        String email = insertDTO.getEmail();
+        String horaApertura = insertDTO.getHoraApertura();
+        String horaCierre = insertDTO.getHoraCierre();
+        String passwd = insertDTO.getPasswd();
         return this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
     }
 
@@ -61,7 +72,7 @@ public class RestauranteRESTController {
 
     @PostMapping("/restaurante/{idRest}/platos")
     @SecurityRequirement(name = "authorization")
-    public void insertarPlato(@PathVariable String idRest, @RequestBody String nombre, @RequestBody int categoria, @RequestBody double precio) {
+    public void insertarPlato(@PathVariable String idRest, @RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
@@ -79,7 +90,7 @@ public class RestauranteRESTController {
 
     @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
     @SecurityRequirement(name = "authorization")
-    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestBody double nuevoPrecio, @RequestBody String fecha) {
+    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
     }
 
