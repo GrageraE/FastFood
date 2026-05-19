@@ -83,7 +83,7 @@ public class Pedido {
         return this.cliente;
     }
 
-    public ArrayList<LineaPlatos> getPlatos() {
+    public List<LineaPlatos> getPlatos() {
         return this.platos;
     }
 

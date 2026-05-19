@@ -29,7 +29,6 @@ public class LineaPlatos {
     }
 
     public Precio precioSubtotal() {
-        // TODO: Hacer precio
-        return null;
+        return this.plato.getPrecio().multiplicarPrecios(this.cantidad);
     }
 }

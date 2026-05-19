@@ -5,6 +5,7 @@ import es.grupoO.FastFood.factory.PlatosFactory;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Rebaja;
 import es.grupoO.FastFood.model.state.CategoriaPlato;
+import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.state.Divisa;
 import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.repository.PlatosRepository;
@@ -36,9 +37,7 @@ public class PlatosService {
     }
 
     public List<Plato> filtrarPlatos(String idRestaurante, int categoria) {
-        // TODO: Revisar categoria
-        CategoriaPlato cat = CategoriaPlato.values()[categoria];
-
+        CategoriaPlato cat = CategoriaPlato.fromInteger(categoria);
         return this.platosRepository.findAllByRestauranteIdAndCategoria(idRestaurante, cat);
     }
     

@@ -41,7 +41,7 @@ public class RestauranteFactory {
 
         String hashPasswd = hasher.encoder(passwd);
 
-        CategoriaRestaurante cat = CategoriaRestaurante.values()[this.categoria];
+        CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
 
         Valoracion val = new Valoracion();
 

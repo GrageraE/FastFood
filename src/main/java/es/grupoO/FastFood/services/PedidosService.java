@@ -71,7 +71,7 @@ public class PedidosService {
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
         }
-        EstadoPedido estadoPedido = EstadoPedido.values()[estado];
+        EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
         pedido.setEstado(estadoPedido);
     }
     

@@ -26,7 +26,7 @@ public class PlatosFactory {
     
     public Plato fabricarPlato() {
         Restaurante rest = restaurantesService.buscarRestaurantePorID(this.idRestaurante);
-        CategoriaPlato cat = CategoriaPlato.values()[this.categoriaPlato];
+        CategoriaPlato cat = CategoriaPlato.fromInteger(categoriaPlato);
         Precio precio = new Precio(this.precio, Divisa.EURO);
         
         return new Plato(this.nombre, rest, precio, cat);

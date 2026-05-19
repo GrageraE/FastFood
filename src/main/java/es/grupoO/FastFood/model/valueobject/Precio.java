@@ -27,4 +27,8 @@ public class Precio {
         }
         return new Precio(this.cantidad + p2.cantidad, this.divisa);
     }
+
+    public Precio multiplicarPrecios(int multiplo) {
+        return new Precio(this.cantidad * multiplo, this.divisa);
+    }
 }
