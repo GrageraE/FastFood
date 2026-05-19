@@ -102,6 +102,6 @@ public class ClienteRESTController {
     @SecurityRequirement(name = "authorization")
     public void changePasswdCliente(@RequestParam String newPasswd,
                             Authentication auth) {
-        this.clientesService.changePasswd(newPasswd, auth);
+        this.clientesService.changePasswdCliente(newPasswd, auth);
     }
 }

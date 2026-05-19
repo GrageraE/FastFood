@@ -8,7 +8,7 @@ import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.PedidosService;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Plato;
-
+import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RestauranteLoginDTO;
 
 import java.util.List;
@@ -87,5 +87,13 @@ public class RestauranteRESTController {
     @SecurityRequirement(name = "authorization")
     public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
+    }
+
+
+    @PutMapping("/restaurante/password")
+    @SecurityRequirement(name = "authorization")
+    public void changePasswdRestaurante(@RequestParam String newPasswd,
+                            Authentication auth) {
+        this.restaurantesService.changePasswdRestaurante(newPasswd, auth);
     }
 }

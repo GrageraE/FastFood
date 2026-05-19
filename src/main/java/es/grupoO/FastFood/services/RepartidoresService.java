@@ -3,6 +3,7 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
+import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.RepartidorFactory;
 import es.grupoO.FastFood.mapper.RepartidorLoginMapper;
 import es.grupoO.FastFood.model.valueobject.Pair;
@@ -12,6 +13,7 @@ import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.repository.RepartidoresRepository;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
+import org.springframework.security.core.Authentication;
 
 @Service
 public class RepartidoresService {
@@ -55,14 +57,16 @@ public class RepartidoresService {
         this.repository.deleteById(idRepar);
     }
 
-    public void passwdChanger(String idRepartidor, String newPasswd) {
-        Repartidor repartidor = this.buscarRepartidorPorID(idRepartidor);
-        if(repartidor == null) {
-            throw new NoExistDBException("El repartidor no esta registrado");
+    public void changePasswdRepartidor(String newPasswd, Authentication auth) {
+        if (auth.getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("REPARTIDOR"))) {
+            throw new RoleNotAllowedException("El repartidor no tiene el rol de repartidor");
         }
         HashMaker hasher = new HashMaker();
+        Email email = Email.parse(auth.getName());
+        //no hay que comprobar el email, porque el token ya ha sido validado.
+        Repartidor repartidor = this.repository.findByEmail(email);
         repartidor.setHashPassword(hasher.encoder(newPasswd));
-
         this.repository.save(repartidor);
     }
 }

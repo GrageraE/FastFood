@@ -6,7 +6,7 @@ import es.grupoO.FastFood.services.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 
 import java.util.List;
@@ -57,5 +57,13 @@ public class RepartidorRESTController {
     @SecurityRequirement(name = "authorization")
     public void asignarPedido(@PathVariable String idPedido, @RequestParam String idRepartidor) {
         this.pedidosService.asignarPedido(idPedido, idRepartidor);
+    }
+
+
+    @PutMapping("/repartidor/password")
+    @SecurityRequirement(name = "authorization")
+    public void changePasswdRepartidor(@RequestParam String newPasswd,
+                            Authentication auth) {
+        this.repartidoresService.changePasswdRepartidor(newPasswd, auth);
     }
 }

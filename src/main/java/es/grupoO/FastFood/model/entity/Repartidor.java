@@ -43,7 +43,6 @@ public class Repartidor {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -63,4 +62,5 @@ public class Repartidor {
     public void setEmail(Email emailRepartidor) {
         this.email = emailRepartidor;
     }
+
 }

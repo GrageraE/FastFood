@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import es.grupoO.FastFood.auth.HashMaker;
-
+import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
+import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
+import es.grupoO.FastFood.model.valueobject.Email;
 
 @Service
 public class RestaurantesService {
@@ -77,15 +79,16 @@ public class RestaurantesService {
         this.valoracionesRepository.save(valoracion);
     }
 
-    public void passwdChanger(String idRest, String newPasswd) {
-        //TODO comprobar que el usuario cambia su propia contraseña
-        Restaurante rest = this.buscarRestaurantePorID(idRest);
-        if(rest == null) {
-            throw new NoExistDBException("El restaurante no existe");
+    public void changePasswdRestaurante(String newPasswd, Authentication auth) {
+        if (auth.getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("RESTAURANTE"))) {
+            throw new RoleNotAllowedException("El restaurante no tiene el rol de restaurante");
         }
         HashMaker hasher = new HashMaker();
-        rest.setHashPassword(hasher.encoder(newPasswd));
-
-        this.repository.save(rest);
+        Email email = Email.parse(auth.getName());
+        //no hay que comprobar el email, porque el token ya ha sido validado.
+        Restaurante restaurante = this.repository.findByEmail(email);
+        restaurante.setHashPassword(hasher.encoder(newPasswd));
+        this.repository.save(restaurante);
     }
 }
