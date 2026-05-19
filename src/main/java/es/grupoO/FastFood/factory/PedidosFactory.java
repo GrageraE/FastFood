@@ -42,6 +42,6 @@ public class PedidosFactory {
             lineas.add(new LineaPlatos(plato, cantidad));
         }
         
-        return new Pedido(cliente, restaurante, lineas);
+        return new Pedido(cliente, restaurante, lineas, restaurante.getPosicion().toGeoJson());
     }
 }

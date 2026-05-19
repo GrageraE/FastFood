@@ -4,9 +4,13 @@ import es.grupoO.FastFood.dto.FormLoginDTO;
 import es.grupoO.FastFood.dto.RepartidorInsertDTO;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.services.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
@@ -56,9 +60,11 @@ public class RepartidorRESTController {
 
     @GetMapping("/pedidos/disponibles")
     @SecurityRequirement(name = "authorization")
-    public List<Pedido> buscarPedidosRepartir(@RequestBody long ubicacion) {
-        // TODO: Cambiar tipo de parametro a GeoJSON
-        return this.pedidosService.buscarPedidosARepartir(ubicacion);
+    public Page<Pedido> buscarPedidosRepartir(@RequestBody Posicion ubicacion,
+                                              @RequestParam(required = false, defaultValue = "0") int pagina,
+                                              @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size);
+        return this.pedidosService.buscarPedidosARepartir(ubicacion, paginacion);
     }
 
     @PostMapping("/pedidos/{idPedido}/asignar")

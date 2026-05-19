@@ -6,9 +6,12 @@ import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.state.EstadoPedido;
 import es.grupoO.FastFood.model.valueobject.Pair;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.repository.LineaPlatosRepository;
 import es.grupoO.FastFood.repository.PedidosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.factory.PedidosFactory;
 
@@ -89,8 +92,7 @@ public class PedidosService {
         }
     }
     
-    public List<Pedido> buscarPedidosARepartir(long ubicacionRepartidor) {
-        // TODO no sabemos ubicacion
-        return null;
+    public Page<Pedido> buscarPedidosARepartir(Posicion posicionRepartidor, Pageable pageable) {
+        return this.pedidosRepository.buscarPorUbicacion(posicionRepartidor, pageable);
     }
 }

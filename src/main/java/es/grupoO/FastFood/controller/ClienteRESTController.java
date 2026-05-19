@@ -2,6 +2,7 @@ package es.grupoO.FastFood.controller;
 
 import es.grupoO.FastFood.dto.ClienteInsertDTO;
 import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.PedidoRequestDTO;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Plato;
@@ -113,8 +114,10 @@ public class ClienteRESTController {
 
     @PostMapping("/pedidos")
     @SecurityRequirement(name = "authorization")
-    public Pedido realizarPedido(@RequestParam String idCliente, @RequestParam String idRest,
-                                 @RequestParam List<Pair<String, Integer>> platos) {
+    public Pedido realizarPedido(@RequestBody PedidoRequestDTO pedidoRequest) {
+        String idCliente = pedidoRequest.getIdCliente();
+        String idRest = pedidoRequest.getIdRest();
+        var platos = pedidoRequest.getPlatos();
         return this.pedidosService.realizarPedido(idCliente, idRest, platos);
     }
 

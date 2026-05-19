@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -32,8 +33,11 @@ public class Restaurante {
 
     private Email email;
 
-    public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura,
-            LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, String hashPassword) {
+    private Posicion posicion;
+
+    public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura, 
+                       LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, 
+                       String hashPassword, Posicion posicion) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -43,6 +47,7 @@ public class Restaurante {
         this.valoracion = valoracion;
         this.email = email;
         this.hashPassword = hashPassword;
+        this.posicion = posicion;
     }
 
     public String getIdRestaurante() {
@@ -127,5 +132,13 @@ public class Restaurante {
 
     public void setHashPassword(String hashPassword) {
         this.hashPassword = hashPassword;
+    }
+
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(Posicion posicion) {
+        this.posicion = posicion;
     }
 }

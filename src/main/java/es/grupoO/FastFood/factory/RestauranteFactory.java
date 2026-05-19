@@ -6,6 +6,7 @@ import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 
 import java.time.LocalTime;
 
@@ -47,7 +48,8 @@ public class RestauranteFactory {
 
         Valoracion val = new Valoracion();
 
+        // TODO: Obtener posicion del restaurante
         return new Restaurante(this.nombre, this.direccion, this.telefono,
-                horaAp, horaC, cat, val, emailParsed, hashPasswd);
+                horaAp, horaC, cat, val, emailParsed, hashPasswd, Posicion.create(0, 0));
     }
 }

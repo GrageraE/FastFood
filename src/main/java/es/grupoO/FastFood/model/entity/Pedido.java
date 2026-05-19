@@ -4,11 +4,12 @@ import es.grupoO.FastFood.exceptions.EmptyOrderException;
 import es.grupoO.FastFood.model.state.EstadoPedido;
 import es.grupoO.FastFood.model.valueobject.Precio;
 
-import java.util.ArrayList;
 import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -33,7 +34,10 @@ public class Pedido {
 
     private LocalTime horaPedido;
 
-    public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> lineasPlatos) {
+    @GeoSpatialIndexed
+    private GeoJsonPoint posicion;
+
+    public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> lineasPlatos, GeoJsonPoint posicion) {
         this.restaurante = restaurante;
         this.cliente = cliente;
 
@@ -41,6 +45,7 @@ public class Pedido {
         this.estadoPedido = EstadoPedido.EN_PREPARACION;
         this.horaPedido = LocalTime.now();
         this.platos = lineasPlatos;
+        this.posicion = posicion;
     }
 
     public String getIdPedido() {
@@ -100,5 +105,13 @@ public class Pedido {
 
     public EstadoPedido getEstadoPedido(){
         return this.estadoPedido;
+    }
+
+    public GeoJsonPoint getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(GeoJsonPoint posicion) {
+        this.posicion = posicion;
     }
 }

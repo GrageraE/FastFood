@@ -2,9 +2,13 @@ package es.grupoO.FastFood.repository;
 
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.state.EstadoPedido;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -44,4 +48,12 @@ public interface PedidosRepository extends MongoRepository<Pedido, String> {
 
     @Query("{'estadoPedido': ?0}")
     Page<Pedido> findAllByEstadoPedido(EstadoPedido estado, Pageable pageable);
+
+    Page<Pedido> findByEstadoPedidoAndPosicionNear(EstadoPedido estado, GeoJsonPoint posicion, Distance distance, Pageable pageable);
+
+    default Page<Pedido> buscarPorUbicacion(Posicion posRepartidor, Pageable pageable) {
+        Distance distancia = new Distance(8, Metrics.KILOMETERS);
+        return this.findByEstadoPedidoAndPosicionNear(
+                EstadoPedido.LISTO_PARA_ENTREGAR, posRepartidor.toGeoJson(), distancia, pageable);
+    }
 }
