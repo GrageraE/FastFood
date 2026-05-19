@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.auth.HashMaker;
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.entity.Restaurante;
@@ -45,7 +46,9 @@ public class AuthService {
     }
 
     public Pair<Cliente, String> loginCliente(String email, String password) {
-        Cliente cliente = this.clientesRepository.findByEmail(Email.parse(email));
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email del cliente no es valido"));
+        Cliente cliente = this.clientesRepository.findByEmail(parsedEmail);
 
        if(cliente == null) {
            throw new NoExistDBException("El cliente no esta registrado");
@@ -58,7 +61,10 @@ public class AuthService {
     }
 
     public Pair<Restaurante, String> loginRestaurante(String email, String password) {
-        Restaurante rest =  this.restaurantesRepository.findByEmail(Email.parse(email));
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
+        Restaurante rest = this.restaurantesRepository.findByEmail(parsedEmail);
+
         if(rest == null) {
             throw new NoExistDBException("El restaurante no esta registrado");
         }
@@ -70,7 +76,9 @@ public class AuthService {
     }
 
     public Pair<Repartidor, String> loginRepartidor(String email, String password) {
-        Repartidor repartidor = this.repartidoresRepository.findByEmail(Email.parse(email));
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email del repartidor no es valido"));
+        Repartidor repartidor = this.repartidoresRepository.findByEmail(parsedEmail);
 
         if(repartidor == null) {
             throw new NoExistDBException("El email introducido no corresponde a ningun usuario");

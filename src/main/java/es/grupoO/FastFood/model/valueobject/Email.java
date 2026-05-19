@@ -1,5 +1,7 @@
 package es.grupoO.FastFood.model.valueobject;
 
+import java.util.Optional;
+
 public class Email {
     private String userName;
     
@@ -17,19 +19,12 @@ public class Email {
         return servidor;
     }
     
-    public static Email parse(String dir) {
-        String[] splitted = dir.split("@");
-        String userName = splitted[0];
-        String domain  = splitted[1];
-        return new Email(userName, domain);
-    }
-    
-    public static boolean validarEmail(String email) {
-        String[] parts = email.split("@");
-        if (parts.length != 2) {
-            return false;
+    public static Optional<Email> parse(String dir) {
+        String[] parts = dir.split("@");
+        if (parts.length != 2 && !parts[0].isBlank() && !parts[1].isBlank()) {
+            return Optional.empty();
         }
-        return !parts[0].isEmpty() && !parts[1].isEmpty();
+        return Optional.of(new Email(parts[0], parts[1]));
     }
 
     @Override

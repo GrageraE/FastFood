@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.factory;
 
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
@@ -37,7 +38,8 @@ public class RestauranteFactory {
     public Restaurante fabricarRestaurante() {
         LocalTime horaAp = LocalTime.parse(this.horaApertura);
         LocalTime horaC = LocalTime.parse(this.horaCierre);
-        Email emailParsed = Email.parse(this.email);
+        Email emailParsed = Email.parse(this.email)
+                .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
 
         String hashPasswd = hasher.encoder(passwd);
 

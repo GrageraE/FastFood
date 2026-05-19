@@ -15,7 +15,7 @@ import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
-import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
+
 @Service
 public class RepartidoresService {
     @Autowired
@@ -39,11 +39,10 @@ public class RepartidoresService {
     }
 
     public Repartidor insertarRepartidor(String nombre, String telefono, String email, String passwd) {
-        if (!Email.validarEmail(email)) {
-            throw new NotValidEmailException("El email no es válido");
-        }
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email dado no es correcto"));
 
-        if(this.repository.findByEmail(Email.parse(email)) != null) {
+        if(this.repository.findByEmail(parsedEmail) != null) {
             throw new UsernameAlreadyExistException("El repartidor ya existe");
         }
         
@@ -64,7 +63,8 @@ public class RepartidoresService {
 
     public void changePasswdRepartidor(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
-        Email email = Email.parse(auth.getName());
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("El email dado no es valido"));
         //no hay que comprobar el email, porque el token ya ha sido validado.
         Repartidor repartidor = this.repository.findByEmail(email);
         repartidor.setHashPassword(hasher.encoder(newPasswd));

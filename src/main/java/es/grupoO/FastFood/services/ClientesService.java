@@ -27,13 +27,12 @@ public class ClientesService {
     ClienteLoginMapper clienteMapper;
     
     public Cliente insertarCliente(String nombre, String direccion, String telefono, String email, String passwd) {
-        if (!Email.validarEmail(email)) {
-            throw new NotValidEmailException("El email no es válido");
-        }
-        if(this.repository.findByEmail(Email.parse(email)) != null) {
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email proporcionado no es correcto"));
+
+        if(this.repository.findByEmail(parsedEmail) != null) {
             throw new UsernameAlreadyExistException("El cliente ya existe");
         }
-
 
         ClienteFactory clienteFactory = new ClienteFactory(nombre, direccion, telefono, email, passwd);
         Cliente cliente = clienteFactory.crearCliente();
@@ -53,7 +52,8 @@ public class ClientesService {
     
     public void changePasswdCliente(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
-        Email email = Email.parse(auth.getName());
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email proporcionado no valido"));
         //no hay que comprobar el email, porque el token ya ha sido validado.
         Cliente cliente = this.repository.findByEmail(email);
         cliente.setHashPassword(hasher.encoder(newPasswd));

@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.factory;
 
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
@@ -23,7 +24,8 @@ public class ClienteFactory {
     }
 
     public Cliente crearCliente() {
-        Email email = Email.parse(this.emailString);
+        Email email = Email.parse(this.emailString)
+                .orElseThrow(() -> new NotValidEmailException("El email del cliente no es valido"));
         String hashPasswd = hasher.encoder(passwd);
         return new Cliente(nombre, direccion, telefono, email, hashPasswd);
     }

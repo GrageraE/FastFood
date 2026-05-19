@@ -51,12 +51,12 @@ public class RestaurantesService {
     public Restaurante insertarRestaurante(String nombre, int categoria, String direccion,String telefono, 
         String email, String horaApertura, String horaCierre, String passwd){
 
-        if (!Email.validarEmail(email)) {
-            throw new NotValidEmailException("El email no es válido");
-        }   
-            if(this.repository.findByEmail(Email.parse(email)) != null) {
-                throw new UsernameAlreadyExistException("El restaurante ya existe");
-            }
+        Email parsedEmail = Email.parse(email)
+                .orElseThrow(() -> new NotValidEmailException("El email proporcionado no es correcto"));
+
+        if(this.repository.findByEmail(parsedEmail) != null) {
+            throw new UsernameAlreadyExistException("El restaurante ya existe");
+        }
 
         RestauranteFactory fact = new RestauranteFactory(nombre, direccion, telefono, horaApertura, horaCierre, categoria, email, passwd);
         Restaurante restaurante = fact.fabricarRestaurante();
@@ -88,7 +88,8 @@ public class RestaurantesService {
 
     public void changePasswdRestaurante(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
-        Email email = Email.parse(auth.getName());
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("El email proporcionado no es correcto"));
         //no hay que comprobar el email, porque el token ya ha sido validado.
         Restaurante restaurante = this.repository.findByEmail(email);
         restaurante.setHashPassword(hasher.encoder(newPasswd));

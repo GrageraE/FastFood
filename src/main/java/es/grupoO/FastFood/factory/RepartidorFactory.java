@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.factory;
 
 import es.grupoO.FastFood.auth.HashMaker;
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.valueobject.Email;
 
@@ -21,7 +22,8 @@ public class RepartidorFactory {
     }
     
     public Repartidor fabricarRepartidor() {
-        Email emailParsed = Email.parse(this.email);
+        Email emailParsed = Email.parse(this.email)
+                .orElseThrow(() -> new NotValidEmailException("El email del repartidor no es valido"));
         String hashPassword = this.hasher.encoder(this.passwd);
         return new Repartidor(nombre, telefono, emailParsed, hashPassword);
     }
