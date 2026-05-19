@@ -15,7 +15,7 @@ public final class HashMaker {
         return this.encoder.encode(password);
     }
 
-    public Boolean verify(String passwordBaseDatos, String password){
+    public boolean verify(String passwordBaseDatos, String password){
         return this.encoder.matches(password, passwordBaseDatos);
     }
 }

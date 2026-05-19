@@ -1,7 +1,6 @@
 package es.grupoO.FastFood.repository;
 
 import es.grupoO.FastFood.model.entity.Plato;
-import es.grupoO.FastFood.model.entity.Restaurante;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

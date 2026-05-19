@@ -1,10 +1,12 @@
 package es.grupoO.FastFood.model.entity;
 
+import es.grupoO.FastFood.exceptions.EmptyOrderException;
 import es.grupoO.FastFood.model.state.EstadoPedido;
 import es.grupoO.FastFood.model.valueobject.Precio;
 
 import java.util.ArrayList;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -27,17 +29,16 @@ public class Pedido {
     private EstadoPedido estadoPedido;
 
     @DBRef
-    private ArrayList<LineaPlatos> platos;
+    private List<LineaPlatos> platos;
 
     private LocalTime horaPedido;
 
-    public Pedido(Cliente cliente, Restaurante restaurante, ArrayList<LineaPlatos> lineasPlatos) {
+    public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> lineasPlatos) {
         this.restaurante = restaurante;
         this.cliente = cliente;
 
         this.repartidor = null;
         this.estadoPedido = EstadoPedido.EN_PREPARACION;
-        this.repartidor = null;
         this.horaPedido = LocalTime.now();
         this.platos = lineasPlatos;
     }
@@ -87,15 +88,10 @@ public class Pedido {
     }
 
     public Precio precioTotal() {
-        // TODO: Comprobar si tiene valor
-        if(this.platos.isEmpty()) {
-            // TODO: Lanzar excepcion
-        }
-
         return this.platos.stream()
                 .map(x -> x.precioSubtotal())
                 .reduce((a, b) -> a.sumarPrecios(b))
-                .get();
+                .orElseThrow(() -> new EmptyOrderException("Pedido vacio"));
     }
 
     public LocalTime fechaRealizacion(){

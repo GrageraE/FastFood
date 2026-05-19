@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.model.entity;
 
+import es.grupoO.FastFood.exceptions.InvalidRatingException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -36,11 +37,11 @@ public class Valoracion {
      */
     public void actualizarValoracion(int nuevoValor) {
         if(nuevoValor < 1 || nuevoValor > 5) {
-            // TODO: Lanzar excepcion
+            throw new InvalidRatingException("La valoracion enviada es invalida");
         }
         double sumaVal = this.nValoraciones * this.valor;
         sumaVal += nuevoValor;
         this.nValoraciones++;
-        this.valor = sumaVal / ((double) this.nValoraciones);
+        this.valor = sumaVal / this.nValoraciones;
     }
 }

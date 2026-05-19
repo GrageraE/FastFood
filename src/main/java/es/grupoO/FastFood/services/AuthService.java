@@ -36,7 +36,7 @@ public class AuthService {
     private final RepartidoresRepository repartidoresRepository;
 
     // Clave secreta (debe tener mínimo 256 bits)
-    private final static SecretKey key = Keys.hmacShaKeyFor("MiClaveSecretaSuperSeguraYMuyLarga2026!".getBytes());
+    private static final SecretKey key = Keys.hmacShaKeyFor("MiClaveSecretaSuperSeguraYMuyLarga2026!".getBytes());
 
     public AuthService(ClientesRepository clientesRepository, RestaurantesRepository restaurantesRepository, RepartidoresRepository repartidoresRepository) {
         this.clientesRepository = clientesRepository;
@@ -70,8 +70,11 @@ public class AuthService {
     }
 
     public Pair<Repartidor, String> loginRepartidor(String email, String password) {
-        // TODO: puede petar
         Repartidor repartidor = this.repartidoresRepository.findByEmail(Email.parse(email));
+
+        if(repartidor == null) {
+            throw new NoExistDBException("El email introducido no corresponde a ningun usuario");
+        }
 
         String hashedPasswd = repartidor.getHashPassword();
         comprobarPassword(password, hashedPasswd);

@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.model.valueobject;
 
+import es.grupoO.FastFood.exceptions.NotEqualCurrencyException;
 import es.grupoO.FastFood.model.state.Divisa;
 
 public class Precio {
@@ -22,7 +23,7 @@ public class Precio {
 
     public Precio sumarPrecios(Precio p2) {
         if(this.divisa != p2.divisa) {
-            // TODO: Lanzar excepcion
+            throw new NotEqualCurrencyException("No se pueden sumar los precios");
         }
         return new Precio(this.cantidad + p2.cantidad, this.divisa);
     }

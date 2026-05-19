@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.services;
 
+import es.grupoO.FastFood.exceptions.AlreadyAssignedException;
 import es.grupoO.FastFood.model.entity.LineaPlatos;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
@@ -75,7 +76,6 @@ public class PedidosService {
     }
     
     public void asignarPedido(String idPedido, String idRepartidor) {
-        // TODO: Errores
         Pedido pedido = this.buscarPedidoPorID(idPedido);
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
@@ -85,7 +85,7 @@ public class PedidosService {
         if(!pedido.repartidorAsignado()) {
             pedido.asignarRepartidor(rep);
         } else {
-            // TODO: Error
+            throw new AlreadyAssignedException("Repartidor ya asignado");
         }
     }
     

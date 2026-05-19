@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.dto.ClienteLoginDTO;
+import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.factory.ClienteFactory;
 import es.grupoO.FastFood.auth.HashMaker;
 import es.grupoO.FastFood.mapper.ClienteLoginMapper;
@@ -9,8 +10,6 @@ import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.repository.ClientesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import es.grupoO.FastFood.exceptions.NoExistDBException;
-import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.model.valueobject.Email;
 import org.springframework.security.core.Authentication;
 
@@ -39,7 +38,7 @@ public class ClientesService {
     }
     
     public Cliente buscarClientePorID(String idCliente) {
-        return this.repository.findById(idCliente).get();
+        return this.repository.findById(idCliente).orElseThrow(() -> new NoExistDBException("ID no encontrado"));
     }
     
     public void changePasswdCliente(String newPasswd, Authentication auth) {

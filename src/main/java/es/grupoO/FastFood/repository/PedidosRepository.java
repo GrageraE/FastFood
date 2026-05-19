@@ -1,8 +1,6 @@
 package es.grupoO.FastFood.repository;
 
-import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
-import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.state.EstadoPedido;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
