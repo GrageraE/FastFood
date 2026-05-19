@@ -28,12 +28,12 @@ public class RestauranteRESTController {
         this.pedidosService = pedidosService;
     }
 
-    @PostMapping("/restaurantes/validar")
+    @PostMapping("/restaurante/validar")
     public RestauranteLoginDTO validarRestaurante(@RequestParam String email, @RequestParam String password) {
         return restaurantesService.validar(email, password);
     }
 
-    @PostMapping("/restaurantes/registro")
+    @PostMapping("/restaurante/registro")
     public Restaurante insertarRestaurante(@RequestParam String nombre, @RequestParam int categoria, @RequestParam  String direccion,
                                     @RequestParam String telefono, @RequestParam  String email, @RequestParam String horaApertura,
                                     @RequestParam String horaCierre, @RequestParam String passwd)
@@ -41,7 +41,7 @@ public class RestauranteRESTController {
         return this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
     }
 
-    @GetMapping("/restaurantes/{idRest}")
+    @GetMapping("/restaurante/{idRest}")
     @SecurityRequirement(name = "authorization")
     public Restaurante buscarRestaurantePorID(@PathVariable String idRest) {
         return this.restaurantesService.buscarRestaurantePorID(idRest);

@@ -23,12 +23,12 @@ public class RepartidorRESTController {
         this.repartidoresService = repartidoresService;
     }
 
-    @PostMapping("/repartidores/validar")
+    @PostMapping("/repartidor/validar")
     public RepartidorLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
         return this.repartidoresService.validar(email, passwd);
     }
 
-    @PostMapping("/repartidores/registro")
+    @PostMapping("/repartidor/registro")
     public Repartidor insertarRepartidor(@RequestParam String nombre, @RequestParam String telefono,
                                    @RequestParam String email, @RequestParam String passwd) {
         return this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);

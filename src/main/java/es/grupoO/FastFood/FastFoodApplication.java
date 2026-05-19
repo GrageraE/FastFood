@@ -68,7 +68,7 @@ public class FastFoodApplication {
 	@Configuration
 	class WebSecurityConfig {
 		@Bean
-		protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+		protected SecurityFilterChain configure(HttpSecurity http) {
 			// Establece los requisitos de autenticacion de los endpoints
 			http
 					.csrf(AbstractHttpConfigurer::disable)
@@ -86,6 +86,9 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority("REPARTIDOR")
 							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/estado").hasAuthority("RESTAURANTE")
 							.requestMatchers(HttpMethod.POST, "/restaurantes/{id_rest}/platos/{id_plato}/rebaja").hasAuthority("RESTAURANTE")
+							.requestMatchers(HttpMethod.PUT, "/cliente/password").hasAuthority("CLIENTE")
+							.requestMatchers(HttpMethod.PUT, "/restaurante/password").hasAuthority("RESTAURANTE")
+							.requestMatchers(HttpMethod.PUT, "/repartidor/password").hasAuthority("REPARTIDOR")
 							// Permitir usar swagger sin autenticarse
 							.requestMatchers("/swagger-ui.html").permitAll()
 							.requestMatchers("/swagger-ui/**").permitAll()

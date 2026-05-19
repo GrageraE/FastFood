@@ -44,24 +44,24 @@ public class ClienteRESTController {
         this.pagosService = pagosService;
     }
 
-    @PostMapping("/clientes/validar")
+    @PostMapping("/cliente/validar")
     public ClienteLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
         return this.clientesService.validar(email, passwd);
     }
 
-    @PostMapping("/clientes/registro")
+    @PostMapping("/cliente/registro")
     public Cliente insertarCliente(@RequestParam String nombre, @RequestParam String direccion, @RequestParam String telefono,
                                 @RequestParam String email, @RequestParam String passwd) {
         return this.clientesService.insertarCliente(nombre, direccion, telefono, email, passwd);
     }
 
-    @GetMapping("/clientes/{idCliente}")
+    @GetMapping("/cliente/{idCliente}")
     @SecurityRequirement(name = "authorization")
     public Cliente buscarClientePorID(@PathVariable String idCliente) {
         return this.clientesService.buscarClientePorID(idCliente);
     }
 
-    @GetMapping("/restaurantes/buscar")
+    @GetMapping("/restaurante/buscar")
     @SecurityRequirement(name = "authorization")
     public List<Restaurante> buscarRestaurante(@RequestParam String nombre) {
         return this.restaurantesService.buscarRestaurante(nombre);

@@ -80,10 +80,6 @@ public class RestaurantesService {
     }
 
     public void changePasswdRestaurante(String newPasswd, Authentication auth) {
-        if (auth.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("RESTAURANTE"))) {
-            throw new RoleNotAllowedException("El restaurante no tiene el rol de restaurante");
-        }
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName());
         //no hay que comprobar el email, porque el token ya ha sido validado.

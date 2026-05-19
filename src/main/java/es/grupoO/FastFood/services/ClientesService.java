@@ -43,10 +43,6 @@ public class ClientesService {
     }
     
     public void changePasswdCliente(String newPasswd, Authentication auth) {
-        if (auth.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("CLIENTE"))) {
-            throw new RoleNotAllowedException("El cliente no tiene el rol de cliente");
-        }
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName());
         //no hay que comprobar el email, porque el token ya ha sido validado.

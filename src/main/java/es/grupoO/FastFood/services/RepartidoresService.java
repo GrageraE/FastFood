@@ -58,10 +58,6 @@ public class RepartidoresService {
     }
 
     public void changePasswdRepartidor(String newPasswd, Authentication auth) {
-        if (auth.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("REPARTIDOR"))) {
-            throw new RoleNotAllowedException("El repartidor no tiene el rol de repartidor");
-        }
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName());
         //no hay que comprobar el email, porque el token ya ha sido validado.
