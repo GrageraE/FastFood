@@ -9,6 +9,8 @@ import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.security.core.Authentication;
+
 import es.grupoO.FastFood.dto.ClienteLoginDTO;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -94,5 +96,12 @@ public class ClienteRESTController {
     @SecurityRequirement(name = "authorization")
     public void realizarPago(@RequestParam double cantidad) {
         this.pagosService.realizarPago(cantidad);
+    }
+
+    @PutMapping("/cliente/password")
+    @SecurityRequirement(name = "authorization")
+    public void changePasswdCliente(@RequestParam String newPasswd,
+                            Authentication auth) {
+        this.clientesService.changePasswd(newPasswd, auth);
     }
 }
