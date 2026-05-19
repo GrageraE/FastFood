@@ -60,7 +60,7 @@ public class RepartidorRESTController {
 
     @GetMapping("/pedidos/disponibles")
     @SecurityRequirement(name = "authorization")
-    public Page<Pedido> buscarPedidosRepartir(@RequestBody Posicion ubicacion,
+    public Page<Pedido> buscarPedidosRepartir(@ModelAttribute Posicion ubicacion,
                                               @RequestParam(required = false, defaultValue = "0") int pagina,
                                               @RequestParam(required = false, defaultValue = "10") int size) {
         Pageable paginacion = PageRequest.of(pagina, size);

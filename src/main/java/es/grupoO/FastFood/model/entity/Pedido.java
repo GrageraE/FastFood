@@ -37,14 +37,14 @@ public class Pedido {
     @GeoSpatialIndexed
     private GeoJsonPoint posicion;
 
-    public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> lineasPlatos, GeoJsonPoint posicion) {
+    public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> platos, GeoJsonPoint posicion) {
         this.restaurante = restaurante;
         this.cliente = cliente;
 
         this.repartidor = null;
         this.estadoPedido = EstadoPedido.EN_PREPARACION;
         this.horaPedido = LocalTime.now();
-        this.platos = lineasPlatos;
+        this.platos = platos;
         this.posicion = posicion;
     }
 

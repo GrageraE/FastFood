@@ -8,17 +8,13 @@ public class Posicion {
     private double latitud;
     private double longitud;
 
-    public static Posicion create(double latitud, double longitud) {
+    public Posicion(double latitud, double longitud) {
         if(latitud < -90 || latitud > 90) {
             throw new InvalidPositionException("Posicion dada es invalida, revise su metodo de dar la localizacion");
         }
         if(longitud < -180 || longitud > 180) {
             throw new InvalidPositionException("Posicion dada es invalida, revise su metodo de dar la localizacion");
         }
-        return new Posicion(latitud, longitud);
-    }
-
-    private Posicion(double latitud, double longitud) {
         this.latitud = latitud;
         this.longitud = longitud;
     }

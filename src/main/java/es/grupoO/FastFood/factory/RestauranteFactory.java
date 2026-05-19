@@ -50,6 +50,6 @@ public class RestauranteFactory {
 
         // TODO: Obtener posicion del restaurante
         return new Restaurante(this.nombre, this.direccion, this.telefono,
-                horaAp, horaC, cat, val, emailParsed, hashPasswd, Posicion.create(0, 0));
+                horaAp, horaC, cat, val, emailParsed, hashPasswd, new Posicion(0, 0));
     }
 }

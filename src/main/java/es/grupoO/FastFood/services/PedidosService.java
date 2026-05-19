@@ -76,6 +76,7 @@ public class PedidosService {
         }
         EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
         pedido.setEstado(estadoPedido);
+        this.pedidosRepository.save(pedido);
     }
     
     public void asignarPedido(String idPedido, String idRepartidor) {

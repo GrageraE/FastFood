@@ -52,7 +52,7 @@ public interface PedidosRepository extends MongoRepository<Pedido, String> {
     Page<Pedido> findByEstadoPedidoAndPosicionNear(EstadoPedido estado, GeoJsonPoint posicion, Distance distance, Pageable pageable);
 
     default Page<Pedido> buscarPorUbicacion(Posicion posRepartidor, Pageable pageable) {
-        Distance distancia = new Distance(8, Metrics.KILOMETERS);
+        Distance distancia = new Distance(100, Metrics.KILOMETERS);
         return this.findByEstadoPedidoAndPosicionNear(
                 EstadoPedido.LISTO_PARA_ENTREGAR, posRepartidor.toGeoJson(), distancia, pageable);
     }
