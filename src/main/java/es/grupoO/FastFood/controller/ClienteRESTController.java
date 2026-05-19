@@ -45,13 +45,13 @@ public class ClienteRESTController {
     }
 
     @PostMapping("/cliente/validar")
-    public ClienteLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
+    public ClienteLoginDTO validar(@RequestBody String email, @RequestBody String passwd) {
         return this.clientesService.validar(email, passwd);
     }
 
     @PostMapping("/cliente/registro")
-    public Cliente insertarCliente(@RequestParam String nombre, @RequestParam String direccion, @RequestParam String telefono,
-                                @RequestParam String email, @RequestParam String passwd) {
+    public Cliente insertarCliente(@RequestBody String nombre, @RequestBody String direccion, @RequestBody String telefono,
+                                @RequestBody String email, @RequestBody String passwd) {
         return this.clientesService.insertarCliente(nombre, direccion, telefono, email, passwd);
     }
 
@@ -94,13 +94,13 @@ public class ClienteRESTController {
 
     @PostMapping("/pagos")
     @SecurityRequirement(name = "authorization")
-    public void realizarPago(@RequestParam double cantidad) {
+    public void realizarPago(@RequestBody double cantidad) {
         this.pagosService.realizarPago(cantidad);
     }
 
     @PutMapping("/cliente/password")
     @SecurityRequirement(name = "authorization")
-    public void changePasswdCliente(@RequestParam String newPasswd,
+    public void changePasswdCliente(@RequestBody String newPasswd,
                             Authentication auth) {
         this.clientesService.changePasswdCliente(newPasswd, auth);
     }

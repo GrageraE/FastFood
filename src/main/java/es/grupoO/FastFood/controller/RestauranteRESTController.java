@@ -29,14 +29,14 @@ public class RestauranteRESTController {
     }
 
     @PostMapping("/restaurante/validar")
-    public RestauranteLoginDTO validarRestaurante(@RequestParam String email, @RequestParam String password) {
+    public RestauranteLoginDTO validarRestaurante(@RequestBody String email, @RequestBody String password) {
         return restaurantesService.validar(email, password);
     }
 
     @PostMapping("/restaurante/registro")
-    public Restaurante insertarRestaurante(@RequestParam String nombre, @RequestParam int categoria, @RequestParam  String direccion,
-                                    @RequestParam String telefono, @RequestParam  String email, @RequestParam String horaApertura,
-                                    @RequestParam String horaCierre, @RequestParam String passwd)
+    public Restaurante insertarRestaurante(@RequestBody String nombre, @RequestBody int categoria, @RequestBody String direccion,
+                                    @RequestBody String telefono, @RequestBody  String email, @RequestBody String horaApertura,
+                                    @RequestBody String horaCierre, @RequestBody String passwd)
     {
         return this.restaurantesService.insertarRestaurante(nombre, categoria, direccion, telefono, email, horaApertura, horaCierre, passwd);
     }
@@ -67,7 +67,7 @@ public class RestauranteRESTController {
 
     @PostMapping("/restaurante/{idRest}/platos")
     @SecurityRequirement(name = "authorization")
-    public void insertarPlato(@PathVariable String idRest,@RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
+    public void insertarPlato(@PathVariable String idRest, @RequestBody String nombre, @RequestBody int categoria, @RequestBody double precio) {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
@@ -79,20 +79,19 @@ public class RestauranteRESTController {
 
     @PostMapping("/pedidos/{idPedido}/estado")
     @SecurityRequirement(name = "authorization")
-    public void cambiarEstadoPedido(@PathVariable String idPedido, @RequestParam int estado) {
+    public void cambiarEstadoPedido(@PathVariable String idPedido, @RequestBody int estado) {
         this.pedidosService.cambiarEstado(idPedido, estado);
     }
 
     @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
     @SecurityRequirement(name = "authorization")
-    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
+    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestBody double nuevoPrecio, @RequestBody String fecha) {
         this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
     }
 
-
     @PutMapping("/restaurante/password")
     @SecurityRequirement(name = "authorization")
-    public void changePasswdRestaurante(@RequestParam String newPasswd,
+    public void changePasswdRestaurante(@RequestBody String newPasswd,
                             Authentication auth) {
         this.restaurantesService.changePasswdRestaurante(newPasswd, auth);
     }

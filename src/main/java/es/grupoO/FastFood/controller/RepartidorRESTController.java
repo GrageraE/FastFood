@@ -24,13 +24,13 @@ public class RepartidorRESTController {
     }
 
     @PostMapping("/repartidor/validar")
-    public RepartidorLoginDTO validar(@RequestParam String email, @RequestParam String passwd) {
+    public RepartidorLoginDTO validar(@RequestBody String email, @RequestBody String passwd) {
         return this.repartidoresService.validar(email, passwd);
     }
 
     @PostMapping("/repartidor/registro")
-    public Repartidor insertarRepartidor(@RequestParam String nombre, @RequestParam String telefono,
-                                   @RequestParam String email, @RequestParam String passwd) {
+    public Repartidor insertarRepartidor(@RequestBody String nombre, @RequestBody String telefono,
+                                   @RequestBody String email, @RequestBody String passwd) {
         return this.repartidoresService.insertarRepartidor(nombre, telefono, email, passwd);
     }
 
@@ -48,21 +48,20 @@ public class RepartidorRESTController {
 
     @GetMapping("/pedidos/disponibles")
     @SecurityRequirement(name = "authorization")
-    public List<Pedido> buscarPedidosRepartir(@RequestParam long ubicacion) {
+    public List<Pedido> buscarPedidosRepartir(@RequestBody long ubicacion) {
         // TODO: Cambiar tipo de parametro a GeoJSON
         return this.pedidosService.buscarPedidosARepartir(ubicacion);
     }
 
     @PostMapping("/pedidos/{idPedido}/asignar")
     @SecurityRequirement(name = "authorization")
-    public void asignarPedido(@PathVariable String idPedido, @RequestParam String idRepartidor) {
+    public void asignarPedido(@PathVariable String idPedido, @RequestBody String idRepartidor) {
         this.pedidosService.asignarPedido(idPedido, idRepartidor);
     }
 
-
     @PutMapping("/repartidor/password")
     @SecurityRequirement(name = "authorization")
-    public void changePasswdRepartidor(@RequestParam String newPasswd,
+    public void changePasswdRepartidor(@RequestBody String newPasswd,
                             Authentication auth) {
         this.repartidoresService.changePasswdRepartidor(newPasswd, auth);
     }

@@ -13,7 +13,6 @@ import java.util.List;
 import es.grupoO.FastFood.auth.HashMaker;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
-import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.model.valueobject.Email;
 
 @Service
