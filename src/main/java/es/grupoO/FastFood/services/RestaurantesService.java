@@ -74,12 +74,14 @@ public class RestaurantesService {
         return restaurante;
     }
 
-    public void borrarRestaurante(String id) {
-        Restaurante restaurante = this.buscarRestaurantePorID(id);
+    public void borrarRestaurante(Authentication auth) {
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email no valido"));
+        Restaurante restaurante = this.repository.findByEmail(email);
         if(restaurante == null) {
             throw new NoExistDBException("El restaurante no existe");
         }
-        this.repository.deleteById(id);
+        this.repository.delete(restaurante);
     }
 
     public void actualizarValoracion(String id, int valor) {

@@ -3,7 +3,6 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
-import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.RepartidorFactory;
 import es.grupoO.FastFood.mapper.RepartidorLoginMapper;
 import es.grupoO.FastFood.model.valueobject.Pair;
@@ -53,12 +52,14 @@ public class RepartidoresService {
         return repartidor;
     }
 
-    public void borrarRepartidor(String idRepar) {
-        Repartidor repartidor = this.repository.findById(idRepar).orElse(null);
+    public void borrarRepartidor(Authentication auth) {
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email no valido"));
+        Repartidor repartidor = this.repository.findByEmail(email);
         if (repartidor == null) {
             throw new NoExistDBException("El repartidor no esta registrado");
         }
-        this.repository.deleteById(idRepar);
+        this.repository.delete(repartidor);
     }
 
     public void changePasswdRepartidor(String newPasswd, Authentication auth) {

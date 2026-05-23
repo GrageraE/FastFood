@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.exceptions.NoExistDBException;
+import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.PlatosFactory;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Rebaja;
@@ -12,6 +13,7 @@ import es.grupoO.FastFood.repository.PlatosRepository;
 import es.grupoO.FastFood.repository.RebajasRepository;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -47,7 +49,12 @@ public class PlatosService {
         this.platosRepository.save(plato);
     }
     
-    public void borrarPlato(String idPlato) {
+    public void borrarPlato(String idPlato, Authentication auth) {
+        Plato plato = this.platosRepository.findById(idPlato)
+                .orElseThrow(() -> new NoExistDBException("El plato dado no existe"));
+        if(!plato.getRestaurante().getEmail().equals(auth.getName())) {
+            throw new RoleNotAllowedException("El plato no pertenece al restaurante actual");
+        }
         this.platosRepository.deleteById(idPlato);
     }
     

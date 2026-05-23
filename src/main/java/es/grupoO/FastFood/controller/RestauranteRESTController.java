@@ -58,10 +58,10 @@ public class RestauranteRESTController {
         return this.restaurantesService.buscarRestaurantePorID(idRest);
     }
 
-    @DeleteMapping("/restaurante/{idRest}")
+    @DeleteMapping("/restaurante/self")
     @SecurityRequirement(name = "authorization")
-    public void borrarRestaurante(@PathVariable String idRest) {
-        this.restaurantesService.borrarRestaurante(idRest);
+    public void borrarRestaurante(Authentication auth) {
+        this.restaurantesService.borrarRestaurante(auth);
     }
 
     @GetMapping("/restaurante/{idRest}/platos/{categoria}")
@@ -76,10 +76,10 @@ public class RestauranteRESTController {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
-    @DeleteMapping("/restaurante/{_idRest}/platos/{idPlato}")
+    @DeleteMapping("/restaurante/self/platos/{idPlato}")
     @SecurityRequirement(name = "authorization")
-    public void borrarPlato(@PathVariable String _idRest, @PathVariable String idPlato) {
-        this.platosService.borrarPlato(idPlato);
+    public void borrarPlato(@PathVariable String idPlato, Authentication auth) {
+        this.platosService.borrarPlato(idPlato, auth);
     }
 
     @PostMapping("/pedidos/{idPedido}/estado")
