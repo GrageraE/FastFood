@@ -35,16 +35,15 @@ public interface RestaurantesRepository extends MongoRepository<Restaurante, Str
 
     /**
      *
-     * @param posicionCleinte
+     * @param posicion
      * @return Lista de restaurantes ordenados por proximidad
      */
 
-    Page<Restaurante> findByPosicionNear(
-            GeoJsonPoint posicionCleinte, Distance distance, Pageable pageable);
+    Page<Restaurante> findByPosicionNear(GeoJsonPoint posicion, Distance distance, Pageable pageable);
 
     default Page<Restaurante> findByPosicionNear(Posicion posCliente, Pageable pageable) {
         Distance distancia = new Distance(100, Metrics.KILOMETERS);
         return findByPosicionNear(posCliente.toGeoJson(), distancia, pageable);
-    };
+    }
 }
 

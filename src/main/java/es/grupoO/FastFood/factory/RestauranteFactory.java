@@ -54,9 +54,8 @@ public class RestauranteFactory {
 
         Posicion posicion = geocodingService.obtenerCoordenadas(this.direccion);
 
-        // TODO: REVISAR
         return new Restaurante(this.nombre, this.direccion, this.telefono,
-                horaAp, horaC, cat, val, emailParsed, hashPasswd, posicion);
+                horaAp, horaC, cat, val, emailParsed, hashPasswd, posicion.toGeoJson());
     }
 
 

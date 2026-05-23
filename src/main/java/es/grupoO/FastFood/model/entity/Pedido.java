@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,7 +35,7 @@ public class Pedido {
 
     private LocalTime horaPedido;
 
-    @GeoSpatialIndexed
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint posicion;
 
     public Pedido(Cliente cliente, Restaurante restaurante, List<LineaPlatos> platos, GeoJsonPoint posicion) {

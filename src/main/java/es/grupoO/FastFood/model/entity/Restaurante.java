@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Posicion;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,12 +36,12 @@ public class Restaurante {
 
     private Email email;
 
-    @GeoSpatialIndexed
-    private Posicion posicion;
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+    private GeoJsonPoint posicion;
 
     public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura, 
                        LocalTime horaCierre, CategoriaRestaurante categoria, Valoracion valoracion, Email email, 
-                       String hashPassword, Posicion posicion) {
+                       String hashPassword, GeoJsonPoint posicion) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -140,11 +142,11 @@ public class Restaurante {
         this.hashPassword = hashPassword;
     }
 
-    public Posicion getPosicion() {
+    public GeoJsonPoint getPosicion() {
         return posicion;
     }
 
-    public void setPosicion(Posicion posicion) {
+    public void setPosicion(GeoJsonPoint posicion) {
         this.posicion = posicion;
     }
 
