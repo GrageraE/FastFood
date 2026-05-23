@@ -141,4 +141,5 @@ public class Restaurante {
     public void setPosicion(Posicion posicion) {
         this.posicion = posicion;
     }
+
 }

@@ -6,6 +6,7 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.repository.RestaurantesRepository;
 import es.grupoO.FastFood.repository.ValoracionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +105,9 @@ public class RestaurantesService {
         Restaurante restaurante = this.repository.findByEmail(email);
         restaurante.setHashPassword(hasher.encoder(newPasswd));
         this.repository.save(restaurante);
+    }
+
+    public Page<Restaurante> buscarRestaurantesCercanos(Posicion posicionRepartidor, Pageable pageable) {
+        return this.repository.findByPosicionNear(posicionRepartidor, pageable);
     }
 }
