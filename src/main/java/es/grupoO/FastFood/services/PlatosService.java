@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.dto.PlatoDTO;
+import es.grupoO.FastFood.exceptions.InvalidDateException;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -69,8 +71,15 @@ public class PlatosService {
     
     public void establecerRebaja(String idPlato, double nuevoPrecio, String fechaFin, Authentication auth) {
         Precio pr = new Precio(nuevoPrecio, Divisa.EURO);
-        LocalDate fecha = LocalDate.parse(fechaFin);
+        LocalDate fecha;
+        try {
+            fecha = LocalDate.parse(fechaFin);
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateException("Fecha inválida: " + fechaFin);
+        }
+
         Rebaja rebaja = new Rebaja(pr, fecha);
+
         Email emailRest = Email.parse(auth.getName())
                 .orElseThrow(() -> new NotValidEmailException("Email no valido"));
 

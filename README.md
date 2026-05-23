@@ -1,4 +1,69 @@
 # FastFood
-Aplicación académica de un clon de Uber Eats
+## Descripción
 
-Para el swagger:http://localhost:8080/swagger-ui/index.html
+FastFood API es una aplicación backend desarrollada con Spring Boot hecha para la asignatura Ingeniería de software del grupo O del grado de Matematicas e informática del año 2026 en mayo
+
+## Integrantes
+Yu Xiang Yang Xu
+Daniel Ramon Gragera
+Yun Chen
+---
+## Uso y compilacion
+### Requisitos previos
+- Java 17
+- Docker (Es necesario instalar Docker para ejecutar la base de datos MongoDB en un contenedor)
+
+### Compilación y ejecución
+1. Levantar docker (a veces no es necesario, si no funciona use el comando):
+```
+docker compose up -d
+```
+2. Compilar el proyecto con Gradle:
+```
+./gradlew bootRun
+```
+3. Para acceder a las pruebas entre al link:
+http://localhost:8080/swagger-ui/index.html
+4. Para acceder a la base de datos MongoDB ponga el siguiente link en su navegador:
+5. http://localhost:8081/
+
+## Tecnologías utilizadas
+
+- Java 17
+- Spring Boot
+- Docker
+- MongoDB
+- Compass
+
+---
+
+## Arquitectura
+
+El proyecto sigue una arquitectura en capas:
+
+- Controller: exposición de endpoints REST
+- Service: lógica de negocio
+- Repository: acceso a base de datos MongoDB
+- Model/Domain: entidades y value objects
+- DTO: comunicación con APIs externas
+- Exception: manejo de errores personalizados
+- Security: configuración de seguridad y permisos
+- mappers: conversión entre entidades y DTOs
+---
+
+## Funcionalidades
+
+- Gestión de clientes
+- Gestión de restaurantes
+- CRUD de platos
+- Aplicación de rebajas a platos
+- Validación de permisos por restaurante
+- Geocodificación de direcciones
+- Manejo de excepciones personalizadas
+
+---
+
+## Geocodificación
+
+El sistema utiliza la API de Nominatim para convertir direcciones en coordenadas.
+

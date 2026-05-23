@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.services;
 
+import es.grupoO.FastFood.exceptions.GeocodingException;
 import es.grupoO.FastFood.model.valueobject.Posicion;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class GeocodingService {
             ArrayNode resultados = resp.path("features").asArray();
 
             if(resultados.isEmpty()) {
-                throw new RuntimeException("Sin resultados");
+                throw new GeocodingException("Sin resultados");
             }
 
             ArrayNode ptoJson = resultados.get(0).path("geometry").path("coordinates").asArray();
@@ -43,7 +44,7 @@ public class GeocodingService {
 
             posicion = new Posicion(latitud, longitud);
         } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new GeocodingException("Error: " + e.getMessage());
         }
 
         return posicion;
