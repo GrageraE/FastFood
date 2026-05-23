@@ -27,13 +27,19 @@ public class Pair<T, U> {
     public void setSecond(U second) {
         this.second = second;
     }
-
+    /* Método para comparar dos pares.
+     * @param Object
+     * @return boolean
+    */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Pair<?, ?> pair)) return false;
         return Objects.equals(first, pair.first) && Objects.equals(second, pair.second);
     }
 
+    /* Método para calcular el hash code de un par.
+     * @return int
+    */
     @Override
     public int hashCode() {
         return Objects.hash(first, second);

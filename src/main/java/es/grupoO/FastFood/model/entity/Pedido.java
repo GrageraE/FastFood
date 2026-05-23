@@ -92,6 +92,10 @@ public class Pedido {
         return this.platos;
     }
 
+    /*
+     * Método para calcular el precio total del pedido.
+     * @return Precio
+     */
     public Precio precioTotal() {
         return this.platos.stream()
                 .map(x -> x.precioSubtotal())

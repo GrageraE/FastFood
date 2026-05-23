@@ -27,7 +27,10 @@ public class LineaPlatos {
     public String getId() {
         return this.idLineaPlatos;
     }
-
+    /* 
+     * Método para calcular el precio subtotal de la línea de platos.
+     * @return Precio, el precio subtotal
+    */
     public Precio precioSubtotal() {
         return this.plato.getPrecio().multiplicarPrecios(this.cantidad);
     }

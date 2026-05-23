@@ -35,6 +35,9 @@ public class Posicion {
         this.longitud = longitud;
     }
 
+    /* Método para convertir la posición (latitud, longitud) a un punto geojson.
+     * @return GeoJsonPoint
+    */
     public GeoJsonPoint toGeoJson() {
         return new GeoJsonPoint(this.longitud, this.latitud);
     }

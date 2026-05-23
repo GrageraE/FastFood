@@ -20,7 +20,10 @@ public class Precio {
     public Divisa getDivisa() {
         return divisa;
     }
-
+    /* Método para sumar dos precios, solo si tienen la misma divisa.
+     * @param Precio
+     * @return Precio
+    */
     public Precio sumarPrecios(Precio p2) {
         if(this.divisa != p2.divisa) {
             throw new NotEqualCurrencyException("No se pueden sumar los precios");
@@ -28,6 +31,10 @@ public class Precio {
         return new Precio(this.cantidad + p2.cantidad, this.divisa);
     }
 
+    /* Método para multiplicar un precio por un número, manteniendo la misma divisa.
+     * @param int
+     * @return Precio
+    */
     public Precio multiplicarPrecios(int multiplo) {
         return new Precio(this.cantidad * multiplo, this.divisa);
     }

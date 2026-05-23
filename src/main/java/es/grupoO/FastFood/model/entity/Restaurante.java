@@ -121,7 +121,11 @@ public class Restaurante {
     public void setEmail(Email email) {
         this.email = email;
     }
-
+    /*
+        * Método para verificar si el restaurante está abierto a una hora dada.
+        * @param LocalTime
+        * @return Boolean
+    */
     public Boolean estaAbierto(LocalTime hora) {
         return hora.isAfter(this.horaApertura) && hora.isBefore(this.horaCierre);
     }
