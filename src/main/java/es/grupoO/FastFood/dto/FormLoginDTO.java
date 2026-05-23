@@ -1,5 +1,9 @@
 package es.grupoO.FastFood.dto;
 
+/**
+ * DTO para recoger los formularios de inicio de sesion. Este DTO sirve para los tres roles,
+ * ya que los formularios son identicos
+ */
 public class FormLoginDTO {
     private String email;
     private String passwd;

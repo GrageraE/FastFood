@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.controller;
 
 import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.PlatoDTO;
 import es.grupoO.FastFood.dto.RestauranteInsertDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,15 +59,15 @@ public class RestauranteRESTController {
         return this.restaurantesService.buscarRestaurantePorID(idRest);
     }
 
-    @DeleteMapping("/restaurante/{idRest}")
+    @DeleteMapping("/restaurante/self")
     @SecurityRequirement(name = "authorization")
-    public void borrarRestaurante(@PathVariable String idRest) {
-        this.restaurantesService.borrarRestaurante(idRest);
+    public void borrarRestaurante(Authentication auth) {
+        this.restaurantesService.borrarRestaurante(auth);
     }
 
     @GetMapping("/restaurante/{idRest}/platos/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
+    public List<PlatoDTO> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
@@ -76,10 +77,10 @@ public class RestauranteRESTController {
         this.platosService.insertarPlato(idRest, nombre, categoria, precio);
     }
 
-    @DeleteMapping("/restaurante/{_idRest}/platos/{idPlato}")
+    @DeleteMapping("/restaurante/self/platos/{idPlato}")
     @SecurityRequirement(name = "authorization")
-    public void borrarPlato(@PathVariable String _idRest, @PathVariable String idPlato) {
-        this.platosService.borrarPlato(idPlato);
+    public void borrarPlato(@PathVariable String idPlato, Authentication auth) {
+        this.platosService.borrarPlato(idPlato, auth);
     }
 
     @PostMapping("/pedidos/{idPedido}/estado")
@@ -88,10 +89,17 @@ public class RestauranteRESTController {
         this.pedidosService.cambiarEstado(idPedido, estado);
     }
 
-    @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
+    @PostMapping("/restaurante/self/platos/{idPlato}/rebaja")
     @SecurityRequirement(name = "authorization")
-    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
-        this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
+    public void establecerRebaja(@PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha,
+                                 Authentication auth) {
+        this.platosService.establecerRebaja(idPlato, nuevoPrecio, fecha, auth);
+    }
+
+    @DeleteMapping("/restaurante/self/platos/{idPlato}/rebaja")
+    @SecurityRequirement(name = "authorization")
+    public void quitarRebaja(@PathVariable String idPlato, Authentication auth) {
+        this.platosService.quitarRebaja(idPlato, auth);
     }
 
     @PutMapping("/restaurante/password")

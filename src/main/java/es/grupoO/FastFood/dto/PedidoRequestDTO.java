@@ -4,6 +4,9 @@ import es.grupoO.FastFood.model.valueobject.Pair;
 
 import java.util.List;
 
+/**
+ * DTO para almacenar los datos de solicitud de pedido.
+ */
 public class PedidoRequestDTO {
     private String idCliente;
     private String idRest;

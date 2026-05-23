@@ -1,13 +1,12 @@
 package es.grupoO.FastFood.controller;
 
-import es.grupoO.FastFood.dto.ClienteInsertDTO;
-import es.grupoO.FastFood.dto.FormLoginDTO;
-import es.grupoO.FastFood.dto.PedidoRequestDTO;
+import es.grupoO.FastFood.dto.*;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,13 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.core.Authentication;
 
-import es.grupoO.FastFood.dto.ClienteLoginDTO;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class ClienteRESTController {
@@ -96,13 +91,13 @@ public class ClienteRESTController {
 
     @GetMapping("/restaurante/{idRestaurante}/platos")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> buscarPlato(@PathVariable String idRestaurante) {
+    public List<PlatoDTO> buscarPlato(@PathVariable String idRestaurante) {
         return this.platosService.buscarPlato(idRestaurante);
     }
 
     @GetMapping("/restaurante/{idRestaurante}/platos/categorias/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable String idRestaurante, @PathVariable int categoria) {
+    public List<PlatoDTO> filtrarPlatos(@PathVariable String idRestaurante, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRestaurante, categoria);
     }
 
@@ -132,5 +127,20 @@ public class ClienteRESTController {
     public void changePasswdCliente(@RequestBody String newPasswd,
                             Authentication auth) {
         this.clientesService.changePasswdCliente(newPasswd, auth);
+    }
+
+    @DeleteMapping("/cliente/self")
+    @SecurityRequirement(name = "authorization")
+    public void eliminarCliente(Authentication auth) {
+        this.clientesService.eliminarCliente(auth);
+    }
+
+    @GetMapping("/restaurantesCercanos")
+    @SecurityRequirement(name = "authorization")
+    public Page<Restaurante> buscarRestaurantesCercanos(@ModelAttribute Posicion ubicacion,
+                                              @RequestParam(required = false, defaultValue = "0") int pagina,
+                                              @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size);
+        return this.restaurantesService.buscarRestaurantesCercanos(ubicacion, paginacion);
     }
 }

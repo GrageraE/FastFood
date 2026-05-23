@@ -3,7 +3,6 @@ package es.grupoO.FastFood.services;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
-import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.RepartidorFactory;
 import es.grupoO.FastFood.mapper.RepartidorLoginMapper;
 import es.grupoO.FastFood.model.valueobject.Pair;
@@ -25,11 +24,22 @@ public class RepartidoresService {
     @Autowired
     private RepartidorLoginMapper repartidorMapper;
 
+    /**
+     * valida un restaurante y lo pasa a su formato con un mapper
+     * @param email
+     * @param passwd
+     * @return RepartidorLoginDTO
+     */
     public RepartidorLoginDTO validar(String email, String passwd) {
         Pair<Repartidor, String> data = this.authService.loginRepartidor(email, passwd);
         return this.repartidorMapper.fromPair(data);
     }
 
+    /**
+     * Busca un repartidor por id
+     * @param idRepar
+     * @return Repartidor
+     */
     public Repartidor buscarRepartidorPorID(String idRepar) {
         Repartidor repartidor = this.repository.findById(idRepar).orElse(null);
         if (repartidor == null) {
@@ -38,6 +48,16 @@ public class RepartidoresService {
         return repartidor;
     }
 
+    /**
+     * inserta un repartidor y lo guarda en la base de datos, devuelve el repartidor insertado
+     * @param nombre
+     * @param telefono
+     * @param email
+     * @param passwd
+     * @throws NotValidEmailException
+     * @throws UsernameAlreadyExistException
+     * @return Repartidor
+     */
     public Repartidor insertarRepartidor(String nombre, String telefono, String email, String passwd) {
         Email parsedEmail = Email.parse(email)
                 .orElseThrow(() -> new NotValidEmailException("El email dado no es correcto"));
@@ -53,14 +73,27 @@ public class RepartidoresService {
         return repartidor;
     }
 
-    public void borrarRepartidor(String idRepar) {
-        Repartidor repartidor = this.repository.findById(idRepar).orElse(null);
+    /**
+     * borra el repartidor de la base de datos, solo borra el usuario asociado al token
+     * @param auth
+     * @throws NotValidEmailException
+     */
+    public void borrarRepartidor(Authentication auth) {
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email no valido"));
+        Repartidor repartidor = this.repository.findByEmail(email);
         if (repartidor == null) {
             throw new NoExistDBException("El repartidor no esta registrado");
         }
-        this.repository.deleteById(idRepar);
+        this.repository.delete(repartidor);
     }
 
+    /**
+     * cambia la contraseña, el usuario tiene que estar autenticado pasando su JWT, solo se cambia el usuario asociado a ese JWT
+     * @param newPasswd
+     * @param auth
+     * @throws NotValidEmailException
+     */
     public void changePasswdRepartidor(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName())

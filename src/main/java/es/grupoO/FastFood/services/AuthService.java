@@ -45,6 +45,11 @@ public class AuthService {
         this.repartidoresRepository = repartidoresRepository;
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return el cliente + token JWT
+     */
     public Pair<Cliente, String> loginCliente(String email, String password) {
         Email parsedEmail = Email.parse(email)
                 .orElseThrow(() -> new NotValidEmailException("El email del cliente no es valido"));
@@ -60,6 +65,11 @@ public class AuthService {
         return new Pair<>(cliente, this.getJWTToken(email, "CLIENTE"));
     }
 
+    /**
+     * @param email
+     * @param password
+     * @return el restaurante + token JWT
+     */
     public Pair<Restaurante, String> loginRestaurante(String email, String password) {
         Email parsedEmail = Email.parse(email)
                 .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
@@ -74,7 +84,11 @@ public class AuthService {
 
         return new Pair<>(rest, this.getJWTToken(email, "RESTAURANTE"));
     }
-
+    /**
+     * @param email
+     * @param password
+     * @return el repartidor + token JWT
+     */
     public Pair<Repartidor, String> loginRepartidor(String email, String password) {
         Email parsedEmail = Email.parse(email)
                 .orElseThrow(() -> new NotValidEmailException("El email del repartidor no es valido"));
@@ -90,6 +104,12 @@ public class AuthService {
         return new Pair<>(repartidor, this.getJWTToken(email, "REPARTIDOR"));
     }
 
+    /**
+     *
+     * @param password
+     * @param hashedPasswd
+     * @throws NoMatchingPasswordException si la contraseña no coincide con el hash
+     */
     private static void comprobarPassword(String password, String hashedPasswd) {
         HashMaker hasher = new HashMaker();
 
@@ -98,6 +118,11 @@ public class AuthService {
         }
     }
 
+    /**
+     * @param username
+     * @param role
+     * @return token JWT
+     */
     private String getJWTToken(String username, String role) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList(role);

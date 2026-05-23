@@ -56,7 +56,10 @@ public class Plato {
     }
 
     public Precio getPrecio() {
-        return precio;
+        if(this.rebaja == null) {
+            return precio;
+        }
+        return this.rebaja.nuevoPrecio();
     }
 
     public void setPrecio(Precio precio) {
@@ -79,7 +82,9 @@ public class Plato {
         this.rebaja = rebaja;
     }
 
-    public void quitarRebaja(){
+    public Rebaja quitarRebaja(){
+        Rebaja rebaja = this.rebaja;
         this.rebaja = null;
+        return rebaja;
     }
 }

@@ -33,6 +33,13 @@ public class PedidosService {
     @Autowired
     private PlatosService platosService;
 
+    /**
+     * Realiza un pedido a partir de la informacion dada, guardando el pedido y sus lineas en la base de datos
+     * @param idCliente
+     * @param idRest
+     * @param platos
+     * @return pedido
+     */
     public Pedido realizarPedido(String idCliente, String idRest, List<Pair<String, Integer>> platos) {
         PedidosFactory  pedidosFactory = new PedidosFactory(
                 idCliente, idRest, platos, this.clientesService, this.restaurantesService, this.platosService
@@ -48,6 +55,12 @@ public class PedidosService {
         return pedido;
     }
 
+    /**
+     * busca el pedido por id
+     * @param idPedido
+     * @throws NoExistDBException si el pedido no esta registrado
+     * @return pedido
+     */
     public Pedido buscarPedidoPorID(String idPedido) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
@@ -55,7 +68,12 @@ public class PedidosService {
         }
         return pedido;
     }
-    
+
+    /**
+     * anula el pedido asociado a un id
+     * @param idPedido
+     * @throws NoExistDBException si el pedido no esta registrado
+     */
     public void anularPedido(String idPedido) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
@@ -68,22 +86,34 @@ public class PedidosService {
 
         this.pedidosRepository.deleteById(idPedido);
     }
-    
+
+    /**
+     * avanza el estado al puesto por el usuario
+     * @param idPedido
+     * @param estado
+     * @throws NoExistDBException si el pedido no esta registrado
+     */
     public void cambiarEstado(String idPedido, int estado) {
         Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
         if(pedido == null) {
             throw new NoExistDBException("El pedido no esta registrado");
         }
         EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
-        if(EstadoPedido.ENTREGADO.equals(estadoPedido)){
-        this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
-        this.pedidosRepository.deleteById(idPedido);
-        }else{
-        pedido.setEstado(estadoPedido);
-        this.pedidosRepository.save(pedido);
+        if(EstadoPedido.ENTREGADO.equals(estadoPedido)) {
+            this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
+            this.pedidosRepository.deleteById(idPedido);
+        } else {
+            pedido.setEstado(estadoPedido);
+            this.pedidosRepository.save(pedido);
         }
     }
-    
+
+    /**
+     * asigna el pedido al repartidor con ese id
+     * @param idPedido
+     * @param idRepartidor
+     * @throws NoExistDBException si el pedido o el repartidor no estan registrados
+     */
     public void asignarPedido(String idPedido, String idRepartidor) {
         Pedido pedido = this.buscarPedidoPorID(idPedido);
         if(pedido == null) {
@@ -97,7 +127,13 @@ public class PedidosService {
             throw new AlreadyAssignedException("Repartidor ya asignado");
         }
     }
-    
+
+    /**
+     * devuelve una lista de los restaurantes con pedidos disponibles mas cercanos dada la ubicacion del repartidor
+     * @param posicionRepartidor
+     * @param pageable
+     * @return pageable<Pedido>
+     */
     public Page<Pedido> buscarPedidosARepartir(Posicion posicionRepartidor, Pageable pageable) {
         return this.pedidosRepository.buscarPorUbicacion(posicionRepartidor, pageable);
     }

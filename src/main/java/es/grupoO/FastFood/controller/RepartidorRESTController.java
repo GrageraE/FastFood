@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.dto.RepartidorLoginDTO;
 
-import java.util.List;
-import java.util.Map;
-
 @RestController
 public class RepartidorRESTController {
     @Autowired
@@ -52,10 +49,10 @@ public class RepartidorRESTController {
         return this.repartidoresService.buscarRepartidorPorID(idRepar);
     }
 
-    @DeleteMapping("/repartidor/{idRepar}")
+    @DeleteMapping("/repartidor/self")
     @SecurityRequirement(name = "authorization")
-    public void borrarRepartidor(@PathVariable String idRepar) {
-        this.repartidoresService.borrarRepartidor(idRepar);
+    public void borrarRepartidor(Authentication auth) {
+        this.repartidoresService.borrarRepartidor(auth);
     }
 
     @GetMapping("/pedidos/disponibles")
