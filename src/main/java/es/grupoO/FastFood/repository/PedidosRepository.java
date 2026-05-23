@@ -15,12 +15,19 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface PedidosRepository extends MongoRepository<Pedido, String> {
+
+    /**
+     *
+     * @param clienteId
+     * @return Lista de pedidos realizados por un cliente específico, identificados por su ID.
+     */
     @Query("{'cliente.$id': ?0}")
     List<Pedido> findAllByClienteId(ObjectId clienteId);
 
     default List<Pedido> findAllByClienteId(String clienteId) {
         return this.findAllByClienteId(new ObjectId(clienteId));
     }
+
 
     @Query("{'restaurante': ?0}")
     List<Pedido> findAllByRestauranteId(ObjectId restauranteId);
@@ -45,6 +52,15 @@ public interface PedidosRepository extends MongoRepository<Pedido, String> {
     default Page<Pedido> findAllByRestauranteIdPage(String restauranteId, Pageable pageable) {
         return this.findAllByRestauranteIdPage(new ObjectId(restauranteId), pageable);
     }
+
+    /**
+     *
+     * @param estadoPedido
+     * @param poscionRepartidor
+     * @return Hace una consulta de un pedido y pide la localizacion del repartidor, devuele
+     * un pageable de pedidos con el estado listo para entregar, y la localizacion del repartidor,
+     * para que el repartidor pueda ver los pedidos que tiene cerca de su localizacion
+     */
 
     @Query("{'estadoPedido': ?0}")
     Page<Pedido> findAllByEstadoPedido(EstadoPedido estado, Pageable pageable);

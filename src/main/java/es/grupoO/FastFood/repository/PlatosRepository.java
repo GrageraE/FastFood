@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import es.grupoO.FastFood.model.state.CategoriaPlato;
 
 import java.util.List;
-
+//Fabricacion pura entre servicios y bases de datos
 public interface PlatosRepository extends MongoRepository<Plato, String> {
     @Query("{ 'restaurante.$id': ?0 }")
     List<Plato> findAllByRestaurante(ObjectId idRestaurante);
