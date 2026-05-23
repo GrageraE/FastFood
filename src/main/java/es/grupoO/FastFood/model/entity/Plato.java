@@ -79,7 +79,9 @@ public class Plato {
         this.rebaja = rebaja;
     }
 
-    public void quitarRebaja(){
+    public Rebaja quitarRebaja(){
+        Rebaja rebaja = this.rebaja;
         this.rebaja = null;
+        return rebaja;
     }
 }

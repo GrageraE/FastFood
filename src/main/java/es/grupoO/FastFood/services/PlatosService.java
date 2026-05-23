@@ -1,13 +1,14 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.exceptions.NoExistDBException;
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.PlatosFactory;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Rebaja;
 import es.grupoO.FastFood.model.state.CategoriaPlato;
-import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.state.Divisa;
+import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.repository.PlatosRepository;
 import es.grupoO.FastFood.repository.RebajasRepository;
@@ -58,19 +59,44 @@ public class PlatosService {
         this.platosRepository.deleteById(idPlato);
     }
     
-    public void establecerRebaja(String _idRest, String idPlato, double nuevoPrecio, String fechaFin) {
+    public void establecerRebaja(String idPlato, double nuevoPrecio, String fechaFin, Authentication auth) {
         Precio pr = new Precio(nuevoPrecio, Divisa.EURO);
         LocalDate fecha = LocalDate.parse(fechaFin);
         Rebaja rebaja = new Rebaja(pr, fecha);
-        
+        Email emailRest = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email no valido"));
+
         Plato plato = this.buscarPlatoPorID(idPlato);
         if(plato == null) {
             throw new NoExistDBException("El plato no esta registrado");
+        }
+
+        if(!plato.getRestaurante().getEmail().equals(emailRest)) {
+            throw new RoleNotAllowedException("El plato no pertenece al restaurante actual");
         }
         
         plato.setRebaja(rebaja);
         
         this.rebajasRepository.save(rebaja);
+        this.platosRepository.save(plato);
+    }
+
+    public void quitarRebaja(String idPlato, Authentication auth) {
+        Email emailRest = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email no valido"));
+
+        Plato plato = this.buscarPlatoPorID(idPlato);
+        if(plato == null) {
+            throw new NoExistDBException("El plato no esta registrado");
+        }
+
+        if(!plato.getRestaurante().getEmail().equals(emailRest)) {
+            throw new RoleNotAllowedException("El plato no pertenece al restaurante actual");
+        }
+
+        Rebaja rebaja = plato.quitarRebaja();
+
+        this.rebajasRepository.delete(rebaja);
         this.platosRepository.save(plato);
     }
 }

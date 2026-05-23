@@ -88,10 +88,17 @@ public class RestauranteRESTController {
         this.pedidosService.cambiarEstado(idPedido, estado);
     }
 
-    @PostMapping("/restaurante/{idRest}/platos/{idPlato}/rebaja")
+    @PostMapping("/restaurante/self/platos/{idPlato}/rebaja")
     @SecurityRequirement(name = "authorization")
-    public void establecerRebaja(@PathVariable String idRest, @PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha) {
-        this.platosService.establecerRebaja(idRest, idPlato, nuevoPrecio, fecha);
+    public void establecerRebaja(@PathVariable String idPlato, @RequestParam double nuevoPrecio, @RequestParam String fecha,
+                                 Authentication auth) {
+        this.platosService.establecerRebaja(idPlato, nuevoPrecio, fecha, auth);
+    }
+
+    @DeleteMapping("/restaurante/self/platos/{idPlato}/rebaja")
+    @SecurityRequirement(name = "authorization")
+    public void quitarRebaja(@PathVariable String idPlato, Authentication auth) {
+        this.platosService.quitarRebaja(idPlato, auth);
     }
 
     @PutMapping("/restaurante/password")

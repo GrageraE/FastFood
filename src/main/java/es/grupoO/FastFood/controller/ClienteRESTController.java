@@ -134,9 +134,9 @@ public class ClienteRESTController {
         this.clientesService.changePasswdCliente(newPasswd, auth);
     }
 
-    @DeleteMapping("/cliente/{idCliente}")
+    @DeleteMapping("/cliente/self")
     @SecurityRequirement(name = "authorization")
     public void eliminarCliente(Authentication auth) {
-        this.clientesService.eliminarCliente(idCliente);
+        this.clientesService.eliminarCliente(auth);
     }
 }
