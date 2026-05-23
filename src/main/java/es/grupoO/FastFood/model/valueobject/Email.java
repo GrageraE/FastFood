@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.model.valueobject;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Email {
@@ -35,5 +36,16 @@ public class Email {
     @Override
     public String toString() {
         return userName + "@" + servidor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Email email)) return false;
+        return Objects.equals(userName, email.userName) && Objects.equals(servidor, email.servidor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, servidor);
     }
 }

@@ -57,7 +57,11 @@ public class PlatosService {
     public void borrarPlato(String idPlato, Authentication auth) {
         Plato plato = this.platosRepository.findById(idPlato)
                 .orElseThrow(() -> new NoExistDBException("El plato dado no existe"));
-        if(!plato.getRestaurante().getEmail().equals(auth.getName())) {
+
+        Email emailRest = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("El email dado no es valido"));
+
+        if(!plato.getRestaurante().getEmail().equals(emailRest)) {
             throw new RoleNotAllowedException("El plato no pertenece al restaurante actual");
         }
         this.platosRepository.deleteById(idPlato);
