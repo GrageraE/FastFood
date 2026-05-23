@@ -2,6 +2,9 @@ package es.grupoO.FastFood.dto;
 
 import es.grupoO.FastFood.model.valueobject.Email;
 
+/**
+ * DTO para entregar los datos de inicio de sesion a un Repartidor. Contiene su ID, su correo y su token
+ */
 public class RepartidorLoginDTO {
     private String idRepartidor;
 

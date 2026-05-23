@@ -4,6 +4,9 @@ import es.grupoO.FastFood.model.state.CategoriaPlato;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Precio;
 
+/**
+ * DTO para entregar los datos de un Plato. Ademas, vendra con la rebaja aplicada en caso de existir.
+ */
 public class PlatoDTO {
     private String idPlato;
 

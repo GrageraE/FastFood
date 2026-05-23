@@ -1,5 +1,8 @@
 package es.grupoO.FastFood.dto;
 
+/**
+ * DTO para recoger los datos de un Restaurante cuando se va a crear una cuenta. Necesario para el @RequestBody
+ */
 public class RestauranteInsertDTO {
     private String nombre;
     private int categoria;

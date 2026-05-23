@@ -2,6 +2,9 @@ package es.grupoO.FastFood.dto;
 
 import es.grupoO.FastFood.model.valueobject.Email;
 
+/**
+ * DTO para entregar los datos de inicio de sesion a un Cliente. Contiene su ID, su correo y su token
+ */
 public class ClienteLoginDTO {
     private String idCliente;
 
