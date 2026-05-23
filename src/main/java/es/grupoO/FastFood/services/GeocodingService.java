@@ -1,34 +1,51 @@
 package es.grupoO.FastFood.services;
 
-import es.grupoO.FastFood.dto.NominatimResponse;
 import es.grupoO.FastFood.model.valueobject.Posicion;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClient;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+
+import java.net.URI;
 
 @Service
 public class GeocodingService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestClient restClient;
+
+    public GeocodingService() {
+        this.restClient = RestClient.builder()
+                .baseUrl(URI.create("https://nominatim.openstreetmap.org/search"))
+                .defaultHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0")
+                .build();
+    }
 
     public Posicion obtenerCoordenadas(String direccion) {
+        Posicion posicion;
+        try {
+            JsonNode resp = this.restClient
+                    .get()
+                    .uri("?q={direccion}&format=geojson&limit=1", direccion)
+                    .retrieve()
+                    .body(JsonNode.class);
 
-        String url = "https://nominatim.openstreetmap.org/search"
-                + "?q=" + direccion
-                + "&format=json&limit=1";
+            ArrayNode resultados = resp.path("features").asArray();
 
-        ResponseEntity<NominatimResponse[]> response =
-                restTemplate.getForEntity(url, NominatimResponse[].class);
+            if(resultados.isEmpty()) {
+                throw new RuntimeException("Sin resultados");
+            }
 
-        NominatimResponse[] body = response.getBody();
+            ArrayNode ptoJson = resultados.get(0).path("geometry").path("coordinates").asArray();
+            double longitud = ptoJson.get(0).asDouble();
+            double latitud = ptoJson.get(1).asDouble();
 
-        if (body == null || body.length == 0) {
-            throw new RuntimeException("Dirección no encontrada");
+            posicion = new Posicion(latitud, longitud);
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
         }
 
-        double lat = Double.parseDouble(body[0].getLat());
-        double lon = Double.parseDouble(body[0].getLon());
-
-        return new Posicion(lat, lon);
+        return posicion;
     }
 }

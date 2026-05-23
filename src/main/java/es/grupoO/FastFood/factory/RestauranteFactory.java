@@ -1,6 +1,5 @@
 package es.grupoO.FastFood.factory;
 
-import es.grupoO.FastFood.dto.NominatimResponse;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
@@ -11,7 +10,6 @@ import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.services.GeocodingService;
 
 import java.time.LocalTime;
-
 
 public class RestauranteFactory {
     private String nombre;
@@ -24,11 +22,13 @@ public class RestauranteFactory {
     private String passwd;
 
     private HashMaker hasher;
-    GeocodingService geocodingService;
+
+    private GeocodingService geocodingService;
 
     public RestauranteFactory(String nombre, String direccion,
                               String telefono, String horaApertura,
-                              String horaCierre, int categoria, String email, String passwd) {
+                              String horaCierre, int categoria, String email, String passwd,
+                              GeocodingService geocodingService) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
@@ -38,7 +38,7 @@ public class RestauranteFactory {
         this.email = email;
         this.hasher = new HashMaker();
         this.passwd = passwd;
-        this.geocodingService = new GeocodingService();
+        this.geocodingService = geocodingService;
     }
 
     public Restaurante fabricarRestaurante() {

@@ -1,4 +1,5 @@
 package es.grupoO.FastFood.services;
+
 import es.grupoO.FastFood.dto.RestauranteLoginDTO;
 import es.grupoO.FastFood.factory.RestauranteFactory;
 import es.grupoO.FastFood.mapper.RestauranteLoginMapper;
@@ -11,17 +12,15 @@ import es.grupoO.FastFood.repository.RestaurantesRepository;
 import es.grupoO.FastFood.repository.ValoracionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import es.grupoO.FastFood.auth.HashMaker;
 import org.springframework.security.core.Authentication;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.exceptions.UsernameAlreadyExistException;
+
 @Service
 public class RestaurantesService {
     @Autowired
@@ -32,9 +31,11 @@ public class RestaurantesService {
     private AuthService authService;
     @Autowired
     private RestauranteLoginMapper restauranteMapper;
+    @Autowired
+    private GeocodingService geocodingService;
 
     /**
-     * valida el restaurante y lo pasa a un dto a traves de un mapper
+     * Valida el restaurante y lo pasa a un dto a traves de un mapper
      * @param email
      * @param passwd
      * @return RestauranteLoginDTO
@@ -45,7 +46,7 @@ public class RestaurantesService {
     }
 
     /**
-     * busca restaurante por id, devuelove el restaurante
+     * Busca restaurante por ID, devuelve el restaurante
      * @param idRest
      * @return Restaurante
      */
@@ -58,30 +59,28 @@ public class RestaurantesService {
     }
 
     /**
-     * devuelve una pagina de restaurantes cuyo nombre contenga el string pasado por parametro, con la paginacion dada
+     * Devuelve una pagina de restaurantes cuyo nombre contenga el string pasado por parametro, con la paginacion dada
      * @param nombre
      * @param paginacion
      * @return Page<Restaurante>
      */
     public Page<Restaurante> buscarRestaurante(String nombre, Pageable paginacion) {
-        Page<Restaurante> restaurantes = this.repository.findAllByNombreContainingPaginado(nombre, paginacion);
-        return restaurantes;
+        return this.repository.findAllByNombreContainingPaginado(nombre, paginacion);
     }
 
     /**
-     * devuelve una pagina de restaurantes de la categoria dada por parametro, con la paginacion dada
+     * Devuelve una pagina de restaurantes de la categoria dada por parametro, con la paginacion dada
      * @param categoria
      * @param paginacion
      * @return Page<Restaurante>
      */
     public Page<Restaurante> buscarRestaurante(int categoria, Pageable paginacion) {
         CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
-        Page<Restaurante> restaurantes = this.repository.findAllByCategoriaPaginado(cat, paginacion);
-        return restaurantes;
+        return this.repository.findAllByCategoriaPaginado(cat, paginacion);
     }
 
     /**
-     * inserta un restaurante y devuelve su jwt y lo inserta en la base de datos asociado a restaurantes
+     * Inserta un restaurante y devuelve su jwt y lo inserta en la base de datos asociado a restaurantes
      * @param nombre
      * @param categoria
      * @param direccion
@@ -104,7 +103,11 @@ public class RestaurantesService {
             throw new UsernameAlreadyExistException("El restaurante ya existe");
         }
 
-        RestauranteFactory fact = new RestauranteFactory(nombre, direccion, telefono, horaApertura, horaCierre, categoria, email, passwd);
+        RestauranteFactory fact = new RestauranteFactory(
+                nombre, direccion, telefono, horaApertura,
+                horaCierre, categoria, email, passwd,
+                this.geocodingService
+        );
         Restaurante restaurante = fact.fabricarRestaurante();
         Valoracion val = restaurante.getValoracion();
         this.valoracionesRepository.save(val);
@@ -113,7 +116,7 @@ public class RestaurantesService {
     }
 
     /**
-     * borra el restaurante, se tiene que poseer el JWT y solo se puede borrar el restaurante asociado a ese JWT
+     * Borra el restaurante, se tiene que poseer el JWT y solo se puede borrar el restaurante asociado a ese JWT
      * @param auth
      * @throws NotValidEmailException
      */
