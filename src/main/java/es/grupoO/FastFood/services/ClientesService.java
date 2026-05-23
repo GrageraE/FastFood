@@ -25,7 +25,18 @@ public class ClientesService {
 
     @Autowired
     ClienteLoginMapper clienteMapper;
-    
+
+    /**
+     * Crea un nuevo cliente y lo guarda en la base de datos.
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param passwd
+     * @throws NotValidEmailException si el email no es correcto
+     * @throws UsernameAlreadyExistException si el cliente ya existe
+     * @return cliente
+     */
     public Cliente insertarCliente(String nombre, String direccion, String telefono, String email, String passwd) {
         Email parsedEmail = Email.parse(email)
                 .orElseThrow(() -> new NotValidEmailException("El email proporcionado no es correcto"));
@@ -41,15 +52,31 @@ public class ClientesService {
         return cliente;
     }
 
+    /**
+     * Valida el email y la contraseña de un cliente, y devuelve un DTO con el cliente y un token JWT si las credenciales son correctas.
+     * @param email
+     * @param passwd
+     * @return ClienteLoginDTO
+     */
     public ClienteLoginDTO validar(String email, String passwd) {
         Pair<Cliente, String> data = this.authService.loginCliente(email, passwd);
         return this.clienteMapper.fromPair(data);
     }
-    
+
+    /**
+     * busca al cliente por id
+     * @param idCliente
+     * @return cliente
+     */
     public Cliente buscarClientePorID(String idCliente) {
         return this.repository.findById(idCliente).orElseThrow(() -> new NoExistDBException("ID no encontrado"));
     }
-    
+
+    /**
+     * cambia el password del cliente si esta autenciado con JWT
+     * @param newPasswd
+     * @param auth
+     */
     public void changePasswdCliente(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName())
@@ -60,6 +87,11 @@ public class ClientesService {
         this.repository.save(cliente);
     }
 
+    /**
+     * Borra el cliente de la base de datos solo si esta autenticado
+     * Solo puedes borrar el usuario asociado a tu toke JWT
+     * @param auth
+     */
     public void eliminarCliente(Authentication auth) {
         Cliente cliente = this.repository.findByEmail(Email.parse(auth.getName())
                 .orElseThrow(() -> new NotValidEmailException("Email proporcionado no valido")));

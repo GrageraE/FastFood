@@ -33,11 +33,22 @@ public class RestaurantesService {
     @Autowired
     private RestauranteLoginMapper restauranteMapper;
 
+    /**
+     * valida el restaurante y lo pasa a un dto a traves de un mapper
+     * @param email
+     * @param passwd
+     * @return RestauranteLoginDTO
+     */
     public RestauranteLoginDTO validar(String email, String passwd) {
         Pair<Restaurante, String> data = this.authService.loginRestaurante(email, passwd);
         return this.restauranteMapper.fromPair(data);
     }
 
+    /**
+     * busca restaurante por id, devuelove el restaurante
+     * @param idRest
+     * @return Restaurante
+     */
     public Restaurante buscarRestaurantePorID(String idRest) {
         Restaurante rest = this.repository.findById(idRest).orElse(null);
         if(rest == null) {
@@ -46,17 +57,43 @@ public class RestaurantesService {
         return rest;
     }
 
+    /**
+     * devuelve una pagina de restaurantes cuyo nombre contenga el string pasado por parametro, con la paginacion dada
+     * @param nombre
+     * @param paginacion
+     * @return Page<Restaurante>
+     */
     public Page<Restaurante> buscarRestaurante(String nombre, Pageable paginacion) {
         Page<Restaurante> restaurantes = this.repository.findAllByNombreContainingPaginado(nombre, paginacion);
         return restaurantes;
     }
 
+    /**
+     * devuelve una pagina de restaurantes de la categoria dada por parametro, con la paginacion dada
+     * @param categoria
+     * @param paginacion
+     * @return Page<Restaurante>
+     */
     public Page<Restaurante> buscarRestaurante(int categoria, Pageable paginacion) {
         CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
         Page<Restaurante> restaurantes = this.repository.findAllByCategoriaPaginado(cat, paginacion);
         return restaurantes;
     }
 
+    /**
+     * inserta un restaurante y devuelve su jwt y lo inserta en la base de datos asociado a restaurantes
+     * @param nombre
+     * @param categoria
+     * @param direccion
+     * @param telefono
+     * @param email
+     * @param horaApertura
+     * @param horaCierre
+     * @param passwd
+     * @throws NotValidEmailException
+     * @throws UsernameAlreadyExistException
+     * @return Restaurante
+     */
     public Restaurante insertarRestaurante(String nombre, int categoria, String direccion,String telefono, 
         String email, String horaApertura, String horaCierre, String passwd){
 
@@ -75,6 +112,11 @@ public class RestaurantesService {
         return restaurante;
     }
 
+    /**
+     * borra el restaurante, se tiene que poseer el JWT y solo se puede borrar el restaurante asociado a ese JWT
+     * @param auth
+     * @throws NotValidEmailException
+     */
     public void borrarRestaurante(Authentication auth) {
         Email email = Email.parse(auth.getName())
                 .orElseThrow(() -> new NotValidEmailException("Email no valido"));
@@ -85,6 +127,12 @@ public class RestaurantesService {
         this.repository.delete(restaurante);
     }
 
+    /**
+     * actaualiza la valoracion al dado, el calculo es interno
+     * @param id
+     * @param valor
+     * @trhrows NoExistDBException
+     */
     public void actualizarValoracion(String id, int valor) {
         Restaurante restaurante = this.buscarRestaurantePorID(id);
         if(restaurante == null) {
@@ -97,6 +145,11 @@ public class RestaurantesService {
         this.valoracionesRepository.save(valoracion);
     }
 
+    /**
+     * Cambia la contraseña del restaurante, se tiene que poseer el JWT y solo se puede modificar la contraseña del restaurante asociado a ese JWT
+     * @param newPasswd
+     * @param auth
+     */
     public void changePasswdRestaurante(String newPasswd, Authentication auth) {
         HashMaker hasher = new HashMaker();
         Email email = Email.parse(auth.getName())
@@ -107,6 +160,12 @@ public class RestaurantesService {
         this.repository.save(restaurante);
     }
 
+    /**
+     * Devuelve una pageable de los restaurantes mas cercanos, dada una ubicacion
+     * @param posicionRepartidor
+     * @param pageable
+     * @return Page<Restaurante>
+     */
     public Page<Restaurante> buscarRestaurantesCercanos(Posicion posicionRepartidor, Pageable pageable) {
         return this.repository.findByPosicionNear(posicionRepartidor, pageable);
     }
