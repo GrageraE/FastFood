@@ -4,10 +4,11 @@
 FastFood API es una aplicación backend desarrollada con Spring Boot hecha para la asignatura Ingeniería de software del grupo O del grado de Matematicas e informática del año 2026 en mayo
 
 ## Integrantes
-Yu Xiang Yang Xu
-Daniel Ramon Gragera
+
+Yu Xiang Yang Xu <br>
+Daniel Ramon Gragera  <br>
 Yun Chen
----
+
 ## Uso y compilacion
 ### Requisitos previos
 - Java 17
@@ -44,7 +45,7 @@ El proyecto sigue una arquitectura en capas:
 - Controller: exposición de endpoints REST
 - Service: lógica de negocio
 - Repository: acceso a base de datos MongoDB
-- Model/Domain: entidades y value objects
+- Model: entidades y value objects
 - DTO: comunicación con APIs externas
 - Exception: manejo de errores personalizados
 - Security: configuración de seguridad y permisos
@@ -57,7 +58,7 @@ El proyecto sigue una arquitectura en capas:
 - Gestión de restaurantes
 - CRUD de platos
 - Aplicación de rebajas a platos
-- Validación de permisos por restaurante
+- Validación de permisos por restaurante, cliente y repartidor
 - Geocodificación de direcciones
 - Manejo de excepciones personalizadas
 
