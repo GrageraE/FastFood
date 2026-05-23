@@ -75,8 +75,13 @@ public class PedidosService {
             throw new NoExistDBException("El pedido no esta registrado");
         }
         EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
+        if(EstadoPedido.ENTREGADO.equals(estadoPedido)){
+        this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
+        this.pedidosRepository.deleteById(idPedido);
+        }else{
         pedido.setEstado(estadoPedido);
         this.pedidosRepository.save(pedido);
+        }
     }
     
     public void asignarPedido(String idPedido, String idRepartidor) {
