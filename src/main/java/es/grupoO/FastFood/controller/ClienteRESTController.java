@@ -6,6 +6,7 @@ import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.valueobject.Pair;
+import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -132,5 +133,14 @@ public class ClienteRESTController {
     @SecurityRequirement(name = "authorization")
     public void eliminarCliente(Authentication auth) {
         this.clientesService.eliminarCliente(auth);
+    }
+
+    @GetMapping("/restaurantesCercanos")
+    @SecurityRequirement(name = "authorization")
+    public Page<Restaurante> buscarRestaurantesCercanos(@ModelAttribute Posicion ubicacion,
+                                              @RequestParam(required = false, defaultValue = "0") int pagina,
+                                              @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size);
+        return this.restaurantesService.buscarRestaurantesCercanos(ubicacion, paginacion);
     }
 }
