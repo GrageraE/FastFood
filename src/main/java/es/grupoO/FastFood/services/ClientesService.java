@@ -59,4 +59,10 @@ public class ClientesService {
         cliente.setHashPassword(hasher.encoder(newPasswd));
         this.repository.save(cliente);
     }
+
+    public void eliminarCliente(Authentication auth) {
+        Cliente cliente = this.repository.findByEmail(Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("Email proporcionado no valido")));
+        this.repository.delete(cliente);
+    }
 }
