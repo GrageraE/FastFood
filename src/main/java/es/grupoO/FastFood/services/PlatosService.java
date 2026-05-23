@@ -1,9 +1,11 @@
 package es.grupoO.FastFood.services;
 
+import es.grupoO.FastFood.dto.PlatoDTO;
 import es.grupoO.FastFood.exceptions.NoExistDBException;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.exceptions.RoleNotAllowedException;
 import es.grupoO.FastFood.factory.PlatosFactory;
+import es.grupoO.FastFood.mapper.PlatoMapper;
 import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Rebaja;
 import es.grupoO.FastFood.model.state.CategoriaPlato;
@@ -30,18 +32,20 @@ public class PlatosService {
     private PlatosRepository platosRepository;
     @Autowired
     private RebajasRepository rebajasRepository;
+    @Autowired
+    private PlatoMapper platoMapper;
 
     public Plato buscarPlatoPorID(String platoId) {
         return this.platosRepository.findById(platoId).orElse(null);
     }
 
-    public List<Plato> buscarPlato(String idRestaurante) {
-        return this.platosRepository.findAllByRestaurante(idRestaurante);
+    public List<PlatoDTO> buscarPlato(String idRestaurante) {
+        return this.platoMapper.toDtoList(this.platosRepository.findAllByRestaurante(idRestaurante));
     }
 
-    public List<Plato> filtrarPlatos(String idRestaurante, int categoria) {
+    public List<PlatoDTO> filtrarPlatos(String idRestaurante, int categoria) {
         CategoriaPlato cat = CategoriaPlato.fromInteger(categoria);
-        return this.platosRepository.findAllByRestauranteIdAndCategoria(idRestaurante, cat);
+        return this.platoMapper.toDtoList(this.platosRepository.findAllByRestauranteIdAndCategoria(idRestaurante, cat));
     }
     
     public void insertarPlato(String idRest, String nombre, int categoria, double precio) {

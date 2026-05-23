@@ -1,8 +1,6 @@
 package es.grupoO.FastFood.controller;
 
-import es.grupoO.FastFood.dto.ClienteInsertDTO;
-import es.grupoO.FastFood.dto.FormLoginDTO;
-import es.grupoO.FastFood.dto.PedidoRequestDTO;
+import es.grupoO.FastFood.dto.*;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Plato;
@@ -18,13 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.core.Authentication;
 
-import es.grupoO.FastFood.dto.ClienteLoginDTO;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class ClienteRESTController {
@@ -96,13 +90,13 @@ public class ClienteRESTController {
 
     @GetMapping("/restaurante/{idRestaurante}/platos")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> buscarPlato(@PathVariable String idRestaurante) {
+    public List<PlatoDTO> buscarPlato(@PathVariable String idRestaurante) {
         return this.platosService.buscarPlato(idRestaurante);
     }
 
     @GetMapping("/restaurante/{idRestaurante}/platos/categorias/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable String idRestaurante, @PathVariable int categoria) {
+    public List<PlatoDTO> filtrarPlatos(@PathVariable String idRestaurante, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRestaurante, categoria);
     }
 

@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Posicion;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
@@ -33,6 +34,7 @@ public class Restaurante {
 
     private Email email;
 
+    @GeoSpatialIndexed
     private Posicion posicion;
 
     public Restaurante(String nombre, String direccion, String telefono, LocalTime horaApertura, 

@@ -1,6 +1,7 @@
 package es.grupoO.FastFood.controller;
 
 import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.PlatoDTO;
 import es.grupoO.FastFood.dto.RestauranteInsertDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class RestauranteRESTController {
 
     @GetMapping("/restaurante/{idRest}/platos/{categoria}")
     @SecurityRequirement(name = "authorization")
-    public List<Plato> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
+    public List<PlatoDTO> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
         return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
