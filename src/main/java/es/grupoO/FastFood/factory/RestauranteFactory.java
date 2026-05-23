@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.factory;
 
+import es.grupoO.FastFood.dto.NominatimResponse;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
@@ -7,8 +8,10 @@ import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.auth.HashMaker;
 import es.grupoO.FastFood.model.valueobject.Posicion;
+import es.grupoO.FastFood.services.GeocodingService;
 
 import java.time.LocalTime;
+
 
 public class RestauranteFactory {
     private String nombre;
@@ -21,6 +24,7 @@ public class RestauranteFactory {
     private String passwd;
 
     private HashMaker hasher;
+    GeocodingService geocodingService;
 
     public RestauranteFactory(String nombre, String direccion,
                               String telefono, String horaApertura,
@@ -34,6 +38,7 @@ public class RestauranteFactory {
         this.email = email;
         this.hasher = new HashMaker();
         this.passwd = passwd;
+        this.geocodingService = new GeocodingService();
     }
 
     public Restaurante fabricarRestaurante() {
@@ -41,15 +46,18 @@ public class RestauranteFactory {
         LocalTime horaC = LocalTime.parse(this.horaCierre);
         Email emailParsed = Email.parse(this.email)
                 .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
-
         String hashPasswd = hasher.encoder(passwd);
 
         CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
 
         Valoracion val = new Valoracion();
 
-        // TODO: Obtener posicion del restaurante
+        Posicion posicion = geocodingService.obtenerCoordenadas(this.direccion);
+
+        // TODO: REVISAR
         return new Restaurante(this.nombre, this.direccion, this.telefono,
-                horaAp, horaC, cat, val, emailParsed, hashPasswd, new Posicion(0, 0));
+                horaAp, horaC, cat, val, emailParsed, hashPasswd, posicion);
     }
+
+
 }

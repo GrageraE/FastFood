@@ -60,3 +60,6 @@ out/
 hs_err_pid*
 replay_pid*
 
+requirements.txt
+api_client.py
+venv
