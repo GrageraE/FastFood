@@ -73,8 +73,9 @@ public class RestauranteRESTController {
 
     @PostMapping("/restaurante/{idRest}/platos")
     @SecurityRequirement(name = "authorization")
-    public void insertarPlato(@PathVariable String idRest, @RequestParam String nombre, @RequestParam int categoria, @RequestParam double precio) {
-        this.platosService.insertarPlato(idRest, nombre, categoria, precio);
+    public void insertarPlato(@PathVariable String idRest, @RequestParam String nombre, @RequestParam int categoria,
+                              @RequestParam double precio, Authentication auth) {
+        this.platosService.insertarPlato(idRest, nombre, categoria, precio, auth);
     }
 
     @DeleteMapping("/restaurante/self/platos/{idPlato}")

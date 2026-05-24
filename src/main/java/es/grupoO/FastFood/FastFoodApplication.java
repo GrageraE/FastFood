@@ -86,6 +86,7 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority("REPARTIDOR")
 							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/estado").hasAuthority("RESTAURANTE")
 							.requestMatchers(HttpMethod.POST, "/restaurante/self/platos/{id_plato}/rebaja").hasAuthority("RESTAURANTE")
+							.requestMatchers(HttpMethod.POST, "/restaurante/{idRest}/platos").hasAuthority("RESTAURANTE")
 							.requestMatchers(HttpMethod.PUT, "/cliente/password").hasAuthority("CLIENTE")
 							.requestMatchers(HttpMethod.PUT, "/restaurante/password").hasAuthority("RESTAURANTE")
 							.requestMatchers(HttpMethod.PUT, "/repartidor/password").hasAuthority("REPARTIDOR")

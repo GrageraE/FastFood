@@ -50,9 +50,9 @@ public class PlatosService {
         return this.platoMapper.toDtoList(this.platosRepository.findAllByRestauranteIdAndCategoria(idRestaurante, cat));
     }
     
-    public void insertarPlato(String idRest, String nombre, int categoria, double precio) {
+    public void insertarPlato(String idRest, String nombre, int categoria, double precio, Authentication auth) {
         PlatosFactory platosFactory = new PlatosFactory(nombre, idRest, precio, categoria, this.restaurantesService);
-        Plato plato = platosFactory.fabricarPlato();
+        Plato plato = platosFactory.fabricarPlato(auth);
         this.platosRepository.save(plato);
     }
     
