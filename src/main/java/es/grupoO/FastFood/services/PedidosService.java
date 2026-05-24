@@ -36,6 +36,8 @@ public class PedidosService {
     private RestaurantesService restaurantesService;
     @Autowired
     private PlatosService platosService;
+    @Autowired
+    private PagosService pagosService;
 
     /**
      * Realiza un pedido a partir de la informacion dada, guardando el pedido y sus lineas en la base de datos
@@ -50,6 +52,8 @@ public class PedidosService {
         );
 
         Pedido pedido = pedidosFactory.fabricarPedido();
+
+        this.pagosService.realizarPago(pedido.precioTotal().getCantidad());
 
         this.lineaPlatosRepository.saveAll(pedido.getPlatos());
         this.pedidosRepository.save(pedido);
