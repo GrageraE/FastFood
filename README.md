@@ -23,19 +23,17 @@ docker compose up -d
 ```
 ./gradlew bootRun
 ```
-3. Para acceder a las pruebas entre al link:
-http://localhost:8080/swagger-ui/index.html
-4. Para acceder a la base de datos MongoDB ponga el siguiente link en su navegador:
-5. http://localhost:8081/
+3. Para acceder a las pruebas entre al link: http://localhost:8080/swagger-ui/index.html
+4. Para acceder a la base de datos MongoDB entre en: http://localhost:8081/
+---
 
 ## Tecnologías utilizadas
 
 - Java 17
 - Spring Boot
-- Docker
-- MongoDB
-- Compass
-
+- Docker: Para leventar la base de datos
+- MongoDB: La base de datos
+- Compass: Aplicación para ver y gestionar los documentos de MongoDB
 ---
 
 ## Arquitectura
@@ -46,10 +44,11 @@ El proyecto sigue una arquitectura en capas:
 - Service: lógica de negocio
 - Repository: acceso a base de datos MongoDB
 - Model: entidades y value objects
-- DTO: comunicación con APIs externas
+- DTO: comunicación con APIs externas y con el usuario de la API
 - Exception: manejo de errores personalizados
 - Security: configuración de seguridad y permisos
-- mappers: conversión entre entidades y DTOs
+- Mappers: conversión entre entidades y DTOs
+- Auth: Verificación de autenticación
 ---
 
 ## Funcionalidades
