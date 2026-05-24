@@ -1,21 +1,24 @@
 package es.grupoO.FastFood.controller;
 
-import es.grupoO.FastFood.dto.FormLoginDTO;
-import es.grupoO.FastFood.dto.PlatoDTO;
-import es.grupoO.FastFood.dto.RestauranteInsertDTO;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import es.grupoO.FastFood.services.RestaurantesService;
-import es.grupoO.FastFood.services.PlatosService;
-import es.grupoO.FastFood.services.PedidosService;
-import es.grupoO.FastFood.model.entity.Restaurante;
-import es.grupoO.FastFood.model.entity.Plato;
 import org.springframework.security.core.Authentication;
-import es.grupoO.FastFood.dto.RestauranteLoginDTO;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import es.grupoO.FastFood.dto.FormLoginDTO;
+import es.grupoO.FastFood.dto.RestauranteInsertDTO;
+import es.grupoO.FastFood.dto.RestauranteLoginDTO;
+import es.grupoO.FastFood.model.entity.Restaurante;
+import es.grupoO.FastFood.services.PedidosService;
+import es.grupoO.FastFood.services.PlatosService;
+import es.grupoO.FastFood.services.RestaurantesService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 public class RestauranteRESTController {
@@ -63,12 +66,6 @@ public class RestauranteRESTController {
     @SecurityRequirement(name = "authorization")
     public void borrarRestaurante(Authentication auth) {
         this.restaurantesService.borrarRestaurante(auth);
-    }
-
-    @GetMapping("/restaurante/{idRest}/platos/{categoria}")
-    @SecurityRequirement(name = "authorization")
-    public List<PlatoDTO> filtrarPlatos(@PathVariable String idRest, @PathVariable int categoria) {
-        return this.platosService.filtrarPlatos(idRest, categoria);
     }
 
     @PostMapping("/restaurante/{idRest}/platos")
