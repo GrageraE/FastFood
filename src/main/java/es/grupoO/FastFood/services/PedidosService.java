@@ -1,10 +1,12 @@
 package es.grupoO.FastFood.services;
 
 import es.grupoO.FastFood.exceptions.AlreadyAssignedException;
-import es.grupoO.FastFood.model.entity.LineaPlatos;
+import es.grupoO.FastFood.exceptions.BadAssignmentException;
+import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Pedido;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.state.EstadoPedido;
+import es.grupoO.FastFood.model.valueobject.Email;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.model.valueobject.Precio;
@@ -13,6 +15,7 @@ import es.grupoO.FastFood.repository.PedidosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import es.grupoO.FastFood.factory.PedidosFactory;
 
@@ -78,10 +81,7 @@ public class PedidosService {
      * @throws NoExistDBException si el pedido no esta registrado
      */
     public void anularPedido(String idPedido) {
-        Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
-        if(pedido == null) {
-            throw new NoExistDBException("El pedido no esta registrado");
-        }
+        Pedido pedido = this.buscarPedidoPorID(idPedido);
 
         this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
         this.pedidosRepository.deleteById(idPedido);
@@ -94,10 +94,7 @@ public class PedidosService {
      * @throws NoExistDBException si el pedido no esta registrado
      */
     public void cambiarEstado(String idPedido, int estado) {
-        Pedido pedido = this.pedidosRepository.findById(idPedido).orElse(null);
-        if(pedido == null) {
-            throw new NoExistDBException("El pedido no esta registrado");
-        }
+        Pedido pedido = this.buscarPedidoPorID(idPedido);
         EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
         if(EstadoPedido.ENTREGADO.equals(estadoPedido)) {
             this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
@@ -117,18 +114,29 @@ public class PedidosService {
      */
     public void asignarPedido(String idPedido, String idRepartidor) {
         Pedido pedido = this.buscarPedidoPorID(idPedido);
-        if(pedido == null) {
-            throw new NoExistDBException("El pedido no esta registrado");
-        }
         Repartidor rep = this.repartidoresService.buscarRepartidorPorID(idRepartidor);
 
-        if(!pedido.repartidorAsignado()) {
+        if(pedido.repartidorNoAsignado()) {
             pedido.asignarRepartidor(rep);
             pedido.setEstado(EstadoPedido.EN_REPARTO);
             this.pedidosRepository.save(pedido);
         } else {
             throw new AlreadyAssignedException("Repartidor ya asignado");
         }
+    }
+
+    public void entregarPedido(String idPedido, Authentication auth) {
+        Pedido pedido = this.buscarPedidoPorID(idPedido);
+
+        Email email = Email.parse(auth.getName())
+                .orElseThrow(() -> new NotValidEmailException("El email del token no es valido"));
+
+        if(pedido.repartidorNoAsignado() || !pedido.getRepartidor().getEmail().equals(email)) {
+            throw new BadAssignmentException("El pedido ha sido asignado a otro repartidor o no asignado. No se puede entregar");
+        }
+
+        this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
+        this.pedidosRepository.delete(pedido);
     }
 
     /**

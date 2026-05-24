@@ -29,6 +29,12 @@ public class GlobalExceptionHandler {
                 .body(buildError(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
+    @ExceptionHandler(BadAssignmentException.class)
+    public ResponseEntity<Map<String, Object>> handleBadAssignmentException(BadAssignmentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(buildError(HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
     @ExceptionHandler(DifferentRestaurantsException.class)
     public ResponseEntity<Map<String, Object>> handleDifferentRestaurantsException(DifferentRestaurantsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

@@ -70,6 +70,12 @@ public class RepartidorRESTController {
         this.pedidosService.asignarPedido(idPedido, idRepartidor);
     }
 
+    @PostMapping("/pedidos/{idPedido}/entregar")
+    @SecurityRequirement(name = "authorization")
+    public void entregarPedido(@PathVariable String idPedido, Authentication auth) {
+        this.pedidosService.entregarPedido(idPedido, auth);
+    }
+
     @PutMapping("/repartidor/password")
     @SecurityRequirement(name = "authorization")
     public void changePasswdRepartidor(@RequestBody String newPasswd,

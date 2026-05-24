@@ -77,8 +77,8 @@ public class Pedido {
         return this.repartidor;
     }
 
-    public boolean repartidorAsignado() {
-        return this.repartidor != null;
+    public boolean repartidorNoAsignado() {
+        return this.repartidor == null;
     }
 
     public Restaurante getRestaurante() {
