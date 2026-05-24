@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.factory;
 
+import es.grupoO.FastFood.exceptions.InvalidTimeException;
 import es.grupoO.FastFood.exceptions.NotValidEmailException;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.model.entity.Valoracion;
@@ -10,6 +11,7 @@ import es.grupoO.FastFood.model.valueobject.Posicion;
 import es.grupoO.FastFood.services.GeocodingService;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 public class RestauranteFactory {
     private String nombre;
@@ -42,8 +44,15 @@ public class RestauranteFactory {
     }
 
     public Restaurante fabricarRestaurante() {
-        LocalTime horaAp = LocalTime.parse(this.horaApertura);
-        LocalTime horaC = LocalTime.parse(this.horaCierre);
+        LocalTime horaAp;
+        LocalTime horaC;
+        try {
+            horaAp = LocalTime.parse(this.horaApertura);
+            horaC = LocalTime.parse(this.horaCierre);
+        } catch (DateTimeParseException e) {
+            throw new InvalidTimeException("Tiempo invalido: " + e.getParsedString() + " -- Razon: " + e.getMessage());
+        }
+
         Email emailParsed = Email.parse(this.email)
                 .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
         String hashPasswd = hasher.encoder(passwd);
