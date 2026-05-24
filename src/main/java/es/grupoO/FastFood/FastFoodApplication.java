@@ -82,6 +82,7 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/repartidor/validar").permitAll()
 							// Exigir roles especificos para determinados endpoints
 							.requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAuthority("CLIENTE")
+							.requestMatchers(HttpMethod.GET, "/pedidos/clientes/{idCliente}").hasAuthority("CLIENTE")
 							.requestMatchers(HttpMethod.POST, "/restaurante/{id}/valoracion").hasAuthority("CLIENTE")
 							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority("REPARTIDOR")
 							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/entregar").hasAuthority("REPARTIDOR")

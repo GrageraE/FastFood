@@ -71,6 +71,10 @@ public class PedidosService {
         return pedido;
     }
 
+    public Page<Pedido> buscarPedidoPorCliente(String idCliente, Pageable pageable) {
+        return this.pedidosRepository.buscarPorCliente(idCliente, pageable);
+    }
+
     public Precio obtenerPrecioPedido(String idPedido) {
         return this.buscarPedidoPorID(idPedido).precioTotal();
     }
@@ -96,13 +100,8 @@ public class PedidosService {
     public void cambiarEstado(String idPedido, int estado) {
         Pedido pedido = this.buscarPedidoPorID(idPedido);
         EstadoPedido estadoPedido = EstadoPedido.fromInteger(estado);
-        if(EstadoPedido.ENTREGADO.equals(estadoPedido)) {
-            this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
-            this.pedidosRepository.deleteById(idPedido);
-        } else {
-            pedido.setEstado(estadoPedido);
-            this.pedidosRepository.save(pedido);
-        }
+        pedido.setEstado(estadoPedido);
+        this.pedidosRepository.save(pedido);
     }
 
     /**
@@ -125,6 +124,12 @@ public class PedidosService {
         }
     }
 
+    /**
+     * Marca el pedido como entregado y quita su repartidor asociado.
+     * Comprueba que el repartidor que entrega coincida con el que fue asignado
+     * @param idPedido El ID del pedido a alterar
+     * @param auth Identidad del repartidor
+     */
     public void entregarPedido(String idPedido, Authentication auth) {
         Pedido pedido = this.buscarPedidoPorID(idPedido);
 
@@ -135,8 +140,9 @@ public class PedidosService {
             throw new BadAssignmentException("El pedido ha sido asignado a otro repartidor o no asignado. No se puede entregar");
         }
 
-        this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
-        this.pedidosRepository.delete(pedido);
+        pedido.quitarRepartidor();
+        pedido.setEstado(EstadoPedido.ENTREGADO);
+        this.pedidosRepository.save(pedido);
     }
 
     /**

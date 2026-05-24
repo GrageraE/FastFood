@@ -115,6 +115,15 @@ public class ClienteRESTController {
         return this.pedidosService.realizarPedido(idCliente, idRest, platos);
     }
 
+    @GetMapping("/pedidos/clientes/{idCliente}")
+    @SecurityRequirement(name = "authorization")
+    public Page<Pedido> pedidosPasados(@PathVariable String idCliente,
+                                       @RequestParam(required = false, defaultValue = "0") int pagina,
+                                       @RequestParam(required = false, defaultValue = "10") int size) {
+        Pageable paginacion = PageRequest.of(pagina, size);
+        return this.pedidosService.buscarPedidoPorCliente(idCliente, paginacion);
+    }
+
     @GetMapping("/pedidos/{idPedido}/precio")
     @SecurityRequirement(name = "authorization")
     public Precio obtenerPrecioPedido(@PathVariable String idPedido) {

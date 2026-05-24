@@ -73,6 +73,12 @@ public class Pedido {
         this.repartidor = repartidor;
     }
 
+    public Repartidor quitarRepartidor() {
+        Repartidor repartidor = this.repartidor;
+        this.repartidor = null;
+        return repartidor;
+    }
+
     public Repartidor getRepartidor() {
         return this.repartidor;
     }

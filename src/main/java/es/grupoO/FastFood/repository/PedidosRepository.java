@@ -15,12 +15,6 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface PedidosRepository extends MongoRepository<Pedido, String> {
-
-    /**
-     *
-     * @param clienteId
-     * @return Lista de pedidos realizados por un cliente específico, identificados por su ID.
-     */
     @Query("{'cliente.$id': ?0}")
     List<Pedido> findAllByClienteId(ObjectId clienteId);
 
@@ -28,45 +22,27 @@ public interface PedidosRepository extends MongoRepository<Pedido, String> {
         return this.findAllByClienteId(new ObjectId(clienteId));
     }
 
-
-    @Query("{'restaurante': ?0}")
-    List<Pedido> findAllByRestauranteId(ObjectId restauranteId);
-
-    default List<Pedido> findAllByRestauranteId(String restauranteId) {
-        return this.findAllByRestauranteId(new ObjectId(restauranteId));
-    }
-
-    @Query("{'estadoPedido': ?0}")
-    List<Pedido> findAllByEstadoPedido(EstadoPedido estado);
-
     @Query("{'cliente.$id': ?0}")
     Page<Pedido> findAllByClienteIdPage(ObjectId clienteId, Pageable pageable);
 
-    default Page<Pedido> findAllByClienteIdPage(String clienteId, Pageable pageable) {
+    /**
+     * Encuentra todos los pedidos realizados por el cliente dado
+     * @param clienteId El ID del cliente a buscar
+     * @param pageable Paginacion
+     * @return Pedidos realizados por el cliente dado
+     */
+    default Page<Pedido> buscarPorCliente(String clienteId, Pageable pageable) {
         return this.findAllByClienteIdPage(new ObjectId(clienteId), pageable);
     }
 
-    @Query("{'restaurante': ?0}")
-    Page<Pedido> findAllByRestauranteIdPage(ObjectId restauranteId, Pageable pageable);
-
-    default Page<Pedido> findAllByRestauranteIdPage(String restauranteId, Pageable pageable) {
-        return this.findAllByRestauranteIdPage(new ObjectId(restauranteId), pageable);
-    }
-
-    /**
-     *
-     * @param estadoPedido
-     * @param poscionRepartidor
-     * @return Hace una consulta de un pedido y pide la localizacion del repartidor, devuele
-     * un pageable de pedidos con el estado listo para entregar, y la localizacion del repartidor,
-     * para que el repartidor pueda ver los pedidos que tiene cerca de su localizacion
-     */
-
-    @Query("{'estadoPedido': ?0}")
-    Page<Pedido> findAllByEstadoPedido(EstadoPedido estado, Pageable pageable);
-
     Page<Pedido> findByEstadoPedidoAndPosicionNear(EstadoPedido estado, GeoJsonPoint posicion, Distance distance, Pageable pageable);
 
+    /**
+     * Busca los pedidos listos para entregar que procedan de los restaurantes mas cercanos a la posicion dada
+     * @param posRepartidor La posicion actual del repartidor
+     * @param pageable Paginacion
+     * @return Pedidos con el estado listo para entregar
+     */
     default Page<Pedido> buscarPorUbicacion(Posicion posRepartidor, Pageable pageable) {
         Distance distancia = new Distance(100, Metrics.KILOMETERS);
         return this.findByEstadoPedidoAndPosicionNear(
