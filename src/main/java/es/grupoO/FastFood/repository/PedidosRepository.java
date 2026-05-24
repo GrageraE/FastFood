@@ -12,16 +12,7 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import java.util.List;
-
 public interface PedidosRepository extends MongoRepository<Pedido, String> {
-    @Query("{'cliente.$id': ?0}")
-    List<Pedido> findAllByClienteId(ObjectId clienteId);
-
-    default List<Pedido> findAllByClienteId(String clienteId) {
-        return this.findAllByClienteId(new ObjectId(clienteId));
-    }
-
     @Query("{'cliente.$id': ?0}")
     Page<Pedido> findAllByClienteIdPage(ObjectId clienteId, Pageable pageable);
 

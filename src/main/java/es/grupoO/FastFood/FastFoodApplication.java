@@ -67,6 +67,11 @@ public class FastFoodApplication {
 	@EnableWebSecurity
 	@Configuration
 	class WebSecurityConfig {
+
+		public static final String CLIENTE_AUTH = "CLIENTE";
+		public static final String REPARTIDOR_AUTH = "REPARTIDOR";
+		public static final String RESTAURANTE_AUTH = "RESTAURANTE";
+
 		@Bean
 		protected SecurityFilterChain configure(HttpSecurity http) {
 			// Establece los requisitos de autenticacion de los endpoints
@@ -81,22 +86,22 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/repartidor/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidor/validar").permitAll()
 							// Exigir roles especificos para determinados endpoints
-							.requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAuthority("CLIENTE")
-							.requestMatchers(HttpMethod.GET, "/pedidos/clientes/{idCliente}").hasAuthority("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/restaurante/{id}/valoracion").hasAuthority("CLIENTE")
-							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority("REPARTIDOR")
-							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/entregar").hasAuthority("REPARTIDOR")
-							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/estado").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.POST, "/restaurante/self/platos/{id_plato}/rebaja").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.POST, "/restaurante/{idRest}/platos").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.PUT, "/cliente/password").hasAuthority("CLIENTE")
-							.requestMatchers(HttpMethod.PUT, "/restaurante/password").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.PUT, "/repartidor/password").hasAuthority("REPARTIDOR")
-							.requestMatchers(HttpMethod.DELETE, "/cliente/self").hasAuthority("CLIENTE")
-							.requestMatchers(HttpMethod.DELETE, "/restaurante/self").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.DELETE, "/restaurante/self/platos/{idPlato}").hasAuthority("RESTAURANTE")
-							.requestMatchers(HttpMethod.DELETE, "/repartidor/self").hasAuthority("REPARTIDOR")
-							.requestMatchers(HttpMethod.DELETE, "/restaurante/self/platos/{idPlato}/rebaja").hasAuthority("RESTAURANTE")
+							.requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAuthority(CLIENTE_AUTH)
+							.requestMatchers(HttpMethod.GET, "/pedidos/clientes/{idCliente}").hasAuthority(CLIENTE_AUTH)
+							.requestMatchers(HttpMethod.POST, "/restaurante/{id}/valoracion").hasAuthority(CLIENTE_AUTH)
+							.requestMatchers(HttpMethod.POST, "/pedidos/{id}/asignar").hasAuthority(REPARTIDOR_AUTH)
+							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/entregar").hasAuthority(REPARTIDOR_AUTH)
+							.requestMatchers(HttpMethod.POST, "/pedidos/{idPedido}/estado").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.POST, "/restaurante/self/platos/{id_plato}/rebaja").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.POST, "/restaurante/{idRest}/platos").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.PUT, "/cliente/password").hasAuthority(CLIENTE_AUTH)
+							.requestMatchers(HttpMethod.PUT, "/restaurante/password").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.PUT, "/repartidor/password").hasAuthority(REPARTIDOR_AUTH)
+							.requestMatchers(HttpMethod.DELETE, "/cliente/self").hasAuthority(CLIENTE_AUTH)
+							.requestMatchers(HttpMethod.DELETE, "/restaurante/self").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.DELETE, "/restaurante/self/platos/{idPlato}").hasAuthority(RESTAURANTE_AUTH)
+							.requestMatchers(HttpMethod.DELETE, "/repartidor/self").hasAuthority(REPARTIDOR_AUTH)
+							.requestMatchers(HttpMethod.DELETE, "/restaurante/self/platos/{idPlato}/rebaja").hasAuthority(RESTAURANTE_AUTH)
 							// Permitir usar swagger sin autenticarse
 							.requestMatchers("/swagger-ui.html").permitAll()
 							.requestMatchers("/swagger-ui/**").permitAll()

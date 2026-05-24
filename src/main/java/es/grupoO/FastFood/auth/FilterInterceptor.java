@@ -54,7 +54,6 @@ public class FilterInterceptor extends OncePerRequestFilter {
 
             handler.doFilter(request, response);
         } catch (Exception e) {
-            // TODO: Continuar con los filtros??
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token invalido o expirado");
             SecurityContextHolder.clearContext();
         }
