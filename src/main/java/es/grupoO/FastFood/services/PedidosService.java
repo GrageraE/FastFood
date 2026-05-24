@@ -7,6 +7,7 @@ import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.state.EstadoPedido;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.model.valueobject.Posicion;
+import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.repository.LineaPlatosRepository;
 import es.grupoO.FastFood.repository.PedidosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,9 @@ public class PedidosService {
 
     /**
      * Realiza un pedido a partir de la informacion dada, guardando el pedido y sus lineas en la base de datos
-     * @param idCliente
-     * @param idRest
-     * @param platos
+     * @param idCliente El ID del cliente solicitante
+     * @param idRest El ID del restaurante al que se le hace el pedido
+     * @param platos Una lista de ID de platos junto con sus cantidades deseadas
      * @return pedido
      */
     public Pedido realizarPedido(String idCliente, String idRest, List<Pair<String, Integer>> platos) {
@@ -47,17 +48,15 @@ public class PedidosService {
 
         Pedido pedido = pedidosFactory.fabricarPedido();
 
-        for(LineaPlatos linea : pedido.getPlatos()) {
-            this.lineaPlatosRepository.save(linea);
-        }
+        this.lineaPlatosRepository.saveAll(pedido.getPlatos());
         this.pedidosRepository.save(pedido);
 
         return pedido;
     }
 
     /**
-     * busca el pedido por id
-     * @param idPedido
+     * Busca el pedido por ID
+     * @param idPedido El ID del pedido
      * @throws NoExistDBException si el pedido no esta registrado
      * @return pedido
      */
@@ -69,9 +68,13 @@ public class PedidosService {
         return pedido;
     }
 
+    public Precio obtenerPrecioPedido(String idPedido) {
+        return this.buscarPedidoPorID(idPedido).precioTotal();
+    }
+
     /**
-     * anula el pedido asociado a un id
-     * @param idPedido
+     * Anula el pedido asociado a un ID
+     * @param idPedido El ID de pedido
      * @throws NoExistDBException si el pedido no esta registrado
      */
     public void anularPedido(String idPedido) {
@@ -80,17 +83,14 @@ public class PedidosService {
             throw new NoExistDBException("El pedido no esta registrado");
         }
 
-        for(LineaPlatos linea : pedido.getPlatos()) {
-            this.lineaPlatosRepository.deleteById(linea.getId());
-        }
-
+        this.lineaPlatosRepository.deleteAll(pedido.getPlatos());
         this.pedidosRepository.deleteById(idPedido);
     }
 
     /**
-     * avanza el estado al puesto por el usuario
-     * @param idPedido
-     * @param estado
+     * Cambia el estado del pedido al estado dado por el usuario
+     * @param idPedido El ID del pedido a modificar
+     * @param estado El nuevo estado del pedido
      * @throws NoExistDBException si el pedido no esta registrado
      */
     public void cambiarEstado(String idPedido, int estado) {
@@ -109,10 +109,11 @@ public class PedidosService {
     }
 
     /**
-     * asigna el pedido al repartidor con ese id
-     * @param idPedido
-     * @param idRepartidor
+     * Asigna el pedido al repartidor con ese ID. Cambia el estado a EN_REPARTO
+     * @param idPedido El ID del pedido a modificar
+     * @param idRepartidor El ID del repartidor que se asigna
      * @throws NoExistDBException si el pedido o el repartidor no estan registrados
+     * @throws AlreadyAssignedException si el pedido ya tiene un repartidor asignado
      */
     public void asignarPedido(String idPedido, String idRepartidor) {
         Pedido pedido = this.buscarPedidoPorID(idPedido);
@@ -123,15 +124,17 @@ public class PedidosService {
 
         if(!pedido.repartidorAsignado()) {
             pedido.asignarRepartidor(rep);
+            pedido.setEstado(EstadoPedido.EN_REPARTO);
+            this.pedidosRepository.save(pedido);
         } else {
             throw new AlreadyAssignedException("Repartidor ya asignado");
         }
     }
 
     /**
-     * devuelve una lista de los restaurantes con pedidos disponibles mas cercanos dada la ubicacion del repartidor
-     * @param posicionRepartidor
-     * @param pageable
+     * Devuelve una lista de los restaurantes con pedidos disponibles mas cercanos dada la ubicacion del repartidor
+     * @param posicionRepartidor La ubicacion del repartidor
+     * @param pageable Paginacion
      * @return pageable<Pedido>
      */
     public Page<Pedido> buscarPedidosARepartir(Posicion posicionRepartidor, Pageable pageable) {

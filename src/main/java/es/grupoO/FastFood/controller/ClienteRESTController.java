@@ -3,10 +3,9 @@ package es.grupoO.FastFood.controller;
 import es.grupoO.FastFood.dto.*;
 import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.model.entity.Pedido;
-import es.grupoO.FastFood.model.entity.Plato;
 import es.grupoO.FastFood.model.entity.Restaurante;
-import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.model.valueobject.Posicion;
+import es.grupoO.FastFood.model.valueobject.Precio;
 import es.grupoO.FastFood.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -114,6 +113,12 @@ public class ClienteRESTController {
         String idRest = pedidoRequest.getIdRest();
         var platos = pedidoRequest.getPlatos();
         return this.pedidosService.realizarPedido(idCliente, idRest, platos);
+    }
+
+    @GetMapping("/pedidos/{idPedido}/precio")
+    @SecurityRequirement(name = "authorization")
+    public Precio obtenerPrecioPedido(@PathVariable String idPedido) {
+        return this.pedidosService.obtenerPrecioPedido(idPedido);
     }
 
     @PostMapping("/pagos")

@@ -1,5 +1,6 @@
 package es.grupoO.FastFood.factory;
 
+import es.grupoO.FastFood.exceptions.DifferentRestaurantsException;
 import es.grupoO.FastFood.model.entity.*;
 import es.grupoO.FastFood.model.valueobject.Pair;
 import es.grupoO.FastFood.services.ClientesService;
@@ -39,6 +40,11 @@ public class PedidosFactory {
             int cantidad = linea.getSecond();
 
             Plato plato = this.platosService.buscarPlatoPorID(idPlato);
+
+            if(!plato.getRestaurante().getIdRestaurante().equals(restaurante.getIdRestaurante())) {
+                throw new DifferentRestaurantsException("El pedido solicitado lleva platos de restaurantes diferentes");
+            }
+
             lineas.add(new LineaPlatos(plato, cantidad));
         }
         

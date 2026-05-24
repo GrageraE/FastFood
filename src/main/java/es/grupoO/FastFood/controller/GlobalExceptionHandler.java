@@ -29,10 +29,10 @@ public class GlobalExceptionHandler {
                 .body(buildError(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
-    @ExceptionHandler(ClienteNoRegistrado.class)
-    public ResponseEntity<Map<String, Object>> handleClienteNoRegistrado(ClienteNoRegistrado ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(buildError(HttpStatus.NOT_FOUND, ex.getMessage()));
+    @ExceptionHandler(DifferentRestaurantsException.class)
+    public ResponseEntity<Map<String, Object>> handleDifferentRestaurantsException(DifferentRestaurantsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(buildError(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
     @ExceptionHandler(EmptyOrderException.class)
