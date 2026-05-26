@@ -9,6 +9,8 @@ services:
       - '27017'
     networks:
       - 'red_mongo'
+    volumes:
+      - './data:/data/db'
   compass:
     image: 'haohanyang/compass-web'
     environment:
