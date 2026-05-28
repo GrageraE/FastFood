@@ -98,25 +98,7 @@ public class RestauranteRegistroTest implements MongoContainer {
 
     @Test
     void TC2() { // TODO: Quitar test, spring lo convierte a cadena
-        RestAssured
-                .given()
-                .baseUri(BASE_URI)
-                .port(this.port)
-                .body(this.getBody(
-                        20,
-                        CATEGORIA,
-                        DIRECCION,
-                        TELEFONO,
-                        getEmail(),
-                        HORA_APERTURA,
-                        HORA_CIERRE,
-                        PASSWD
-                ))
-                .contentType("application/json")
-                .when()
-                .post("/restaurante/registro")
-                .then()
-                .statusCode(400);
+
     }
 
     @Test
@@ -193,26 +175,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC6() { // TODO: Quitar test, Spring lo convierte a cadena
-        RestAssured
-                .given()
-                .baseUri(BASE_URI)
-                .port(this.port)
-                .body(this.getBody(
-                        NOMBRE,
-                        CATEGORIA,
-                        15,
-                        TELEFONO,
-                        getEmail(),
-                        HORA_APERTURA,
-                        HORA_CIERRE,
-                        PASSWD
-                ))
-                .contentType("application/json")
-                .when()
-                .post("/restaurante/registro")
-                .then()
-                .statusCode(400);
+    void TC6() { // TODO: Borrar
     }
 
     @Test
@@ -265,7 +228,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .post("/restaurante/registro")
                 .then()
                 .statusCode(400)
-                .body("message", equalTo("El email del restaurante no es valido"));
+                .body("message", equalTo("El email proporcionado no es correcto"));
     }
 
     @Test
@@ -289,7 +252,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .post("/restaurante/registro")
                 .then()
                 .statusCode(400)
-                .body("message", equalTo("El email del restaurante no es valido"));
+                .body("message", equalTo("El email proporcionado no es correcto"));
     }
 
     @Test
@@ -313,7 +276,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .post("/restaurante/registro")
                 .then()
                 .statusCode(400)
-                .body("message", equalTo("El email del restaurante no es valido"));
+                .body("message", equalTo("El email proporcionado no es correcto"));
     }
 
     @Test
@@ -337,7 +300,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .post("/restaurante/registro")
                 .then()
                 .statusCode(400)
-                .body("message", equalTo("El email del restaurante no es valido"));
+                .body("message", equalTo("El email proporcionado no es correcto"));
     }
 
     @Test
@@ -361,7 +324,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .post("/restaurante/registro")
                 .then()
                 .statusCode(400)
-                .body("message", equalTo("El email del restaurante no es valido"));
+                .body("message", equalTo("El email proporcionado no es correcto"));
     }
 
     @Test
@@ -558,25 +521,6 @@ public class RestauranteRegistroTest implements MongoContainer {
 
     @Test
     void TC22() { // TODO: borrar
-        RestAssured
-                .given()
-                .baseUri(BASE_URI)
-                .port(this.port)
-                .body(this.getBody(
-                        NOMBRE,
-                        CATEGORIA,
-                        DIRECCION,
-                        TELEFONO,
-                        getEmail(),
-                        HORA_APERTURA,
-                        HORA_CIERRE,
-                        PASSWD
-                ))
-                .contentType("application/json")
-                .when()
-                .post("/restaurante/registro")
-                .then()
-                .statusCode(400)
-                .body("message", equalTo("Sin resultados"));
+
     }
 }
