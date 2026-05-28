@@ -10,10 +10,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import es.grupoO.FastFood.dto.PlatoDTO;
 import es.grupoO.FastFood.exceptions.InvalidDateException;
@@ -25,10 +29,14 @@ import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.services.PlatosService;
 import es.grupoO.FastFood.services.RestaurantesService;
 
-
 @SpringBootTest
 @Testcontainers
 class EstablecerRebajaTests {
+    @Container
+	@ServiceConnection
+	static MongoDBContainer mongoTestContainer
+			= new MongoDBContainer(DockerImageName.parse("mongo:latest"));
+
     @Autowired
     PlatosService platosService;
 
@@ -50,7 +58,6 @@ class EstablecerRebajaTests {
         );
 
         platosService.insertarPlato(restaurante.getIdRestaurante(), "plato", 0, 1, auth);
-        platosService.insertarPlato(restaurante.getIdRestaurante(), "plato", 0, 1, auth);
         List<PlatoDTO> platos = platosService.buscarPlato(restaurante.getIdRestaurante());
         plato = platosService.buscarPlatoPorID(platos.get(0).getIdPlato());
     }
@@ -58,8 +65,10 @@ class EstablecerRebajaTests {
     //Se crea una rebaja tras cada llamada a test, luego se elimina para limpieza
     @AfterEach 
     public void eliminarPlatoYRestauranteYRebaja(){
+        if(platosService.buscarPlatoPorID(plato.getIdPlato()).getRebaja() != null){
+            platosService.quitarRebaja(plato.getIdPlato(), auth);
+        }
         platosService.borrarPlato(plato.getIdPlato(), auth);
-        platosService.quitarRebaja(plato.getIdPlato(), auth);
         restaurantesService.borrarRestaurante(auth);
     }
     // Nodo J
@@ -139,7 +148,7 @@ class EstablecerRebajaTests {
             List.of(new SimpleGrantedAuthority("RESTAURANTE"))
         );
         // Intentar poner rebaja en plato del primer restaurante con token del segundo
-        assertDoesNotThrow(() -> {
+        assertThrows(RoleNotAllowedException.class, () -> {
             platosService.establecerRebaja(plato.getIdPlato(), 6, "2027-08-28", authOtro);
         });
 
