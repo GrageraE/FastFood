@@ -3,25 +3,29 @@ package es.grupoO.FastFood.endpoint;
 import es.grupoO.FastFood.factory.RestauranteFactory;
 import es.grupoO.FastFood.model.entity.Restaurante;
 import es.grupoO.FastFood.services.GeocodingService;
-import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.event.EventListener;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import es.grupoO.FastFood.containers.MongoContainer;
 import io.restassured.RestAssured;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PostPlatosTest implements MongoContainer {
+public class PostPlatosTest {
+    @Container
+    @ServiceConnection
+    static MongoDBContainer mongoContainer = new MongoDBContainer(DockerImageName.parse("mongo:latest"));
+
     @LocalServerPort
     private int port;
 
@@ -66,7 +70,6 @@ public class PostPlatosTest implements MongoContainer {
         return rest;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
     private String inicizalizarTokenAuth() {
         String token = RestAssured.given()
                 .baseUri(BASE_URI)
@@ -93,10 +96,10 @@ public class PostPlatosTest implements MongoContainer {
         tokenRestaurante = inicizalizarTokenAuth();
     }
 
-    @AfterAll
-    void cleanUpRestaurante() {
-        mongoTemplate.getDb().drop();
-    }
+//    @AfterAll
+//    void cleanUpRestaurante() {
+//        mongoTemplate.getDb().drop();
+//    }
 
     @Test
     void TC1() {
