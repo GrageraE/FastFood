@@ -1,4 +1,9 @@
 data/
+util/imprimirGrafos/Lib
+util/imprimirGrafos/Scripts
+util/imprimirGrafos/Include
+util/imprimirGrafos/share
+util/imprimirGrafos/pyvenv.cfg
 
 HELP.md
 .gradle
@@ -62,6 +67,5 @@ out/
 hs_err_pid*
 replay_pid*
 
-requirements.txt
 api_client.py
 venv
