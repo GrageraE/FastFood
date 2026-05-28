@@ -74,7 +74,7 @@ public class FastFoodApplication {
 
 		@Bean
 		protected SecurityFilterChain configure(HttpSecurity http) {
-			// Establece los requisitos de autenticacion de los endpoints
+			// Establece los requisitos de autenticacion de los endpoint
 			http
 					.csrf(AbstractHttpConfigurer::disable)
 					.authorizeHttpRequests(auth -> auth
@@ -85,7 +85,7 @@ public class FastFoodApplication {
 							.requestMatchers(HttpMethod.POST, "/restaurante/validar").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidor/registro").permitAll()
 							.requestMatchers(HttpMethod.POST, "/repartidor/validar").permitAll()
-							// Exigir roles especificos para determinados endpoints
+							// Exigir roles especificos para determinados endpoint
 							.requestMatchers(HttpMethod.GET, "/cliente/{id}").hasAuthority(CLIENTE_AUTH)
 							.requestMatchers(HttpMethod.GET, "/pedidos/clientes/{idCliente}").hasAuthority(CLIENTE_AUTH)
 							.requestMatchers(HttpMethod.POST, "/restaurante/{id}/valoracion").hasAuthority(CLIENTE_AUTH)
@@ -107,7 +107,7 @@ public class FastFoodApplication {
 							.requestMatchers("/swagger-ui/**").permitAll()
 							.requestMatchers("/v3/api-docs.yaml").permitAll()
 							.requestMatchers("/v3/api-docs/**").permitAll()
-							// Resto de endpoints: requieren simplemente estar autenticados
+							// Resto de endpoint: requieren simplemente estar autenticados
 							.requestMatchers("/error").permitAll()
 							.anyRequest().authenticated()
 					)
