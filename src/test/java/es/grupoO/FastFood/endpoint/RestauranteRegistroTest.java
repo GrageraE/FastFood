@@ -38,7 +38,6 @@ public class RestauranteRegistroTest implements MongoContainer {
 
     @BeforeEach
     void setUp() {
-        // Si la prueba falla, imprime el detalle en consola automáticamente
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
