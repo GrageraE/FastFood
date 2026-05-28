@@ -48,6 +48,7 @@ class EstablecerRebajaTests {
     Restaurante restaurante;
     Plato plato;
 
+    //Inicializamos un restaurante con su login y un plato para cada test
     @BeforeEach
     public void insertarRestauranteConLoginYInsertarPlato(){
         restaurante = restaurantesService.insertarRestaurante("test", 0, "C. de Canarias, 47-43, Arganzuela, 28045 Madrid", "123456789", "test@test.com", "10:00", "22:00", "test");
@@ -71,7 +72,7 @@ class EstablecerRebajaTests {
         platosService.borrarPlato(plato.getIdPlato(), auth);
         restaurantesService.borrarRestaurante(auth);
     }
-    // Nodo J
+    // Nodo B — Fecha con buen formato
     @Test
     public void testConBuenFormatoDate(){
         String buenFormatoDate= "2027-08-28";
@@ -80,7 +81,7 @@ class EstablecerRebajaTests {
         });
     }
 
-    // Nodo C
+    // Nodo C — Fecha con mal formato
     @Test
     public void testConMalFormatoDate(){
         String malFormatoDate = "2027/08/28";
@@ -88,7 +89,7 @@ class EstablecerRebajaTests {
             platosService.establecerRebaja(plato.getIdPlato(), 6, malFormatoDate, auth);
         });
     }
-
+    // Nodo E — Email no válido 
     @Test
     public void testConEmailInvalido() {
         Authentication authMala = new UsernamePasswordAuthenticationToken(
@@ -99,7 +100,7 @@ class EstablecerRebajaTests {
             platosService.establecerRebaja(plato.getIdPlato(), 6.0, "2027-08-28", authMala);
         });
     }
-
+    // Nodo D — Email válido
     @Test
     public void testConEmailValido() {
         assertDoesNotThrow(() -> {
@@ -114,13 +115,13 @@ class EstablecerRebajaTests {
             platosService.establecerRebaja("idFalso123", 6, "2027-08-28", auth);
         });
     }
-
+    // Nodo F — Plato que existe en BD
     @Test
     public void testConPlatoExistente(){
         assertDoesNotThrow(() -> platosService.establecerRebaja(plato.getIdPlato(), 10, "2027-08-28", auth));
     }
 
-    // Nodo I — Plato de otro restaurante (RoleNotAllowedException)
+    // Nodo I — Plato de otro restaurante 
     @Test
     public void testConPlatoDeOtroRestaurante(){
         // Crear segundo restaurante
@@ -138,6 +139,7 @@ class EstablecerRebajaTests {
         restaurantesService.borrarRestaurante(authOtro);
     }
 
+    // Nodo H — Plato del restaurante correcto
     @Test
     public void testConPlatoDelRestauranteCorrecto(){
         // Crear segundo restaurante
@@ -155,6 +157,7 @@ class EstablecerRebajaTests {
         restaurantesService.borrarRestaurante(authOtro);
     }
 
+    // Nodo J — Rebaja guardada correctamente en persistencia
     @Test
     public void buenGuardadoPersistencia(){
         platosService.establecerRebaja(plato.getIdPlato(), 15, "2027-08-28", auth);
