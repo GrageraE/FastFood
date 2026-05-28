@@ -2,13 +2,18 @@ package es.grupoO.FastFood.endpoint;
 
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import es.grupoO.FastFood.containers.MongoContainer;
+import es.grupoO.FastFood.model.entity.Restaurante;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -16,6 +21,8 @@ import io.restassured.RestAssured;
 public class GetPlatosTest implements MongoContainer {
     @LocalServerPort
     private int port;
+    @Autowired
+    private Restaurante restaurantesService;
     public static final String BASE_URI = "http://localhost";
 
     private static final String NOMBRE = "R1";
@@ -38,6 +45,21 @@ public class GetPlatosTest implements MongoContainer {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
+    @BeforeEach
+    void createRestaurante() {
+        String email = getEmail();
+        Restaurante restaurante = this.restaurantesService.insertarRestaurante(
+                NOMBRE,
+                CATEGORIA,
+                DIRECCION,
+                TELEFONO,
+                email,
+                HORA_APERTURA,
+                HORA_CIERRE,
+                PASSWD
+        );
+    }
+
     Map<String, Object> getBody(Object nombre, Object categoria, Object direccion, Object telefono, Object email,
                                 Object horaApertura, Object horaCierre, Object passwd)
     {
@@ -55,24 +77,53 @@ public class GetPlatosTest implements MongoContainer {
 
     @Test
     void TC1() { 
-        RestAssured
-                .given()
-                .baseUri(BASE_URI)
-                .port(this.port)
-                .body(this.getBody(
-                        NOMBRE,
-                        CATEGORIA,
-                        15,
-                        TELEFONO,
-                        getEmail(),
-                        HORA_APERTURA,
-                        HORA_CIERRE,
-                        PASSWD
-                ))
-                .contentType("application/json")
-                .when()
-                .post("/restaurante/registro")
-                .then()
-                .statusCode(400);
+    String idRestaurante = "1";
+    RestAssured
+        .given()
+            .contentType("application/json")
+            .pathParam("idRestaurante", idRestaurante)
+        .when()
+            .get("/restaurante/{idRestaurante}/platos")
+        .then()
+            .statusCode(200);
+    }
+
+    @Test
+    void TC3() { 
+    String idRestaurante = "restaurante";
+    RestAssured
+        .given()
+            .contentType("application/json")
+            .pathParam("idRestaurante", idRestaurante)
+        .when()
+            .get("/restaurante/{idRestaurante}/platos")
+        .then()
+            .statusCode(400);
+    }
+
+    @Test
+    void TC4() { 
+    Integer idRestaurante = -1;
+    RestAssured
+        .given()
+            .contentType("application/json")
+            .pathParam("idRestaurante", idRestaurante)
+        .when()
+            .get("/restaurante/{idRestaurante}/platos")
+        .then()
+            .statusCode(400);
+    }
+
+    @Test
+    void TC5() { 
+    Integer idRestaurante = -1;
+    RestAssured
+        .given()
+            .contentType("application/json")
+            .pathParam("idRestaurante", idRestaurante)
+        .when()
+            .get("/restaurante/{idRestaurante}/platos")
+        .then()
+            .statusCode(400);
     }
 }
