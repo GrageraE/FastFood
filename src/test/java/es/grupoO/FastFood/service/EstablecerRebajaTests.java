@@ -2,6 +2,7 @@ package es.grupoO.FastFood.service;
 
 import java.util.List;
 
+import es.grupoO.FastFood.containers.MongoContainer;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,12 +32,7 @@ import es.grupoO.FastFood.services.RestaurantesService;
 
 @SpringBootTest
 @Testcontainers
-class EstablecerRebajaTests {
-    @Container
-	@ServiceConnection
-	static MongoDBContainer mongoTestContainer
-			= new MongoDBContainer(DockerImageName.parse("mongo:latest"));
-
+class EstablecerRebajaTests implements MongoContainer {
     @Autowired
     PlatosService platosService;
 
