@@ -1,24 +1,36 @@
 package es.grupoO.FastFood.endpoint;
 
 import es.grupoO.FastFood.containers.MongoContainer;
+
 import es.grupoO.FastFood.model.state.CategoriaRestaurante;
 import es.grupoO.FastFood.model.valueobject.Email;
+import es.grupoO.FastFood.model.entity.Restaurante;
+
 import io.restassured.RestAssured;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 public class RestauranteRegistroTest implements MongoContainer {
     @LocalServerPort
     private int port;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public static final String BASE_URI = "http://localhost";
 
@@ -56,10 +68,19 @@ public class RestauranteRegistroTest implements MongoContainer {
         );
     }
 
+    private void comprobarRestauranteInsertado(String idRestaurante, String nombreResaurante) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("idRestaurante").is(new ObjectId(idRestaurante)));
+
+        Restaurante restaurante = mongoTemplate.findOne(query, Restaurante.class);
+        assertNotNull(restaurante);
+        assertEquals(nombreResaurante, restaurante.getNombre());
+    }
+
     @Test
     void TC1() {
         String email = getEmail();
-        RestAssured
+        String idRestaurante = RestAssured
                 .given()
                 .baseUri(BASE_URI)
                 .port(this.port)
@@ -92,7 +113,10 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .and()
                 .body("horaApertura", equalTo(HORA_APERTURA + ":00"))
                 .and()
-                .body("horaCierre", equalTo(HORA_CIERRE + ":00"));
+                .body("horaCierre", equalTo(HORA_CIERRE + ":00"))
+                .and()
+                .extract().path("idRestaurante");
+        comprobarRestauranteInsertado(idRestaurante, NOMBRE);
     }
 
     @Test
@@ -165,7 +189,9 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .when()
                 .post("/restaurante/registro")
                 .then()
-                .statusCode(400);
+                .statusCode(400)
+                .and()
+                .body("error", equalTo("Bad Request"));
     }
 
     @Test
