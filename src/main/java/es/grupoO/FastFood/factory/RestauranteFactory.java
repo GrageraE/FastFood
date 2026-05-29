@@ -20,7 +20,7 @@ public class RestauranteFactory {
     private String horaApertura;
     private String horaCierre;
     private int categoria;
-    private String email;
+    private Email email;
     private String passwd;
 
     private HashMaker hasher;
@@ -29,7 +29,7 @@ public class RestauranteFactory {
 
     public RestauranteFactory(String nombre, String direccion,
                               String telefono, String horaApertura,
-                              String horaCierre, int categoria, String email, String passwd,
+                              String horaCierre, int categoria, Email email, String passwd,
                               GeocodingService geocodingService) {
         this.nombre = nombre;
         this.direccion = direccion;
@@ -53,8 +53,6 @@ public class RestauranteFactory {
             throw new InvalidTimeException("Tiempo invalido: " + e.getParsedString() + " -- Razon: " + e.getMessage());
         }
 
-        Email emailParsed = Email.parse(this.email)
-                .orElseThrow(() -> new NotValidEmailException("El email del restaurante no es valido"));
         String hashPasswd = hasher.encoder(passwd);
 
         CategoriaRestaurante cat = CategoriaRestaurante.fromInteger(categoria);
@@ -64,7 +62,7 @@ public class RestauranteFactory {
         Posicion posicion = geocodingService.obtenerCoordenadas(this.direccion);
 
         return new Restaurante(this.nombre, this.direccion, this.telefono,
-                horaAp, horaC, cat, val, emailParsed, hashPasswd, posicion.toGeoJson());
+                horaAp, horaC, cat, val, this.email, hashPasswd, posicion.toGeoJson());
     }
 
 

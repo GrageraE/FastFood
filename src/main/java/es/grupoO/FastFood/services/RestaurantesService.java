@@ -93,7 +93,7 @@ public class RestaurantesService {
      * @throws UsernameAlreadyExistException
      * @return Restaurante
      */
-    public Restaurante insertarRestaurante(String nombre, int categoria, String direccion,String telefono, 
+    public Restaurante insertarRestaurante(String nombre, int categoria, String direccion, String telefono,
         String email, String horaApertura, String horaCierre, String passwd){
 
         Email parsedEmail = Email.parse(email)
@@ -105,7 +105,7 @@ public class RestaurantesService {
 
         RestauranteFactory fact = new RestauranteFactory(
                 nombre, direccion, telefono, horaApertura,
-                horaCierre, categoria, email, passwd,
+                horaCierre, categoria, parsedEmail, passwd,
                 this.geocodingService
         );
         Restaurante restaurante = fact.fabricarRestaurante();
