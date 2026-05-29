@@ -357,4 +357,24 @@ class PostPlatosTest {
                 .and()
                 .body("message", equalTo(("El restaurante autenticado no coincide con el ID dado")));
     }
+
+    @Test
+    void TC11() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .contentType("application/json")
+                .header("Authorization", "Token incorrecto ¡¡!! ññ")
+                .pathParam("idRest", idRestaurante)
+                .queryParam("nombre", NOMBRE)
+                .queryParam("categoria", CATEGORIA)
+                .queryParam("precio", PRECIO)
+                .when()
+                .post("/restaurante/{idRest}/platos")
+                .then()
+                .statusCode(403)
+                .and()
+                .body("error", equalTo("Forbidden"));
+    }
 }
