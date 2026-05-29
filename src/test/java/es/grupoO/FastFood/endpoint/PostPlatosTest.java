@@ -7,6 +7,7 @@ import es.grupoO.FastFood.model.entity.Cliente;
 import es.grupoO.FastFood.factory.RepartidorFactory;
 import es.grupoO.FastFood.model.entity.Repartidor;
 import es.grupoO.FastFood.model.entity.Plato;
+import es.grupoO.FastFood.model.valueobject.Email;
 
 import es.grupoO.FastFood.services.GeocodingService;
 import org.bson.types.ObjectId;
@@ -44,8 +45,8 @@ class PostPlatosTest {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    private static final String EMAIL_PRINCIPAL = "r@r.com";
-    private static final String EMAIL_SECUNDARIO = "rr@rr.com";
+    private static final Email EMAIL_PRINCIPAL = Email.parse("r@r.com").get();
+    private static final Email EMAIL_SECUNDARIO = Email.parse("rr@rr.com").get();
     private static final String EMAIL_CLIENTE = "cl@cl.com";
     private static final String EMAIL_REPARTIDOR = "rep@rep.com";
     private static final String PASSWD = "1234";
@@ -67,7 +68,7 @@ class PostPlatosTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    private Restaurante construirRestaurante(String email, String passwd) {
+    private Restaurante construirRestaurante(Email email, String passwd) {
         RestauranteFactory fact = new RestauranteFactory(
                 "R" + (contador++),
                 "Plaza Mayor, Madrid, España",
@@ -151,7 +152,7 @@ class PostPlatosTest {
         construirRepartidor(EMAIL_REPARTIDOR, PASSWD);
 
         idRestaurante = restPrincipal.getIdRestaurante();
-        tokenRestaurante = iniciarSesion(EMAIL_PRINCIPAL, PASSWD, "restaurante");
+        tokenRestaurante = iniciarSesion(EMAIL_PRINCIPAL.toString(), PASSWD, "restaurante");
     }
 
     @Test
@@ -339,7 +340,7 @@ class PostPlatosTest {
 
     @Test
     void TC10() {
-        String tokenRestSecundario = iniciarSesion(EMAIL_SECUNDARIO, PASSWD, "restaurante");
+        String tokenRestSecundario = iniciarSesion(EMAIL_SECUNDARIO.toString(), PASSWD, "restaurante");
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
