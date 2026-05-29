@@ -37,11 +37,11 @@ pos = {
 #Leyenda para el grafo, para saber que representa cada letra
 legend_text = (
     "A - Inicio\n"
-    "B - if (LocalDate.parse(fecha).equals(LocalDate.now()))\n"
+    "B - if (LocalDate.parse(fecha) es válido)\n"
     "C - False -> Throws InvalidDateException\n"
     "D - True -> if(Email.parse(auth.getName()) es válido)\n"
     "E - False -> Throws NotValidEmailException\n"
-    "F - True -> if (this.buscarPlatoPorID(idPlato) != null)\n"
+    "F - True -> if (buscarPlatoPorID(idPlato) != null)\n"
     "G - False -> Throws NoExistDBException\n"
     "H - True -> if (plato.getRestaurante().getEmail().equals(emailRest))\n"
     "I - False -> Throws RoleNotAllowedException\n"
