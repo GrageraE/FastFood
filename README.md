@@ -5,9 +5,9 @@ FastFood API es una aplicación backend desarrollada con Spring Boot hecha para 
 
 ## Integrantes
 
-Yu Xiang Yang Xu <br>
-Daniel Ramon Gragera  <br>
-Yun Chen
+* Yu Xiang Yang Xu <br>
+* Daniel Ramon Gragera  <br>
+* Yun Chen
 
 ## Uso y compilacion
 ### Requisitos previos
@@ -15,16 +15,27 @@ Yun Chen
 - Docker (Es necesario instalar Docker para ejecutar la base de datos MongoDB en un contenedor)
 
 ### Compilación y ejecución
-1. Levantar docker (a veces no es necesario, si no funciona use el comando):
+1. Levantar Docker (a veces no es necesario, si no funciona use el comando):
 ```
 docker compose up -d
 ```
-2. Compilar el proyecto con Gradle:
+2. Compilar y ejecutar el proyecto con Gradle:
 ```
 ./gradlew bootRun
 ```
-3. Para acceder a las pruebas entre al link: http://localhost:8080/swagger-ui/index.html
+3. Para acceder al servicio Swagger entre al link: http://localhost:8080/swagger-ui/index.html
 4. Para acceder a la base de datos MongoDB entre en: http://localhost:8081/
+
+### Ejecutar las pruebas automatizadas
+1. Tener en ejecución Docker
+2. Compilar y ejecutar las pruebas con:
+```
+./gradlew test
+```
+3. El reporte de Jacoco se almacena en la ruta:
+```
+./build/reports/jacoco/test/html/index.html
+```
 ---
 
 ## Tecnologías utilizadas
