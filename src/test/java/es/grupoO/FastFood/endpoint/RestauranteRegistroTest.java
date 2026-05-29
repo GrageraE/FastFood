@@ -96,12 +96,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC2() { // TODO: Quitar test, spring lo convierte a cadena
-
-    }
-
-    @Test
-    void TC3() {
+    void TC2() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -126,7 +121,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC4() {
+    void TC3() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -151,7 +146,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC5() {
+    void TC4() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -174,11 +169,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC6() { // TODO: Borrar
-    }
-
-    @Test
-    void TC7() {
+    void TC5() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -202,12 +193,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC8() {
-        // TODO: Quitar clase 11
-    }
-
-    @Test
-    void TC9() {
+    void TC6() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -231,7 +217,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC10() {
+    void TC7() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -255,7 +241,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC11() {
+    void TC8() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -279,7 +265,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC12() {
+    void TC9() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -303,7 +289,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC13() {
+    void TC10() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -327,7 +313,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC14() {
+    void TC11() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -351,7 +337,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC15() {
+    void TC12() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -375,7 +361,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC16() {
+    void TC13() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -399,7 +385,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC17() {
+    void TC14() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -423,7 +409,108 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
+    void TC15() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        "-2:15",
+                        HORA_CIERRE,
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "-2:15"));
+    }
+
+
+    @Test
+    void TC16() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        "24:01",
+                        HORA_CIERRE,
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "24:01"));
+    }
+
+
+    @Test
+    void TC17() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        "12:-2",
+                        HORA_CIERRE,
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "12:-2"));
+
+    }
+
+
+    @Test
     void TC18() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        "12:60",
+                        HORA_CIERRE,
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "12:60"));
+
+    }
+
+    @Test
+    void TC19() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -447,7 +534,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC19() {
+    void TC20() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -471,7 +558,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC20() {
+    void TC21() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -479,7 +566,7 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .body(this.getBody(
                         NOMBRE,
                         CATEGORIA,
-                        "efmkerkjgioerjgergioerg",
+                        DIRECCION,
                         TELEFONO,
                         getEmail(),
                         HORA_APERTURA,
@@ -495,7 +582,7 @@ public class RestauranteRegistroTest implements MongoContainer {
     }
 
     @Test
-    void TC21() {
+    void TC22() {
         RestAssured
                 .given()
                 .baseUri(BASE_URI)
@@ -518,8 +605,106 @@ public class RestauranteRegistroTest implements MongoContainer {
                 .body("message", startsWith("Tiempo invalido: " + "12:prueba"));
     }
 
+
     @Test
-    void TC22() { // TODO: borrar
+    void TC23() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        HORA_APERTURA,
+                        "-2:15",
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "-2:15"));
+    }
+
+
+    @Test
+    void TC24() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        HORA_APERTURA,
+                        "26:01",
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "26:01"));
+    }
+
+
+    @Test
+    void TC25() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        HORA_APERTURA,
+                        "12:-2",
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "12:-2"));
 
     }
+
+
+    @Test
+    void TC26() {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        getEmail(),
+                        HORA_APERTURA,
+                        "12:65",
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(400)
+                .body("message", startsWith("Tiempo invalido: " + "12:65"));
+
+    }
+
 }
