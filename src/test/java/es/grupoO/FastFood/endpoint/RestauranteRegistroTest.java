@@ -48,6 +48,9 @@ public class RestauranteRegistroTest implements MongoContainer {
         return "r" + (contador++) + "@r.com";
     }
 
+    private static final Email EMAIL_REST_COMUN = Email.parse("emailComun@emailComun.com").get();
+    private static final String NOMBRE_REST_COMUN = "Rest con email comun para la prueba TC27";
+
     @BeforeEach
     void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -75,6 +78,29 @@ public class RestauranteRegistroTest implements MongoContainer {
         Restaurante restaurante = mongoTemplate.findOne(query, Restaurante.class);
         assertNotNull(restaurante);
         assertEquals(nombreResaurante, restaurante.getNombre());
+    }
+
+    private void insertarRestauranteEmailComun(Email email, String passwd) {
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE_REST_COMUN,
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        email.toString(),
+                        HORA_APERTURA,
+                        HORA_CIERRE,
+                        passwd
+
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(200);
     }
 
     @Test
@@ -733,4 +759,30 @@ public class RestauranteRegistroTest implements MongoContainer {
 
     }
 
+    @Test
+    void TC27() {
+        insertarRestauranteEmailComun(EMAIL_REST_COMUN, PASSWD);
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(this.port)
+                .body(this.getBody(
+                        NOMBRE_REST_COMUN + " - copia",
+                        CATEGORIA,
+                        DIRECCION,
+                        TELEFONO,
+                        EMAIL_REST_COMUN.toString(),
+                        HORA_APERTURA,
+                        HORA_CIERRE,
+                        PASSWD
+                ))
+                .contentType("application/json")
+                .when()
+                .post("/restaurante/registro")
+                .then()
+                .statusCode(409)
+                .and()
+                .body("message", equalTo("El restaurante ya existe"));
+    }
 }

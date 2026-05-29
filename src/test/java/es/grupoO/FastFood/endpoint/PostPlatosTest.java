@@ -88,7 +88,7 @@ class PostPlatosTest {
         return rest;
     }
 
-    private Cliente construirCliente(String email, String passwd) {
+    private void construirCliente(String email, String passwd) {
         ClienteFactory fact = new ClienteFactory(
                 "Cl",
                 "Plaza Mayor, Madrid, España",
@@ -100,10 +100,9 @@ class PostPlatosTest {
         Cliente rest = fact.crearCliente();
 
         mongoTemplate.insert(rest);
-        return rest;
     }
 
-    private Repartidor construirRepartidor(String email, String passwd) {
+    private void construirRepartidor(String email, String passwd) {
         RepartidorFactory fact = new RepartidorFactory(
                 "Rep",
                 "12345",
@@ -114,7 +113,6 @@ class PostPlatosTest {
         Repartidor rest = fact.fabricarRepartidor();
 
         mongoTemplate.insert(rest);
-        return rest;
     }
 
     private String iniciarSesion(String email, String passwd, String endpoint) {
